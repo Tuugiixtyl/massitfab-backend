@@ -1,0 +1,7 @@
+*.sqlite3
+massitfab/__pycache__/*
+mfApp/__pycache__/*
+mfApp/migrations/*
+*.pyc
+.DS*
+# .env
