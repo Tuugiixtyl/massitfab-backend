@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MfappConfig(AppConfig):
+class MassitfabApiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mfApp'
+    name = 'massitfab_api'
