@@ -1,9 +1,7 @@
 *.sqlite3
 massitfab/__pycache__/*
-maesitfab_app/__pycache__/*
-maesitfab_app/migrations/*
-massitfab_api/__pycache__/*
-massitfab_api/migrations/*
+mfApp/__pycache__/*
+mfApp/migrations/*
 *.pyc
 .DS*
-massitfab/.env
+# .env
