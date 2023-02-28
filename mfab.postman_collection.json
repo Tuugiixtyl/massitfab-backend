@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "a07cedc7-0dab-4582-a97d-301a6199a538",
+		"name": "mfab",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8000/api/register/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tuugiiremph@gmail.com",
+							"type": "default"
+						},
+						{
+							"key": "user",
+							"value": "rufy",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "Admin123@",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/register/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/api/register/ Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tuugiiremph@gmail.com",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "Admin123@",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/api/login/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/api/items/",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTY4Njk0LCJpYXQiOjE2Nzc1NjUwOTQsImp0aSI6IjJjNDBmNTFkMzZkYTQ5ODk4YmZmOTYwNTE0NTI1NzAyIiwidXNlcl9pZCI6Mn0.uqIn57M_GIcj7UFS9OehPmYAdJwOjGEwpw6NdEvHJAg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/items/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/api/items/create/",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTY4Njk0LCJpYXQiOjE2Nzc1NjUwOTQsImp0aSI6IjJjNDBmNTFkMzZkYTQ5ODk4YmZmOTYwNTE0NTI1NzAyIiwidXNlcl9pZCI6Mn0.uqIn57M_GIcj7UFS9OehPmYAdJwOjGEwpw6NdEvHJAg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "default"
+						},
+						{
+							"key": "name",
+							"value": "rufy",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8000/api/items/create/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"create",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/api/items/1/update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTY4Njk0LCJpYXQiOjE2Nzc1NjUwOTQsImp0aSI6IjJjNDBmNTFkMzZkYTQ5ODk4YmZmOTYwNTE0NTI1NzAyIiwidXNlcl9pZCI6Mn0.uqIn57M_GIcj7UFS9OehPmYAdJwOjGEwpw6NdEvHJAg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "sandy",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8000/api/items/3/update/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"3",
+						"update",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
