@@ -2,22 +2,51 @@ from pathlib import Path
 from datetime import timedelta
 import environ
 
+# ==============================================================================
+# TYPE SAFETY START POINT
+# ==============================================================================
+
 env = environ.Env()
 environ.Env.read_env()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+class AuthException(Exception):
+    pass
+
+ROOT_URLCONF = 'massitfab.urls'
+
+DEBUG = False
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+SECRET_KEY = env('SECRET_KEY')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5g4+&^2*mz0^dtci!b_twg*+pcu3w42c%vxbu&vz(k6umc76mm'
+WSGI_APPLICATION = 'massitfab.wsgi.application'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'public']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+encoding = "utf-8"
+USE_TZ = True
 
-ALLOWED_HOSTS = []
+# ==============================================================================
+# SECURITY SETTINGS
+# ==============================================================================
 
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_HTTPONLY = True
+# SECURE_HSTS_SECONDS = 60 * 60 * 24 * 7 * 52  # one year
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
+# SECURE_SSL_REDIRECT = True
 
-# Application definition
+# SESSION_COOKIE_SECURE = True
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    ]
 
 INSTALLED_APPS = [
     'maesitfab_app',
@@ -44,8 +73,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'massitfab.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -62,12 +89,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'massitfab.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -78,10 +99,6 @@ DATABASES = {
         'PORT': env('DATABASE_PORT'),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -98,28 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
-STATICFILES_DIRS = [BASE_DIR / 'public']
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+# ==============================================================================
+# THIRD-PARTY APPS SETTINGS
+# ==============================================================================
 
 AUTH_USER_MODEL = 'massitfab_api.UserData'
 
@@ -127,9 +125,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
 }
 
 SIMPLE_JWT = {
@@ -150,6 +148,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://127.0.0.1:3000",
