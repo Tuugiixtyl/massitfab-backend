@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "localhost:8000/api/register/",
+			"name": "register",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -36,11 +36,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8000/api/register/",
+					"raw": "localhost:5000/api/register/",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "5000",
 					"path": [
 						"api",
 						"register",
@@ -51,7 +51,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8000/api/register/ Copy",
+			"name": "login",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -76,11 +76,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8000/api/login/",
+					"raw": "localhost:5000/api/login/",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "5000",
 					"path": [
 						"api",
 						"login",
@@ -91,14 +91,14 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8000/api/items/",
+			"name": "/api/items/",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTY4Njk0LCJpYXQiOjE2Nzc1NjUwOTQsImp0aSI6IjJjNDBmNTFkMzZkYTQ5ODk4YmZmOTYwNTE0NTI1NzAyIiwidXNlcl9pZCI6Mn0.uqIn57M_GIcj7UFS9OehPmYAdJwOjGEwpw6NdEvHJAg",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTc3ODQ0LCJpYXQiOjE2Nzc1NzQyNDQsImp0aSI6ImNjMTNlNTUyZGJiZTQwZDQ4ODEwNGE0YmM4OTZhODQ4IiwidXNlcl9pZCI6Mn0.FsG37DP3xRfCkp6_6kadSK34UVCyI-pTXqhb84ZRuUE",
 							"type": "string"
 						}
 					]
@@ -106,11 +106,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8000/api/items/",
+					"raw": "localhost:5000/api/items/",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "5000",
 					"path": [
 						"api",
 						"items",
@@ -121,14 +121,14 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8000/api/items/create/",
+			"name": "/api/items/create/",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTY4Njk0LCJpYXQiOjE2Nzc1NjUwOTQsImp0aSI6IjJjNDBmNTFkMzZkYTQ5ODk4YmZmOTYwNTE0NTI1NzAyIiwidXNlcl9pZCI6Mn0.uqIn57M_GIcj7UFS9OehPmYAdJwOjGEwpw6NdEvHJAg",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTc3ODQ0LCJpYXQiOjE2Nzc1NzQyNDQsImp0aSI6ImNjMTNlNTUyZGJiZTQwZDQ4ODEwNGE0YmM4OTZhODQ4IiwidXNlcl9pZCI6Mn0.FsG37DP3xRfCkp6_6kadSK34UVCyI-pTXqhb84ZRuUE",
 							"type": "string"
 						}
 					]
@@ -151,11 +151,11 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8000/api/items/create/",
+					"raw": "localhost:5000/api/items/create/",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "5000",
 					"path": [
 						"api",
 						"items",
@@ -167,14 +167,14 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8000/api/items/1/update",
+			"name": "/api/items/3/update/",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTY4Njk0LCJpYXQiOjE2Nzc1NjUwOTQsImp0aSI6IjJjNDBmNTFkMzZkYTQ5ODk4YmZmOTYwNTE0NTI1NzAyIiwidXNlcl9pZCI6Mn0.uqIn57M_GIcj7UFS9OehPmYAdJwOjGEwpw6NdEvHJAg",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTc3ODQ0LCJpYXQiOjE2Nzc1NzQyNDQsImp0aSI6ImNjMTNlNTUyZGJiZTQwZDQ4ODEwNGE0YmM4OTZhODQ4IiwidXNlcl9pZCI6Mn0.FsG37DP3xRfCkp6_6kadSK34UVCyI-pTXqhb84ZRuUE",
 							"type": "string"
 						}
 					]
@@ -192,11 +192,11 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8000/api/items/3/update/",
+					"raw": "localhost:5000/api/items/3/update/",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "5000",
 					"path": [
 						"api",
 						"items",
@@ -209,14 +209,14 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8000/api/items/1/delete/",
+			"name": "/api/items/3/delete/",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTY4Njk0LCJpYXQiOjE2Nzc1NjUwOTQsImp0aSI6IjJjNDBmNTFkMzZkYTQ5ODk4YmZmOTYwNTE0NTI1NzAyIiwidXNlcl9pZCI6Mn0.uqIn57M_GIcj7UFS9OehPmYAdJwOjGEwpw6NdEvHJAg",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTc3ODQ0LCJpYXQiOjE2Nzc1NzQyNDQsImp0aSI6ImNjMTNlNTUyZGJiZTQwZDQ4ODEwNGE0YmM4OTZhODQ4IiwidXNlcl9pZCI6Mn0.FsG37DP3xRfCkp6_6kadSK34UVCyI-pTXqhb84ZRuUE",
 							"type": "string"
 						}
 					]
@@ -224,11 +224,11 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8000/api/items/1/delete/",
+					"raw": "localhost:5000/api/items/1/delete/",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "5000",
 					"path": [
 						"api",
 						"items",
