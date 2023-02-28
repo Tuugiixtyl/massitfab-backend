@@ -207,6 +207,38 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "localhost:8000/api/items/1/delete/",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTY4Njk0LCJpYXQiOjE2Nzc1NjUwOTQsImp0aSI6IjJjNDBmNTFkMzZkYTQ5ODk4YmZmOTYwNTE0NTI1NzAyIiwidXNlcl9pZCI6Mn0.uqIn57M_GIcj7UFS9OehPmYAdJwOjGEwpw6NdEvHJAg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/items/1/delete/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"items",
+						"1",
+						"delete",
+						""
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
