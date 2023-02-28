@@ -1,0 +1,30 @@
+CREATE ROLE sandy ENCRYPTED PASSWORD 'ruufii' LOGIN;
+
+
+
+CREATE DATABASE massitfab OWNER sandy;
+
+
+
+-- Connect to it as user
+\c massitfab sandy
+
+
+
+CREATE SCHEMA tsuki AUTHORIZATION sandy;
+
+
+
+-- Show all schemas that aren't catalog
+SELECT
+nspname AS namespace
+FROM pg_catalog.pg_namespace
+WHERE nspname !~ '(^pg_|information_schema)';
+
+
+
+CREATE TABLE tsuki.ccx_person(
+    id_ serial primary key,
+    name text not null,
+    surname text not null
+);
