@@ -2,9 +2,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from rest_framework.views import APIView
-from .serializers import UserSerializer
-
 # Define your CRUD functions here
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
@@ -38,11 +35,3 @@ def update_item(request, id):
 def delete_item(request, id):
     # Delete an existing item
     return Response({'message': f'Item with ID {id} deleted.'})
-
-# view for registering users
-class RegisterView(APIView):
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)

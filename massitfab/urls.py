@@ -9,6 +9,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('auth/', include('massitfab_auth.urls', namespace='mfAuth')),
     path('api/', include('massitfab_api.urls', namespace='mfApi')),
     path('', include('maesitfab_app.urls', namespace='mfApp')),
 

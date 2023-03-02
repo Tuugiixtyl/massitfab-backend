@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "a07cedc7-0dab-4582-a97d-301a6199a538",
+		"_postman_id": "863818c6-8283-45ac-8b06-b61f4037688f",
 		"name": "mfab",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21051532"
 	},
 	"item": [
 		{
@@ -15,12 +16,12 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "tuugiiremph@gmail.com",
+							"value": "tuugiiremph@gmail.aa",
 							"type": "default"
 						},
 						{
-							"key": "user",
-							"value": "rufy",
+							"key": "nickname",
+							"value": "ruf11",
 							"type": "default"
 						},
 						{
@@ -28,21 +29,16 @@
 							"value": "Admin123@",
 							"type": "default"
 						}
-					],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					]
 				},
 				"url": {
-					"raw": "localhost:5000/api/register/",
+					"raw": "localhost:5000/auth/register/",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
-						"api",
+						"auth",
 						"register",
 						""
 					]
@@ -60,7 +56,7 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "tuugiiremph@gmail.com",
+							"value": "tuugiiremph@gmail.aa",
 							"type": "default"
 						},
 						{
@@ -68,21 +64,16 @@
 							"value": "Admin123@",
 							"type": "default"
 						}
-					],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					]
 				},
 				"url": {
-					"raw": "localhost:5000/api/login/",
+					"raw": "localhost:5000/auth/login/",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
-						"api",
+						"auth",
 						"login",
 						""
 					]
@@ -98,7 +89,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTc3ODQ0LCJpYXQiOjE2Nzc1NzQyNDQsImp0aSI6ImNjMTNlNTUyZGJiZTQwZDQ4ODEwNGE0YmM4OTZhODQ4IiwidXNlcl9pZCI6Mn0.FsG37DP3xRfCkp6_6kadSK34UVCyI-pTXqhb84ZRuUE",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTk3ODExLCJpYXQiOjE2Nzc1OTQyMTEsImp0aSI6IjMwYjI5ZTJhMjI1NzQ1NGE5M2JkZGY5MjE2OGYxMjBhIiwidXNlcl9pZCI6MX0.cJrdSoqIgWxYuglWj9CrQUjMCgY7JlcnWyEFymUvcZ4",
 							"type": "string"
 						}
 					]

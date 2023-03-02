@@ -6,17 +6,18 @@ import environ
 # TYPE SAFETY START POINT
 # ==============================================================================
 
-env = environ.Env()
-environ.Env.read_env()
-
 class AuthException(Exception):
     pass
 
 ROOT_URLCONF = 'massitfab.urls'
 
-DEBUG = False
+DEBUG = True
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / 'massitfab/etc/.env')
+
 SECRET_KEY = env('SECRET_KEY')
 
 WSGI_APPLICATION = 'massitfab.wsgi.application'
@@ -50,6 +51,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'maesitfab_app',
+    'massitfab_auth',
     'massitfab_api',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -119,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # THIRD-PARTY APPS SETTINGS
 # ==============================================================================
 
-AUTH_USER_MODEL = 'massitfab_api.UserData'
+AUTH_USER_MODEL = 'massitfab_auth.UserData'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -151,6 +153,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 # CORS_ALLOWED_ORIGINS = [
-#     "http://127.0.0.1:3000",
-#     "http://localhost:3000"
+#     "http://127.0.0.1:4000",
+#     "http://localhost:4000"
 # ]
