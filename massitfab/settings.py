@@ -1,6 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
 import environ
+import psycopg2 as ps
+import hashlib
 
 # ==============================================================================
 # TYPE SAFETY START POINT
@@ -93,12 +95,8 @@ TEMPLATES = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASS'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -121,7 +119,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # THIRD-PARTY APPS SETTINGS
 # ==============================================================================
 
-AUTH_USER_MODEL = 'massitfab_auth.UserData'
+params = {
+    'database': env('DATABASE_NAME'),
+    'user': env('DATABASE_USER'),
+    'password': env('DATABASE_PASS'),
+    'host': env('DATABASE_HOST'),
+    'port': env('DATABASE_PORT'),
+}
+
+# AUTH_USER_MODEL = 'massitfab_auth.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -156,3 +162,26 @@ CORS_ALLOW_CREDENTIALS = True
 #     "http://127.0.0.1:4000",
 #     "http://localhost:4000"
 # ]
+
+def connectDB():
+    con = ps.connect(**params)
+    return con
+
+def disconnectDB(con):
+    if(con):
+        con.close()
+
+def Merge(dict1, dict2):
+    res = {**dict1, **dict2}
+    return res
+
+def hashPassword(user_pass):
+    password = user_pass
+    hash_object = hashlib.sha256(password.encode())
+    hashed_password = hash_object.hexdigest()
+    return hashed_password
+
+def verifyPassword(hashed_password, stored_password):
+    if hashed_password == stored_password:
+        return True
+    return False

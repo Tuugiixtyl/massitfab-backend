@@ -1,18 +1,17 @@
 from rest_framework import serializers
-from .models import UserData
 
 
-class UserSerializer(serializers.ModelSerializer):
+class RegisterUserSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=255)
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    # passwordre = serializers.CharField(write_only=True)
 
-    class Meta:
-        model = UserData
-        fields = ["id", "email", "nickname", "password"]
 
-    def create(self, validated_data):
-        user = UserData.objects.create(
-            email=validated_data['email'],
-            nickname=validated_data['nickname']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
+class LoginUserSerializer(serializers.Serializer):
+    # id = serializers.IntegerField()
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+class CreatorSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
