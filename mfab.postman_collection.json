@@ -16,12 +16,12 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "tuugiiremph@gmail.aa",
+							"value": "tuugiiremph@gmail.com",
 							"type": "default"
 						},
 						{
-							"key": "nickname",
-							"value": "ruf11",
+							"key": "username",
+							"value": "rufy",
 							"type": "default"
 						},
 						{
@@ -56,7 +56,7 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "tuugiiremph@gmail.aa",
+							"value": "tuugiiremph@gmail.com",
 							"type": "default"
 						},
 						{

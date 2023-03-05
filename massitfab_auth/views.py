@@ -100,10 +100,17 @@ class LoginUserApi(APIView):
             user_id = Creator(user_id)
             user_id_serialized = CreatorSerializer(user_id).data
             refresh = RefreshToken.for_user(user_id)
+            access_payload = {
+                'username': username,
+                'user_id': user_id_serialized,
+            }
+            access = refresh.access_token
+            access['username'] = access_payload['username']
 
             return Response(
                 {
-                    'access': str(refresh.access_token),
+                    'access': str(access),
+                    'refresh': str(refresh)
                     # 'user_id': user_id_serialized,    # Token has all the data so we'd better get rid of it
                     # 'username': username,
                 },
