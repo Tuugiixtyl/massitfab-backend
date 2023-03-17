@@ -1,10 +1,10 @@
+import requests
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 # Define your CRUD functions here
 @api_view(['GET'])
-@permission_classes((IsAuthenticated,))
 def get_items(request):
     # Return a list of items
     items = [
@@ -15,7 +15,6 @@ def get_items(request):
     return Response(items)
 
 @api_view(['POST'])
-@permission_classes((IsAuthenticated,))
 def create_item(request):
     # Create a new item
     data = request.data
@@ -23,7 +22,6 @@ def create_item(request):
     return Response(new_item)
 
 @api_view(['PUT'])
-@permission_classes((IsAuthenticated,))
 def update_item(request, id):
     # Update an existing item
     data = request.data
@@ -31,7 +29,6 @@ def update_item(request, id):
     return Response(updated_item)
 
 @api_view(['DELETE'])
-@permission_classes((IsAuthenticated,))
 def delete_item(request, id):
     # Delete an existing item
     return Response({'message': f'Item with ID {id} deleted.'})

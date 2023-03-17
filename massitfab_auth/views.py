@@ -9,8 +9,10 @@ from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verify
 from .serializers import RegisterUserSerializer, LoginUserSerializer, CreatorSerializer
 from .classess import Creator
 
-
 class RegisterUserApi(APIView):
+    authentication_classes = ()
+    permission_classes = ()
+
     def post(self, request):
         serializer = RegisterUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -30,7 +32,7 @@ class RegisterUserApi(APIView):
             result = cur.fetchone()
             if result is not None:
                 return Response(
-                    {'detail': 'User with this email or username already exists'},
+                    {'message': 'User with this email or username already exists'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -56,7 +58,7 @@ class RegisterUserApi(APIView):
             )
         except (Exception, ps.DatabaseError) as error:
             return Response(
-                {'detail': str(error)},
+                {'message': str(error)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         finally:
@@ -65,6 +67,9 @@ class RegisterUserApi(APIView):
 
 
 class LoginUserApi(APIView):
+    authentication_classes = ()
+    permission_classes = ()
+
     def post(self, request):
         serializer = LoginUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -84,7 +89,7 @@ class LoginUserApi(APIView):
 
             if result is None:
                 return Response(
-                    {'detail': 'Invalid email or password'},
+                    {'message': 'Invalid email or password'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -92,7 +97,7 @@ class LoginUserApi(APIView):
             user_pass = hashPassword(data['password'])
             if not verifyPassword(user_pass, password):
                 return Response(
-                    {'detail': 'Invalid email or password'},
+                    {'message': 'Invalid email or password'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -105,7 +110,13 @@ class LoginUserApi(APIView):
                 'user_id': user_id_serialized,
             }
             access = refresh.access_token
-            access['username'] = access_payload['username']
+            # access['username'] = access_payload['username']
+
+            cur.execute(
+                f"UPDATE creator SET refresh_token = %s WHERE id = %s",
+                (str(refresh), user_id_serialized['id'])
+            )
+            conn.commit()
 
             return Response(
                 {
@@ -118,7 +129,7 @@ class LoginUserApi(APIView):
             )
         except (Exception, ps.DatabaseError) as error:
             return Response(
-                {'detail': str(error)},
+                {'message': str(error)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         finally:
