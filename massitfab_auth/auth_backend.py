@@ -10,7 +10,6 @@ class Sandy(BaseBackend):   # CustomBackend
         with connections['outlaw'].cursor() as cursor:
             cursor.execute("SELECT * FROM creator WHERE username=%s", [username])
             row = cursor.fetchone()
-            print(row)
             if row:
                 user = UserModel(*row)
                 if user.check_password(password):
@@ -22,7 +21,6 @@ class Sandy(BaseBackend):   # CustomBackend
         with connections['outlaw'].cursor() as cursor:
             cursor.execute("SELECT * FROM creator WHERE id=%s", [user_id])
             row = cursor.fetchone()
-            print(row)
             if row:
                 return UserModel(*row)
         return None

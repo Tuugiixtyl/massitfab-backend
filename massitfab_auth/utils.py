@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from typing import Dict
 from rest_framework_simplejwt.tokens import Token
 
+from massitfab import settings
+
 
 def custom_payload_handler(user: User) -> Dict[str, any]:
     exp = datetime.utcnow() + timedelta(minutes=60)

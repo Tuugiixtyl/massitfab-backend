@@ -121,9 +121,7 @@ class LoginUserApi(APIView):
             return Response(
                 {
                     'access': str(access),
-                    'refresh': str(refresh)
-                    # 'user_id': user_id_serialized,    # Token has all the data so we'd better get rid of it
-                    # 'username': username,
+                    'refresh': str(refresh),
                 },
                 status=status.HTTP_200_OK
             )

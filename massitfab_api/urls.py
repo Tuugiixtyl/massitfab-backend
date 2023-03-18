@@ -1,11 +1,11 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from .views import *
 
 app_name = 'mfApi'
 
 urlpatterns = [
-    path('items/', get_items),
+    re_path(r'^profile/(?i)(?P<username>[a-z]+)/$', get_profile, name='view_profile'),
     path('items/create/', create_item),
     path('items/<int:id>/update/', update_item),
     path('items/<int:id>/delete/', delete_item),
