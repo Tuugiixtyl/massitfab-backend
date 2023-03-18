@@ -1,6 +1,5 @@
 # Third party libraries
 import jwt
-import json
 from datetime import datetime, timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -24,6 +23,7 @@ from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verify
 #     else:
 #         return Response({'error': 'Authorization header missing'}, status=401)
 
+
 @api_view(['GET'])
 def get_profile(request, username):
     conn = None
@@ -45,19 +45,13 @@ def get_profile(request, username):
                 {'message': 'User does not exist'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
-        cusername = result[0]
-        summary = result[1]
-        profile_picture = result[2]
-        created_at = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
         data = {
-            'username': cusername,
-            'summary': summary,
-            'profile_picture': profile_picture,
-            'created_at': created_at
+            'username': result[0],
+            'summary': result[1],
+            'profile_picture': result[2],
+            'created_at': result[3].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         }
-
         return Response(
             data,
             status=status.HTTP_201_CREATED
