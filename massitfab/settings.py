@@ -33,6 +33,14 @@ USE_I18N = True
 encoding = "utf-8"
 USE_TZ = True
 
+params = {
+    'database': env('DATABASE_NAME'),
+    'user': env('DATABASE_USER'),
+    'password': env('DATABASE_PASS'),
+    'host': env('DATABASE_HOST'),
+    'port': env('DATABASE_PORT'),
+}
+
 # ==============================================================================
 # SECURITY SETTINGS
 # ==============================================================================
@@ -100,11 +108,11 @@ DATABASES = {
     },
     'outlaw': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASS'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
+        'NAME': params['database'],
+        'USER': params['user'],
+        'PASSWORD': params['password'],
+        'HOST': params['host'],
+        'PORT': params['port'],
     }
 }
 
@@ -126,14 +134,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # ==============================================================================
 # THIRD-PARTY APPS SETTINGS
 # ==============================================================================
-
-params = {
-    'database': env('DATABASE_NAME'),
-    'user': env('DATABASE_USER'),
-    'password': env('DATABASE_PASS'),
-    'host': env('DATABASE_HOST'),
-    'port': env('DATABASE_PORT'),
-}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

@@ -32,7 +32,7 @@ class RegisterUserApi(APIView):
             result = cur.fetchone()
             if result is not None:
                 return Response(
-                    {'message': 'User with this email or username already exists'},
+                    {'message': 'Тухайн майл хаяг эсвэл нэр дээр өөр хэрэглэгч бүртгэлтэй байна.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -52,7 +52,8 @@ class RegisterUserApi(APIView):
             return Response(
                 {
                     'access': str(refresh.access_token),
-                    'refresh': str(refresh)
+                    # 'refresh': str(refresh),
+                    'message': 'Бүртгэл амжилттай!'
                 },
                 status=status.HTTP_201_CREATED
             )
@@ -89,7 +90,7 @@ class LoginUserApi(APIView):
 
             if result is None:
                 return Response(
-                    {'message': 'Invalid email or password'},
+                    {'message': 'Майл хаяг эсвэл нууц үг буруу байна.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -97,7 +98,7 @@ class LoginUserApi(APIView):
             user_pass = hashPassword(data['password'])
             if not verifyPassword(user_pass, password):
                 return Response(
-                    {'message': 'Invalid email or password'},
+                    {'message': 'Майл хаяг эсвэл нууц үг буруу байна.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -121,7 +122,8 @@ class LoginUserApi(APIView):
             return Response(
                 {
                     'access': str(access),
-                    'refresh': str(refresh),
+                    # 'refresh': str(refresh),
+                    'message': 'Амжилттай!'
                 },
                 status=status.HTTP_200_OK
             )

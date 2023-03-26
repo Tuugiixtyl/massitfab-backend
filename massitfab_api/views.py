@@ -1,7 +1,8 @@
 # Third party libraries
 import jwt
 from datetime import datetime, timezone
-from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -23,8 +24,9 @@ from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verify
 #     else:
 #         return Response({'error': 'Authorization header missing'}, status=401)
 
-
 @api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def get_profile(request, username):
     conn = None
 
