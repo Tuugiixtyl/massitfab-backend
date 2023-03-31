@@ -1,5 +1,4 @@
 # Third party libraries
-import jwt
 from datetime import datetime, timezone
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -7,22 +6,9 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # Local Imports
-from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword
+from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword, verifyToken
+from .serializers import CreateContentSerializer
 
-# @api_view(['GET'])
-# def my_view(request):
-#     auth_header = request.headers.get('Authorization')
-#     if auth_header:
-#         auth_token = auth_header.split(' ')[1]
-#         try:
-#             # Extract the id from the auth
-#             payload = jwt.decode(auth_token, 'secret_key', algorithms=['HS256'])
-#             user_id = payload['user_id']
-#             return Response({'user_id': user_id})
-#         except jwt.exceptions.DecodeError:
-#             return Response({'error': 'Invalid token'}, status=401)
-#     else:
-#         return Response({'error': 'Authorization header missing'}, status=401)
 
 @api_view(['GET'])
 @authentication_classes([])
@@ -69,11 +55,73 @@ def get_profile(request, username):
 
 
 @api_view(['POST'])
-def create_item(request):
-    # Create a new item
-    data = request.data
-    new_item = {'id': data['id'], 'name': data['name']}
-    return Response(new_item)
+def create_product(request):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth['status'] != 200):
+        return Response(
+            {'message': auth['error']},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    serializer = CreateContentSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    data = serializer.validated_data
+
+    conn = None
+    try:
+        # establish database connection
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # Use the connection's autocommit attribute to ensure all queries
+        # are part of the same transaction
+        conn.autocommit = False
+
+        # Start a new transaction
+        cur.execute("BEGIN")
+
+        # Execute an query using parameters
+        values = (data['title'], data['description'], data['schedule'], data['start_date'], # type: ignore
+                  data['end_date'], data['subcategory_id'], data['hashtags'], data['st_price'])   # type: ignore
+        cur.execute(
+            """INSERT INTO product 
+                VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id""",
+            values
+        )
+        content_id = cur.fetchone()[0]  # type: ignore
+
+        # values = (data['source'], content_id)  # type: ignore
+        # cur.execute(
+        #     """INSERT INTO route(source, product_id) 
+        #         VALUES (%s, %s)""",
+        #     values
+        # )
+
+        # values = (data['resource'], content_id, data['membership_id'])  # type: ignore
+        # cur.execute(
+        #     """INSERT INTO gallery
+        #         VALUES (DEFAULT, %s, %s, %s)""",
+        #     values
+        # )
+
+        # Commit the changes to the database
+        conn.commit()
+
+        data = {
+            'message': 'Амжилттай!'
+        }
+        return Response(
+            data,
+            status=status.HTTP_201_CREATED
+        )
+    except (Exception, ps.DatabaseError) as error:
+        return Response(
+            {'message': str(error)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
 
 
 @api_view(['PUT'])

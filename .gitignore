@@ -8,4 +8,4 @@ massitfab_auth/__pycache__/*
 massitfab_auth/migrations/*
 *.pyc
 .DS*
-massitfab/etc/.env
+massitfab/.env

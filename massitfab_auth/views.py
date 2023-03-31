@@ -27,7 +27,7 @@ class RegisterUserApi(APIView):
             # Check if email or username already exists
             cur.execute(
                 "SELECT id FROM creator WHERE email = %s OR username = %s",
-                (data['email'], data['username'])
+                (data['email'], data['username'])   # type: ignore
             )
             result = cur.fetchone()
             if result is not None:
@@ -37,12 +37,12 @@ class RegisterUserApi(APIView):
                 )
 
             # Create user
-            password = hashPassword(data['password'])
+            password = hashPassword(data['password'])   # type: ignore
             cur.execute(
                 "INSERT INTO creator (username, email, password) VALUES (%s, %s, %s) RETURNING id",
-                (data['username'], data['email'], password)
+                (data['username'], data['email'], password) # type: ignore
             )
-            user_id = cur.fetchone()[0]
+            user_id = cur.fetchone()[0] # type: ignore
             conn.commit()
 
             # Generate Token
@@ -84,7 +84,7 @@ class LoginUserApi(APIView):
             # Check if email exists
             cur.execute(
                 "SELECT id, username, password FROM creator WHERE email = %s",
-                (data['email'],)
+                (data['email'],)    # type: ignore
             )
             result = cur.fetchone()
 
@@ -95,7 +95,7 @@ class LoginUserApi(APIView):
                 )
 
             user_id, username, password = result
-            user_pass = hashPassword(data['password'])
+            user_pass = hashPassword(data['password'])  # type: ignore
             if not verifyPassword(user_pass, password):
                 return Response(
                     {'message': 'Майл хаяг эсвэл нууц үг буруу байна.'},

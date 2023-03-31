@@ -3,6 +3,7 @@ from datetime import timedelta
 import environ
 import psycopg2 as ps
 import hashlib
+import jwt
 
 # ==============================================================================
 # TYPE SAFETY START POINT
@@ -18,7 +19,7 @@ DEBUG = True
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
-environ.Env.read_env(BASE_DIR / 'massitfab/etc/.env')
+environ.Env.read_env()
 
 SECRET_KEY = env('SECRET_KEY')
 
@@ -151,7 +152,7 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
@@ -194,3 +195,27 @@ def verifyPassword(hashed_password, stored_password):
     if hashed_password == stored_password:
         return True
     return False
+
+def verifyToken(auth_header):
+    if auth_header:
+        auth_token = auth_header.split(' ')[1]
+        try:
+            # Extract the id from the auth
+            payload = jwt.decode(auth_token, SECRET_KEY, algorithms=['HS256'])
+            resp = {
+                "user_id": payload['user_id'],
+                "status": 200
+            }
+            return resp
+        except jwt.exceptions.DecodeError:
+            resp = {
+                "error": "Invalid token",
+                "status": 401
+            }
+            return resp
+    else:
+        resp = {
+                "error": "Authorization header missing",
+                "status": 401
+            }
+        return resp
