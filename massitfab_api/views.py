@@ -46,7 +46,7 @@ def get_profile(request, username):
             status=status.HTTP_201_CREATED
         )
     except Exception as error:
-        log_error(str(error))
+        log_error('get_profile', str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -126,7 +126,7 @@ def create_product(request):
         gallery_data = data['gallery']  # type: ignore
         for data in gallery_data:
             values = (data['resource'], content_id,
-                      data['membership_id'] if data['membership_id'] else 'None')
+                      data['membership_id'] if data['membership_id'] else None)
             cur.execute(
                 """INSERT INTO gallery
                     VALUES (DEFAULT, %s, %s, %s)""",
@@ -145,7 +145,7 @@ def create_product(request):
         )
     
     except Exception as error:
-        log_error(str(error))
+        log_error('create_product', str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR

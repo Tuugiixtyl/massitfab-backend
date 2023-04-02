@@ -58,7 +58,7 @@ class RegisterUserApi(APIView):
                 status=status.HTTP_201_CREATED
             )
         except Exception as error:
-            log_error(str(error))
+            log_error('Register', str(error))
             return Response(
                 {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -129,7 +129,7 @@ class LoginUserApi(APIView):
                 status=status.HTTP_200_OK
             )
         except Exception as error:
-            log_error(str(error))
+            log_error('Login', str(error))
             return Response(
                 {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR

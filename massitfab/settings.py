@@ -221,7 +221,7 @@ def verifyToken(auth_header):
             }
         return resp
     
-def log_error(error_message):
+def log_error(function_name, error_message):
     conn = None
     try:
         conn = connectDB()
@@ -229,7 +229,7 @@ def log_error(error_message):
         cur.execute(
             """INSERT INTO logs (action, note, details) 
                 VALUES (%s, %s, %s)""", 
-            ('create_product', 'error', error_message)
+            (function_name, 'error', error_message)
         )
         conn.commit()
     except Exception as error:
