@@ -1,6 +1,6 @@
 # massitfab-backend
 
-if necessary:
-pip install -r requirements.txt 
+Анх эхлүүлж байгаа тохиолдолд:
+>pip install -r requirements.txt 
 
-# disable pylance extension when using vscode for unneccessary error handling!!!
+# Энэхүү прожектийг ажиллуулахын тулд пайтон программчлалын хэл болон түүний орчин шаардлагатайг анхаарна уу!

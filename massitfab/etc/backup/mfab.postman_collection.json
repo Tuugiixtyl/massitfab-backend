@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "register",
+			"name": "Register",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -16,30 +16,27 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "tuugiiremph@gmail.com",
+							"value": "tuugiiamv@gmail.com",
 							"type": "default"
 						},
 						{
 							"key": "username",
-							"value": "rufy",
+							"value": "Sandy",
 							"type": "default"
 						},
 						{
 							"key": "password",
-							"value": "Admin123@",
+							"value": "ruufii",
 							"type": "default"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:5000/auth/register/",
+					"raw": "{{auth}}register/",
 					"host": [
-						"localhost"
+						"{{auth}}register"
 					],
-					"port": "5000",
 					"path": [
-						"auth",
-						"register",
 						""
 					]
 				}
@@ -47,7 +44,7 @@
 			"response": []
 		},
 		{
-			"name": "login",
+			"name": "Login",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -67,14 +64,11 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:5000/auth/login/",
+					"raw": "{{auth}}login/",
 					"host": [
-						"localhost"
+						"{{auth}}login"
 					],
-					"port": "5000",
 					"path": [
-						"auth",
-						"login",
 						""
 					]
 				}
@@ -82,29 +76,27 @@
 			"response": []
 		},
 		{
-			"name": "/api/items/",
+			"name": "view_profile",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTk3ODExLCJpYXQiOjE2Nzc1OTQyMTEsImp0aSI6IjMwYjI5ZTJhMjI1NzQ1NGE5M2JkZGY5MjE2OGYxMjBhIiwidXNlcl9pZCI6MX0.cJrdSoqIgWxYuglWj9CrQUjMCgY7JlcnWyEFymUvcZ4",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"url": {
-					"raw": "localhost:5000/api/items/",
+					"raw": "{{api}}profile/rufy/",
 					"host": [
-						"localhost"
+						"{{api}}profile"
 					],
-					"port": "5000",
 					"path": [
-						"api",
-						"items",
+						"rufy",
 						""
 					]
 				}
@@ -112,45 +104,42 @@
 			"response": []
 		},
 		{
-			"name": "/api/items/create/",
+			"name": "upload_content",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTc3ODQ0LCJpYXQiOjE2Nzc1NzQyNDQsImp0aSI6ImNjMTNlNTUyZGJiZTQwZDQ4ODEwNGE0YmM4OTZhODQ4IiwidXNlcl9pZCI6Mn0.FsG37DP3xRfCkp6_6kadSK34UVCyI-pTXqhb84ZRuUE",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5MTM2NTcyLCJpYXQiOjE2NzkxMzI5NzIsImp0aSI6IjBiZGU2ZGRjMjFmYTRlYjc4MmE4ZGJhODRlNjcxMGUxIiwidXNlcl9pZCI6MjAyMzAyMDN9.ONpFaejB-Puw9UmFzDKF0yuTZoQmhLMUVFhbL6vbpGU",
 							"type": "string"
 						}
 					]
 				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "id",
-							"value": "1",
-							"type": "default"
-						},
-						{
-							"key": "name",
-							"value": "rufy",
-							"type": "default"
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": {\r\n        \"title\": \"Alicia VIRTUES\",\r\n        \"description\": \"LoRA V2 Camelliamix\",\r\n        \"schedule\": \"\",\r\n        \"start_date\": \"\",\r\n        \"end_date\": \"\",\r\n        \"subcategory_id\": 20,\r\n        \"hashtags\": \"#myllodia\",\r\n        \"st_price\": 9\r\n    },\r\n    \"source\": [\"img/lillias.png\", \"img/lillias(0).png\"],\r\n    \"gallery\": [\r\n        {\r\n            \"resource\": \"img/lillias.png\",\r\n            \"membership_id\": \"\"\r\n        },\r\n        {\r\n            \"resource\": \"img/lillias(0).png\",\r\n            \"membership_id\": \"\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
-					"raw": "localhost:5000/api/items/create/",
+					"raw": "{{api}}content/link/",
 					"host": [
-						"localhost"
+						"{{api}}content"
 					],
-					"port": "5000",
 					"path": [
-						"api",
-						"items",
-						"create",
+						"link",
 						""
 					]
 				}
@@ -165,7 +154,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTc3ODQ0LCJpYXQiOjE2Nzc1NzQyNDQsImp0aSI6ImNjMTNlNTUyZGJiZTQwZDQ4ODEwNGE0YmM4OTZhODQ4IiwidXNlcl9pZCI6Mn0.FsG37DP3xRfCkp6_6kadSK34UVCyI-pTXqhb84ZRuUE",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5MTM2NTcyLCJpYXQiOjE2NzkxMzI5NzIsImp0aSI6IjBiZGU2ZGRjMjFmYTRlYjc4MmE4ZGJhODRlNjcxMGUxIiwidXNlcl9pZCI6MjAyMzAyMDN9.ONpFaejB-Puw9UmFzDKF0yuTZoQmhLMUVFhbL6vbpGU",
 							"type": "string"
 						}
 					]
@@ -183,14 +172,11 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:5000/api/items/3/update/",
+					"raw": "{{api}}items/3/update/",
 					"host": [
-						"localhost"
+						"{{api}}items"
 					],
-					"port": "5000",
 					"path": [
-						"api",
-						"items",
 						"3",
 						"update",
 						""
@@ -207,7 +193,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc3NTc3ODQ0LCJpYXQiOjE2Nzc1NzQyNDQsImp0aSI6ImNjMTNlNTUyZGJiZTQwZDQ4ODEwNGE0YmM4OTZhODQ4IiwidXNlcl9pZCI6Mn0.FsG37DP3xRfCkp6_6kadSK34UVCyI-pTXqhb84ZRuUE",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5MTM2NTcyLCJpYXQiOjE2NzkxMzI5NzIsImp0aSI6IjBiZGU2ZGRjMjFmYTRlYjc4MmE4ZGJhODRlNjcxMGUxIiwidXNlcl9pZCI6MjAyMzAyMDN9.ONpFaejB-Puw9UmFzDKF0yuTZoQmhLMUVFhbL6vbpGU",
 							"type": "string"
 						}
 					]
@@ -215,14 +201,11 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:5000/api/items/1/delete/",
+					"raw": "{{api}}items/1/delete/",
 					"host": [
-						"localhost"
+						"{{api}}items"
 					],
-					"port": "5000",
 					"path": [
-						"api",
-						"items",
 						"1",
 						"delete",
 						""

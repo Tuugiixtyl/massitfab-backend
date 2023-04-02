@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # Local Imports
-from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword
+from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword, log_error
 from .serializers import RegisterUserSerializer, LoginUserSerializer, CreatorSerializer
 from .classess import Creator
 
@@ -57,9 +57,10 @@ class RegisterUserApi(APIView):
                 },
                 status=status.HTTP_201_CREATED
             )
-        except (Exception, ps.DatabaseError) as error:
+        except Exception as error:
+            log_error(str(error))
             return Response(
-                {'message': str(error)},
+                {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         finally:
@@ -127,9 +128,10 @@ class LoginUserApi(APIView):
                 },
                 status=status.HTTP_200_OK
             )
-        except (Exception, ps.DatabaseError) as error:
+        except Exception as error:
+            log_error(str(error))
             return Response(
-                {'message': str(error)},
+                {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         finally:

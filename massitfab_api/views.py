@@ -4,9 +4,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
+from datetime import datetime
 
 # Local Imports
-from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword, verifyToken
+from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword, verifyToken, log_error
 from .serializers import CreateContentSerializer
 
 
@@ -44,9 +45,10 @@ def get_profile(request, username):
             data,
             status=status.HTTP_201_CREATED
         )
-    except (Exception, ps.DatabaseError) as error:
+    except Exception as error:
+        log_error(str(error))
         return Response(
-            {'message': str(error)},
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     finally:
@@ -81,42 +83,71 @@ def create_product(request):
         cur.execute("BEGIN")
 
         # Execute an query using parameters
-        values = (data['title'], data['description'], data['schedule'], data['start_date'], # type: ignore
-                  data['end_date'], data['subcategory_id'], data['hashtags'], data['st_price'])   # type: ignore
-        cur.execute(
-            """INSERT INTO product 
-                VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id""",
-            values
+        content_data = data['content']  # type: ignore
+        schedule = datetime.strptime(
+            content_data['schedule'], '%Y-%m-%d %H:%M:%S.%f%z') if content_data['schedule'] else None
+        start_date = datetime.strptime(
+            content_data['start_date'], '%Y-%m-%d %H:%M:%S.%f%z') if content_data['start_date'] else None
+        end_date = datetime.strptime(
+            content_data['end_date'], '%Y-%m-%d %H:%M:%S.%f%z') if content_data['end_date'] else None
+        opening = (
+            content_data['title'],
+            content_data['description'],
         )
+        ending = (
+            content_data['subcategory_id'],
+            content_data['hashtags'] if content_data['hashtags'] else '',
+            float(content_data['st_price']) if content_data['st_price'] else 0,
+        )
+        if schedule is not None:
+            cur.execute(
+                """INSERT INTO product 
+                    VALUES (DEFAULT, %s, %s, CAST(%s AS timestamp with time zone), %s, CAST(%s AS timestamp with time zone), CAST(%s AS timestamp with time zone), %s, %s, %s) RETURNING id""",
+                (*opening, schedule, auth['user_id'],
+                 start_date, end_date, *ending)
+            )
+        else:
+            cur.execute(
+                """INSERT INTO product 
+                    VALUES (DEFAULT, %s, %s, DEFAULT, %s, CAST(%s AS timestamp with time zone), CAST(%s AS timestamp with time zone), %s, %s, %s) RETURNING id""",
+                (*opening, auth['user_id'], start_date, end_date, *ending)
+            )
         content_id = cur.fetchone()[0]  # type: ignore
 
-        # values = (data['source'], content_id)  # type: ignore
-        # cur.execute(
-        #     """INSERT INTO route(source, product_id) 
-        #         VALUES (%s, %s)""",
-        #     values
-        # )
+        sources = data['source']        # type: ignore
+        for source in sources:
+            values = (source, content_id)
+            cur.execute(
+                """INSERT INTO route(source, product_id) 
+                    VALUES (%s, %s)""",
+                values
+            )
 
-        # values = (data['resource'], content_id, data['membership_id'])  # type: ignore
-        # cur.execute(
-        #     """INSERT INTO gallery
-        #         VALUES (DEFAULT, %s, %s, %s)""",
-        #     values
-        # )
+        gallery_data = data['gallery']  # type: ignore
+        for data in gallery_data:
+            values = (data['resource'], content_id,
+                      data['membership_id'] if data['membership_id'] else 'None')
+            cur.execute(
+                """INSERT INTO gallery
+                    VALUES (DEFAULT, %s, %s, %s)""",
+                values
+            )
 
         # Commit the changes to the database
         conn.commit()
 
         data = {
-            'message': 'Амжилттай!'
+            'message': 'Байршуулалт амжилттай!'
         }
         return Response(
             data,
             status=status.HTTP_201_CREATED
         )
-    except (Exception, ps.DatabaseError) as error:
+    
+    except Exception as error:
+        log_error(str(error))
         return Response(
-            {'message': str(error)},
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     finally:

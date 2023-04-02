@@ -4,6 +4,7 @@ import environ
 import psycopg2 as ps
 import hashlib
 import jwt
+import json
 
 # ==============================================================================
 # TYPE SAFETY START POINT
@@ -219,3 +220,20 @@ def verifyToken(auth_header):
                 "status": 401
             }
         return resp
+    
+def log_error(error_message):
+    conn = None
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
+        cur.execute(
+            """INSERT INTO logs (action, note, details) 
+                VALUES (%s, %s, %s)""", 
+            ('create_product', 'error', error_message)
+        )
+        conn.commit()
+    except Exception as error:
+        print('Logging failed: ' + str(error))
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
