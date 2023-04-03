@@ -9,5 +9,5 @@ class LoginUserSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
-class CreatorSerializer(serializers.Serializer):
+class FabUserSerializer(serializers.Serializer):
     id = serializers.IntegerField()

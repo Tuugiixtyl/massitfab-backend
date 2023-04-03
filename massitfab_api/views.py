@@ -24,12 +24,13 @@ def get_profile(request, username):
 
         # Check if user does not exists while also retrieving the information
         cur.execute(
-            "SELECT username, summary, profile_picture, created_at FROM creator WHERE username = %s",
+            "SELECT username, summary, profile_picture, created_at FROM fab_user WHERE username = %s",
             [username]
         )
         result = cur.fetchone()
 
         if result is None:
+            log_error('get_profile', "{}", 'User does not exist')
             return Response(
                 {'message': 'User does not exist'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -46,7 +47,7 @@ def get_profile(request, username):
             status=status.HTTP_201_CREATED
         )
     except Exception as error:
-        log_error('get_profile', str(error))
+        log_error('get_profile', "{}", str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -145,7 +146,7 @@ def create_product(request):
         )
     
     except Exception as error:
-        log_error('create_product', str(error))
+        log_error('create_product', data, str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR

@@ -221,15 +221,15 @@ def verifyToken(auth_header):
             }
         return resp
     
-def log_error(function_name, error_message):
+def log_error(function_name, payload_req, error_message):
     conn = None
     try:
         conn = connectDB()
         cur = conn.cursor()
         cur.execute(
-            """INSERT INTO logs (action, note, details) 
-                VALUES (%s, %s, %s)""", 
-            (function_name, 'error', error_message)
+            """INSERT INTO logs (action, note, request, details) 
+                VALUES (%s, %s, %s, %s)""", 
+            (function_name, 'error', payload_req, error_message)
         )
         conn.commit()
     except Exception as error:

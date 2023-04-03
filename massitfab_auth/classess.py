@@ -3,7 +3,7 @@ import jwt
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-class Creator:
+class Fab_user:
     def __init__(self, id):
         self.id = id
 

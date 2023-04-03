@@ -8,18 +8,18 @@ class Sandy(BaseBackend):   # CustomBackend
     def authenticate(self, request, username=None, password=None, **kwargs):
         UserModel = get_user_model()
         with connections['outlaw'].cursor() as cursor:
-            cursor.execute("SELECT * FROM creator WHERE username=%s", [username])
+            cursor.execute("SELECT * FROM fab_user WHERE username=%s", [username])
             row = cursor.fetchone()
             if row:
                 user = UserModel(*row)
-                if user.check_password(password):
+                if user.check_password(password): # type: ignore
                     return user
         return None
 
     def get_user(self, user_id):
         UserModel = get_user_model()
         with connections['outlaw'].cursor() as cursor:
-            cursor.execute("SELECT * FROM creator WHERE id=%s", [user_id])
+            cursor.execute("SELECT * FROM fab_user WHERE id=%s", [user_id])
             row = cursor.fetchone()
             if row:
                 return UserModel(*row)
