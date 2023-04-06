@@ -5,8 +5,8 @@ from .views import *
 app_name = 'mfApi'
 
 urlpatterns = [
-    re_path(r'^profile/(?i)(?P<username>[a-z]+)/$', get_profile, name='view_profile'),
+    re_path(r'^profile/(?i)(?P<username>[a-z]+)/$', get_profile, name='get_profile'),
     path('content/link/', create_product, name='upload_content'),
-    path('items/<int:id>/update/', update_item),
-    path('items/<int:id>/delete/', delete_item),
+    path('content/<int:id>/update/', edit_product, name='update_product'),
+    path('items/<int:id>/delete/', delete_product),
 ]
