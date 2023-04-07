@@ -7,7 +7,7 @@ from rest_framework import status
 from datetime import datetime
 
 # Local Imports
-from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword, verifyToken, log_error
+from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error
 from .serializers import CreateProductSerializer, UpdateProductSerializer, UpdateProfileSerializer
 
 
@@ -16,7 +16,6 @@ from .serializers import CreateProductSerializer, UpdateProductSerializer, Updat
 @permission_classes([AllowAny])
 def get_profile(request, username):
     conn = None
-
     try:
         # establish database connection
         conn = connectDB()
@@ -33,7 +32,7 @@ def get_profile(request, username):
             log_error('get_profile', "{}", 'User does not exist')
             return Response(
                 {'message': 'User does not exist'},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_404_NOT_FOUND
             )
 
         data = {
@@ -44,55 +43,68 @@ def get_profile(request, username):
         }
         return Response(
             data,
-            status=status.HTTP_201_CREATED
+            status=status.HTTP_200_OK
         )
     except Exception as error:
         log_error('get_profile', "{}", str(error))
         return Response(
-            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     finally:
         if conn is not None:
             disconnectDB(conn)
+
 
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([AllowAny])
-def get_products(request,id):
+def get_product(request, id):
     conn = None
     try:
         con = connectDB()
-        cursor = con.cursor()
-        cursor.execute("""SELECT title, description, schedule, fab_user_id, start_date, end_date, subcategory_id, hashtags, st_price, is_removed
-        FROM product WHERE id=%s;""", [id] )
-        result = cursor.fetchall()
+        cur = con.cursor()
+        cur.execute("""SELECT title, description, schedule, fab_user_id, start_date, end_date, subcategory_id, hashtags, st_price, is_removed
+                          FROM product WHERE id=%s;""", [id])
+        result = cur.fetchall()[0]
 
-        if result is None:
-                log_error('product', "{}", 'Product does not exist')
-                return Response(
-                    {'message': 'Product does not exist'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        data = {
-            "data" : result
+        if result is None or result[-1] != False:
+            log_error('product', "{}", 'This product is removed or does not exist')
+            return Response(
+                {'message': 'Product does not exist'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        resp = {
+            "data": {
+                "title": result[0],
+                "description": result[1],
+                "schedule": result[2],
+                "owner": result[3],
+                "start_date": result[4],
+                "end_date": result[5],
+                "categories": result[6],
+                "hashtags": result[7],
+                "price": result[8]
+            },
+            "message": "Амжилттай!",
         }
         return Response(
-            data,
-            status=status.HTTP_201_CREATED
+            resp,
+            status=status.HTTP_200_OK
         )
     except Exception as error:
         log_error('get_product', "{}", str(error))
         return Response(
-            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     finally:
         if conn is not None:
             disconnectDB(conn)
 
-# @api_view(["POST"])
-# def update_profile(request):
+# @api_view(["PUT"])
+# def update_profile(request, id):
 #     auth_header = request.headers.get('Authorization')
 #     auth = verifyToken(auth_header)
 #     if(auth['status'] != 200):
@@ -137,7 +149,7 @@ def get_products(request,id):
 #             data,
 #             status=status.HTTP_201_CREATED
 #         )
-        
+
 #     except Exception as error:
 #         log_error('update_profile', "{}", str(error))
 #         return Response(
@@ -147,6 +159,7 @@ def get_products(request,id):
 #     finally:
 #         if conn is not None:
 #             disconnectDB(conn)
+
 
 @api_view(['POST'])
 def create_product(request):
@@ -235,11 +248,11 @@ def create_product(request):
             data,
             status=status.HTTP_201_CREATED
         )
-    
+
     except Exception as error:
         log_error('create_product', data, str(error))
         return Response(
-            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     finally:
@@ -248,7 +261,7 @@ def create_product(request):
 
 
 @api_view(['PUT'])
-def edit_product(request, id):
+def update_product(request, id):
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
     if(auth['status'] != 200):
@@ -267,28 +280,29 @@ def edit_product(request, id):
         cur = conn.cursor()
 
         values = (id, auth['user_id'])
-        cur.execute('SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
-        content_id, uid = cur.fetchone() # type: ignore
+        cur.execute(
+            'SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
+        content_id, uid = cur.fetchone()  # type: ignore
 
         if content_id is None:
             return Response(
-            {'message': 'You are not authorized to edit this product!'},
-            status=status.HTTP_401_UNAUTHORIZED
-        )
+                {'message': 'You are not authorized to edit this product!'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
         # Use the connection's autocommit attribute to ensure all queries
         # are part of the same transaction
-        conn.autocommit = False
+        # conn.autocommit = False
 
-        # Start a new transaction
-        cur.execute("BEGIN")
+        # # Start a new transaction
+        # cur.execute("BEGIN")
 
         # Execute an query using parameters
         content_data = data['content']  # type: ignore
         values = (
             content_data['title'],
             content_data['description'],
-            content_data['subcategory_id'],
+            int(content_data['subcategory_id']),
             content_data['hashtags'] if content_data['hashtags'] else '',
             float(content_data['st_price']) if content_data['st_price'] else 0,
             id,
@@ -302,7 +316,7 @@ def edit_product(request, id):
         for source in sources:
             values = (source, content_id)
             cur.execute(
-                """UPDATE route SET source=%s, product_id=%s WHERE product_id=%s""",
+                "INSERT INTO route(source, product_id) VALUES (%s, %s)",
                 values
             )
 
@@ -317,20 +331,20 @@ def edit_product(request, id):
             )
 
         # Commit the changes to the database
-        conn.commit()
+        # conn.commit()
 
         data = {
             'message': 'Байршуулалт шинэчлэгдлээ!'
         }
         return Response(
             data,
-            status=status.HTTP_201_CREATED
+            status=status.HTTP_202_ACCEPTED
         )
-    
+
     except Exception as error:
         log_error('create_product', data, str(error))
         return Response(
-            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     finally:
@@ -358,16 +372,18 @@ def delete_product(request, id):
         cur = conn.cursor()
 
         values = (id, auth['user_id'])
-        cur.execute('SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
-        result = cur.fetchone()[0] # type: ignore
+        cur.execute(
+            'SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
+        result = cur.fetchone()[0]  # type: ignore
 
         if result is None:
             return Response(
-            {'message': 'You are not authorized to edit this product!'},
-            status=status.HTTP_401_UNAUTHORIZED
-        )
+                {'message': 'You are not authorized to edit this product!'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
-        cur.execute('UPDATE product SET is_removed = True WHERE id = %s AND fab_user_id = %s', values)
+        cur.execute(
+            'UPDATE product SET is_removed = True WHERE id = %s AND fab_user_id = %s', values)
 
         # Commit the changes to the database
         conn.commit()
@@ -379,11 +395,11 @@ def delete_product(request, id):
             data,
             status=status.HTTP_201_CREATED
         )
-    
+
     except Exception as error:
         log_error('create_product', data, str(error))
         return Response(
-            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     finally:
