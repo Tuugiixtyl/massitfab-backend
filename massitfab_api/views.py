@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Local Imports
 from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword, verifyToken, log_error
-from .serializers import CreateProductSerializer, UpdateProductSerializer
+from .serializers import CreateProductSerializer, UpdateProductSerializer, UpdateProfileSerializer
 
 
 @api_view(['GET'])
@@ -56,8 +56,97 @@ def get_profile(request, username):
         if conn is not None:
             disconnectDB(conn)
 
-def get_products(request):
-    pass
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def get_products(request,id):
+    conn = None
+    try:
+        con = connectDB()
+        cursor = con.cursor()
+        cursor.execute("""SELECT title, description, schedule, fab_user_id, start_date, end_date, subcategory_id, hashtags, st_price, is_removed
+        FROM product WHERE id=%s;""", [id] )
+        result = cursor.fetchall()
+
+        if result is None:
+                log_error('product', "{}", 'Product does not exist')
+                return Response(
+                    {'message': 'Product does not exist'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        data = {
+            "data" : result
+        }
+        return Response(
+            data,
+            status=status.HTTP_201_CREATED
+        )
+    except Exception as error:
+        log_error('get_product', "{}", str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+# @api_view(["POST"])
+# def update_profile(request):
+#     auth_header = request.headers.get('Authorization')
+#     auth = verifyToken(auth_header)
+#     if(auth['status'] != 200):
+#         return Response(
+#             {'message': auth['error']},
+#             status=status.HTTP_401_UNAUTHORIZED
+#         )
+#     serializer = UpdateProfileSerializer(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+#     data = serializer.validated_data
+
+#     conn = None
+#     fab_id = auth['user_id']
+#     try:
+#         conn = connectDB()
+#         cur = conn.cursor()
+
+#         values = (id, fab_id)
+#         cur.execute('SELECT username, summary, profile_picture, FROM fab_user WHERE id=%s;', values)
+#         result = cur.fetchone()
+
+#         if result is None:
+#             return Response(
+#             {'message': 'You are not authorized to update this profile!'},
+#             status=status.HTTP_401_UNAUTHORIZED
+#         )
+
+#         values = (
+#             data["username"],
+#             data["summary"],
+#             data["profile_picture"],
+#             fab_id
+#         )
+#         cur.execute("""UPDATE SET username=%s, summary=%s, profile_picture=%s, FROM fab_user WHERE id=%s""", values)
+
+#         conn.commit()
+
+#         data = {
+#             'message': 'Амжилттай шинэчлэгдсэн!'
+#         }
+#         return Response(
+#             data,
+#             status=status.HTTP_201_CREATED
+#         )
+        
+#     except Exception as error:
+#         log_error('update_profile', "{}", str(error))
+#         return Response(
+#             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
+#             status=status.HTTP_500_INTERNAL_SERVER_ERROR
+#         )
+#     finally:
+#         if conn is not None:
+#             disconnectDB(conn)
 
 @api_view(['POST'])
 def create_product(request):

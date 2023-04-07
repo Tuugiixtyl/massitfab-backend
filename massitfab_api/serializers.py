@@ -39,3 +39,9 @@ class UpdateProductSerializer(serializers.Serializer):
     content = UpdateContentSerializer()
     source = serializers.ListField(child=serializers.CharField())
     gallery = serializers.ListField(child=GallerySerializer())
+
+
+class UpdateProfileSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    summary = serializers.CharField(required=False)
+    profile_picture = serializers.CharField()
