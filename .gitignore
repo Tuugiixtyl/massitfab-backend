@@ -9,3 +9,4 @@ massitfab_auth/migrations/*
 *.pyc
 .DS*
 massitfab/.env
+public/*

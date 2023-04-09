@@ -1,8 +1,15 @@
 from rest_framework import serializers
 from datetime import datetime
 
+class LongStringField(serializers.Field):
+    def to_representation(self, value):
+        return value
+
+    def to_internal_value(self, data):
+        return data
 
 class GallerySerializer(serializers.Serializer):
+    # resource = LongStringField()
     resource = serializers.CharField()
     membership_id = serializers.CharField(allow_blank=True, required=False)
 
@@ -35,10 +42,16 @@ class UpdateContentSerializer(serializers.Serializer):
     st_price = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 
+class UpdateDeletedSerializer(serializers.Serializer):
+    gallery = serializers.ListField(child=serializers.CharField())
+    source = serializers.ListField(child=serializers.CharField())
+
+
 class UpdateProductSerializer(serializers.Serializer):
     content = UpdateContentSerializer()
     source = serializers.ListField(child=serializers.CharField())
     gallery = serializers.ListField(child=GallerySerializer())
+    deleted = serializers.ListField(child=UpdateDeletedSerializer())
 
 
 class UpdateProfileSerializer(serializers.Serializer):
