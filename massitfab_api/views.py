@@ -68,8 +68,9 @@ def get_product(request, id):
     try:
         con = connectDB()
         cur = con.cursor()
-        cur.execute("""SELECT title, description, schedule, fab_user_id, start_date, end_date, subcategory_id, hashtags, st_price, is_removed
-                          FROM product WHERE id=%s;""", [id])
+        cur.execute(
+            """SELECT title, description, schedule, fab_user_id, start_date, end_date, subcategory_id, hashtags, st_price, 
+                created_at, updated_at, is_removed FROM product WHERE id=%s;""", [id])
         result = cur.fetchall()[0]
 
         if result is None or result[-1] != False:
@@ -79,6 +80,14 @@ def get_product(request, id):
                 {'message': 'Product does not exist'},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+        cur.execute("SELECT resource FROM gallery WHERE product_id = %s", [id])
+        medias = cur.fetchall()
+        flat_gallery = [item for sublist in medias for item in sublist]
+
+        cur.execute("SELECT source FROM route WHERE product_id = %s", [id])
+        links = cur.fetchall()
+        flat_link = [item for sublist in links for item in sublist]
 
         resp = {
             "data": {
@@ -90,7 +99,11 @@ def get_product(request, id):
                 "end_date": result[5],
                 "categories": result[6],
                 "hashtags": result[7],
-                "price": result[8]
+                "price": result[8],
+                "published": result[9],
+                "edited": result[10],
+                "gallery": flat_gallery,
+                "link": flat_link
             },
             "message": "Амжилттай!",
         }

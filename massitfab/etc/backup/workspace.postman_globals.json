@@ -1,0 +1,21 @@
+{
+	"id": "21a6951a-71a8-41c1-8f33-9ebf28cdca4e",
+	"values": [
+		{
+			"key": "auth",
+			"value": "localhost:5000/auth",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "api",
+			"value": "localhost:5000/api",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2023-04-09T13:21:38.201Z",
+	"_postman_exported_using": "Postman/10.12.11"
+}
