@@ -11,7 +11,7 @@ from rest_framework import status
 from datetime import datetime
 
 # Local Imports
-from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error
+from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error, json
 from .serializers import CreateProductSerializer, UpdateProductSerializer, UpdateProfileSerializer
 
 
@@ -285,7 +285,7 @@ def create_product(request, format=None):
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )
+        )   
     finally:
         if conn is not None:
             disconnectDB(conn)
@@ -398,7 +398,7 @@ def update_product(request, id):
         conn.commit()
 
         data = {
-            'message': 'Байршуулалт шинэчлэгдлээ!'
+            'message': 'Амжилттай шинэчлэгдлээ!'
         }
         return Response(
             data,
@@ -425,9 +425,6 @@ def delete_product(request, id):
             {'message': auth['error']},
             status=status.HTTP_401_UNAUTHORIZED
         )
-    serializer = UpdateProductSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    data = serializer.validated_data
 
     conn = None
     try:
@@ -438,9 +435,9 @@ def delete_product(request, id):
         values = (id, auth['user_id'])
         cur.execute(
             'SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
-        result = cur.fetchone()[0]  # type: ignore
-
-        if result is None:
+        row = cur.fetchone()
+        
+        if row is None:
             return Response(
                 {'message': 'You are not authorized to edit this product!'},
                 status=status.HTTP_401_UNAUTHORIZED
@@ -461,7 +458,7 @@ def delete_product(request, id):
         )
 
     except Exception as error:
-        log_error('delete_product', data, str(error))
+        log_error('delete_product', json.dumps(request.data), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR

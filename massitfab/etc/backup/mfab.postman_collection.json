@@ -108,7 +108,7 @@
 					"response": []
 				},
 				{
-					"name": "get_product",
+					"name": "get_content",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -116,12 +116,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/product/3/",
+							"raw": "{{api}}/content/3/",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"product",
+								"content",
 								"3",
 								""
 							]
@@ -219,27 +219,28 @@
 					"response": []
 				},
 				{
-					"name": "/api/items/3/delete/",
+					"name": "delete_content",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5MTM2NTcyLCJpYXQiOjE2NzkxMzI5NzIsImp0aSI6IjBiZGU2ZGRjMjFmYTRlYjc4MmE4ZGJhODRlNjcxMGUxIiwidXNlcl9pZCI6MjAyMzAyMDN9.ONpFaejB-Puw9UmFzDKF0yuTZoQmhLMUVFhbL6vbpGU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxMDU5ODM0LCJpYXQiOjE2ODEwNTYyMzQsImp0aSI6IjljY2EwOTMxOWM1NDQyNjdiNjU3MjFiOGY5Y2RiYzJlIiwidXNlcl9pZCI6MjAyMzAyMDN9.eVc4fjsc0ee1NOV1mHuOJZB45Npp1sH__xWv2lIb0L8",
 									"type": "string"
 								}
 							]
 						},
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{api}}items/1/delete/",
+							"raw": "{{api}}/content/3/delete/",
 							"host": [
-								"{{api}}items"
+								"{{api}}"
 							],
 							"path": [
-								"1",
+								"content",
+								"3",
 								"delete",
 								""
 							]
