@@ -63,6 +63,74 @@ def get_profile(request, username):
             disconnectDB(conn)
 
 
+@api_view(["PUT"])
+def update_profile(request):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth['status'] != 200):
+        return Response(
+            {'message': auth['error']},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    serializer = UpdateProfileSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    data = serializer.validated_data
+
+    conn = None
+    fab_id = auth['user_id']
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
+
+        cur.execute(
+            'SELECT username, summary, profile_picture FROM fab_user WHERE id=%s', [fab_id])
+        result = cur.fetchone()
+
+        if result is None:
+            return Response(
+                {'message': 'You are not authorized to update this profile!'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        upload_folder = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
+        pro = data['profile_picture']  # type: ignore
+        profile_picture = None
+        if pro:
+            file_data = base64.b64decode(pro)
+            filename = str(uuid.uuid4()) + '.jpg'
+            if pro != 'public/img/sandy.png':
+                full_path = os.path.join(settings.MEDIA_ROOT, pro)
+                if os.path.isfile(full_path):
+                    os.remove(full_path)
+            with open(os.path.join(upload_folder, filename), 'wb') as f:
+                f.write(file_data)
+            profile_picture = os.path.join(
+                upload_folder, filename).replace('\\', '/')
+        values = (data['username'], data['summary'] if data['summary']
+                  else None, profile_picture, fab_id)  # type: ignore
+        cur.execute(
+            "UPDATE fab_user SET username=%s, summary=%s, profile_picture=%s WHERE id=%s", values)
+        conn.commit()
+
+        data = {
+            'message': 'Амжилттай шинэчлэгдсэн!'
+        }
+        return Response(
+            data,
+            status=status.HTTP_201_CREATED
+        )
+
+    except Exception as error:
+        log_error('update_profile', "{}", str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([AllowAny])
@@ -118,68 +186,6 @@ def get_product(request, id):
         log_error('get_product', "{}", str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.'},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )
-    finally:
-        if conn is not None:
-            disconnectDB(conn)
-
-
-@api_view(["PUT"])
-def update_profile(request):
-    auth_header = request.headers.get('Authorization')
-    auth = verifyToken(auth_header)
-    if(auth['status'] != 200):
-        return Response(
-            {'message': auth['error']},
-            status=status.HTTP_401_UNAUTHORIZED
-        )
-    serializer = UpdateProfileSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    data = serializer.validated_data
-
-    conn = None
-    fab_id = auth['user_id']
-    try:
-        conn = connectDB()
-        cur = conn.cursor()
-
-        cur.execute(
-            'SELECT username, summary, profile_picture FROM fab_user WHERE id=%s', [fab_id])
-        result = cur.fetchone()
-
-        if result is None:
-            return Response(
-                {'message': 'You are not authorized to update this profile!'},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
-        upload_folder = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
-        pro = data['profile_picture']  # type: ignore
-        profile_picture = None
-        if pro:
-            file_data = base64.b64decode(pro)
-            filename = str(uuid.uuid4()) + '.jpg'
-            with open(os.path.join(upload_folder, filename), 'wb') as f:
-                f.write(file_data)
-            profile_picture = os.path.join(
-                upload_folder, filename).replace('\\', '/')
-        values = (data['username'], data['summary'] if data['summary'] else None, profile_picture, fab_id)  # type: ignore
-        cur.execute("UPDATE fab_user SET username=%s, summary=%s, profile_picture=%s WHERE id=%s", values)
-        conn.commit()
-
-        data = {
-            'message': 'Амжилттай шинэчлэгдсэн!'
-        }
-        return Response(
-            data,
-            status=status.HTTP_201_CREATED
-        )
-
-    except Exception as error:
-        log_error('update_profile', "{}", str(error))
-        return Response(
-            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     finally:
