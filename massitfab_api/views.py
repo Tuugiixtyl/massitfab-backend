@@ -117,7 +117,7 @@ def update_profile(request):
         }
         return Response(
             data,
-            status=status.HTTP_201_CREATED
+            status=status.HTTP_202_ACCEPTED
         )
 
     except Exception as error:
