@@ -56,5 +56,5 @@ class UpdateProductSerializer(serializers.Serializer):
 
 class UpdateProfileSerializer(serializers.Serializer):
     username = serializers.CharField()
-    summary = serializers.CharField(required=False)
-    profile_picture = serializers.CharField()
+    summary = serializers.CharField(allow_blank=True, required=False)
+    profile_picture = serializers.CharField(allow_blank=True, required=False)

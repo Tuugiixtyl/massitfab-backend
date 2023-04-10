@@ -36,7 +36,7 @@ CREATE TABLE fab_user (
     email character varying NOT NULL,
     password character varying NOT NULL,
     summary character varying(366),
-    profile_picture character varying DEFAULT 'avatar/sandy.png'::character varying,
+    profile_picture character varying DEFAULT 'img/sandy.png'::character varying,
     refresh_token character varying,
     balance double precision DEFAULT 100.00 NOT NULL,
     is_active boolean DEFAULT false,

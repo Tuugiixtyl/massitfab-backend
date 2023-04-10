@@ -2,7 +2,7 @@
 import os
 import uuid
 import base64
-from datetime import datetime, timezone
+from datetime import datetime
 from django.conf import settings
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -39,14 +39,17 @@ def get_profile(request, username):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        data = {
-            'username': result[0],
-            'summary': result[1],
-            'profile_picture': result[2],
-            'created_at': result[3].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        resp = {
+            "data": {
+                'username': result[0],
+                'summary': result[1],
+                'profile_picture': result[2],
+                'created_at': result[3].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            },
+            "message": "Амжилттай!"
         }
         return Response(
-            data,
+            resp,
             status=status.HTTP_200_OK
         )
     except Exception as error:
@@ -71,7 +74,7 @@ def get_product(request, id):
         cur.execute(
             """SELECT title, description, schedule, fab_user_id, start_date, end_date, subcategory_id, hashtags, st_price, 
                 created_at, updated_at, is_removed FROM product WHERE id=%s;""", [id])
-        result = cur.fetchall()[0]
+        result = cur.fetchone()
 
         if result is None or result[-1] != False:
             log_error('product', "{}",
@@ -121,62 +124,67 @@ def get_product(request, id):
         if conn is not None:
             disconnectDB(conn)
 
-# @api_view(["PUT"])
-# def update_profile(request, id):
-#     auth_header = request.headers.get('Authorization')
-#     auth = verifyToken(auth_header)
-#     if(auth['status'] != 200):
-#         return Response(
-#             {'message': auth['error']},
-#             status=status.HTTP_401_UNAUTHORIZED
-#         )
-#     serializer = UpdateProfileSerializer(data=request.data)
-#     serializer.is_valid(raise_exception=True)
-#     data = serializer.validated_data
 
-#     conn = None
-#     fab_id = auth['user_id']
-#     try:
-#         conn = connectDB()
-#         cur = conn.cursor()
+@api_view(["PUT"])
+def update_profile(request):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth['status'] != 200):
+        return Response(
+            {'message': auth['error']},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    serializer = UpdateProfileSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    data = serializer.validated_data
 
-#         values = (id, fab_id)
-#         cur.execute('SELECT username, summary, profile_picture, FROM fab_user WHERE id=%s;', values)
-#         result = cur.fetchone()
+    conn = None
+    fab_id = auth['user_id']
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
 
-#         if result is None:
-#             return Response(
-#             {'message': 'You are not authorized to update this profile!'},
-#             status=status.HTTP_401_UNAUTHORIZED
-#         )
+        cur.execute(
+            'SELECT username, summary, profile_picture FROM fab_user WHERE id=%s', [fab_id])
+        result = cur.fetchone()
 
-#         values = (
-#             data["username"],
-#             data["summary"],
-#             data["profile_picture"],
-#             fab_id
-#         )
-#         cur.execute("""UPDATE SET username=%s, summary=%s, profile_picture=%s, FROM fab_user WHERE id=%s""", values)
+        if result is None:
+            return Response(
+                {'message': 'You are not authorized to update this profile!'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
-#         conn.commit()
+        upload_folder = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
+        pro = data['profile_picture']  # type: ignore
+        profile_picture = None
+        if pro:
+            file_data = base64.b64decode(pro)
+            filename = str(uuid.uuid4()) + '.jpg'
+            with open(os.path.join(upload_folder, filename), 'wb') as f:
+                f.write(file_data)
+            profile_picture = os.path.join(
+                upload_folder, filename).replace('\\', '/')
+        values = (data['username'], data['summary'] if data['summary'] else None, profile_picture, fab_id)  # type: ignore
+        cur.execute("UPDATE fab_user SET username=%s, summary=%s, profile_picture=%s WHERE id=%s", values)
+        conn.commit()
 
-#         data = {
-#             'message': 'Амжилттай шинэчлэгдсэн!'
-#         }
-#         return Response(
-#             data,
-#             status=status.HTTP_201_CREATED
-#         )
+        data = {
+            'message': 'Амжилттай шинэчлэгдсэн!'
+        }
+        return Response(
+            data,
+            status=status.HTTP_201_CREATED
+        )
 
-#     except Exception as error:
-#         log_error('update_profile', "{}", str(error))
-#         return Response(
-#             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.',},
-#             status=status.HTTP_500_INTERNAL_SERVER_ERROR
-#         )
-#     finally:
-#         if conn is not None:
-#             disconnectDB(conn)
+    except Exception as error:
+        log_error('update_profile', "{}", str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
 
 
 @api_view(['POST'])
@@ -285,7 +293,7 @@ def create_product(request, format=None):
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )   
+        )
     finally:
         if conn is not None:
             disconnectDB(conn)
@@ -436,7 +444,7 @@ def delete_product(request, id):
         cur.execute(
             'SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
         row = cur.fetchone()
-        
+
         if row is None:
             return Response(
                 {'message': 'You are not authorized to edit this product!'},
