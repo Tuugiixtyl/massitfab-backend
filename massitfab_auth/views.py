@@ -50,10 +50,12 @@ class RegisterUserApi(APIView):
             # Generate Token
             user_id = Fab_user(user_id)
             refresh = RefreshToken.for_user(user_id)
+            access = refresh.access_token
+            access['username'] = data['username']
 
             return Response(
                 {
-                    'access': str(refresh.access_token),
+                    'access': str(access),
                     # 'refresh': str(refresh),
                     'message': 'Бүртгэл амжилттай!'
                 },
@@ -113,10 +115,10 @@ class LoginUserApi(APIView):
             refresh = RefreshToken.for_user(user_id)
             access_payload = {
                 'username': username,
-                'user_id': user_id_serialized,
+                # 'user_id': user_id_serialized,
             }
             access = refresh.access_token
-            # access['username'] = access_payload['username']
+            access['username'] = access_payload['username']
 
             cur.execute(
                 f"UPDATE fab_user SET refresh_token = %s WHERE id = %s",
