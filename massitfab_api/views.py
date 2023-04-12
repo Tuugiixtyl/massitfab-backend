@@ -93,15 +93,19 @@ def update_profile(request):
             )
 
         upload_folder = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
-        pro = data['profile_picture']  # type: ignore
+        cur.execute("SELECT profile_picture FROM fab_user WHERE id=%s", [fab_id])
+        oldpro = str(cur.fetchone()[0])
+        pro = data['profile_picture'].read()  # type: ignore
         profile_picture = None
         if pro:
-            file_data = base64.b64decode(pro)
+            # file_data = base64.b64decode(pro)
+            file_data = pro
             filename = str(uuid.uuid4()) + '.jpg'
-            if pro != 'public/img/sandy.png':
-                full_path = os.path.join(settings.MEDIA_ROOT, pro)
+            if oldpro != 'public/img/sandy.png':
+                full_path = os.path.join(settings.MEDIA_ROOT, oldpro)
                 if os.path.isfile(full_path):
                     os.remove(full_path)
+                cur.execute("DELETE FROM gallery WHERE resource=%s", [oldpro])
             with open(os.path.join(upload_folder, filename), 'wb') as f:
                 f.write(file_data)
             profile_picture = os.path.join(
