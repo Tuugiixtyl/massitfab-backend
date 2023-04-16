@@ -615,43 +615,43 @@ def delete_product(request, id):
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([AllowAny])
-def search_product(request):
-    keyword = request.GET.get('keyword', '')
-    page = request.GET.get('page', 1)
-    limit = request.GET.get('limit', 10)
+def search_products(request):
+    keyword = str(request.GET.get('keyword', ''))
+    page = int(request.GET.get('page', 1))
+    limit = int(request.GET.get('limit', 10))
 
     conn = None
     try:
         conn = connectDB()
         cur = conn.cursor()
-
+        
         # get the total number of matching products
         cur.execute(
-            "SELECT COUNT(*) FROM product WHERE name ILIKE %s", ['%'+keyword+'%'])
+            "SELECT COUNT(*) FROM product WHERE title ILIKE %s", ['%'+keyword+'%'])
         total_count = cur.fetchone()[0]  # type: ignore
-
+        
         # get a list of products matching the keyword, paginated
         cur.execute(
-            "SELECT id, name, description, image, price, created_at "
+            "SELECT id, title, description, fab_user_id, st_price, created_at "
             "FROM product "
-            "WHERE name ILIKE %s "
+            "WHERE is_removed = false AND title ILIKE %s "
             "ORDER BY created_at DESC "
             "LIMIT %s OFFSET %s",
             ['%'+keyword+'%', limit, (page-1)*limit]
         )
         rows = cur.fetchall()
-
+        
         products = []
         for row in rows:
             products.append({
                 'id': row[0],
                 'name': row[1],
                 'description': row[2],
-                'image': row[3],
+                'creator': row[3],
                 'price': row[4],
                 'created_at': row[5].strftime('%Y-%m-%dT%H:%M:%S')
             })
-
+        print('resp')
         resp = {
             'data': {
                 'products': products,
@@ -666,7 +666,6 @@ def search_product(request):
         }
 
         return Response(resp, status=status.HTTP_200_OK)
-
     except Exception as error:
         log_error('search_product', json.dumps(
             {"keyword": keyword, "page": page, "limit": limit}), str(error))
@@ -674,7 +673,6 @@ def search_product(request):
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
-
     finally:
         if conn is not None:
             disconnectDB(conn)

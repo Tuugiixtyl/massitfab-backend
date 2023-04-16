@@ -78,7 +78,87 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "tuugiiremph@gmail.com",
+											"type": "default"
+										},
+										{
+											"key": "password",
+											"value": "ruufii",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{auth}}/login/",
+									"host": [
+										"{{auth}}"
+									],
+									"path": [
+										"login",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:31:34 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "308"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E\",\n    \"message\": \"Амжилттай!\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -112,7 +192,80 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get_profile",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/u/get/Sandy/?page=1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"u",
+										"get",
+										"Sandy",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:31:21 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, GET"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1306"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"username\": \"Sandy\",\n        \"summary\": \"I am inside Ruufii's Hideout. Which is mine now tee~hee!\",\n        \"profile_picture\": \"public/img/7310f241-463e-46c5-8a04-fbcaeb9ba24a.jpg\",\n        \"created_at\": \"2023-04-16T15:53:28.698522Z\",\n        \"related_products\": [\n            {\n                \"id\": 8,\n                \"title\": \"Boss Multifaros\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"st_price\": 9,\n                \"created_at\": \"2023-04-16T19:00:02.501015Z\"\n            },\n            {\n                \"id\": 7,\n                \"title\": \"Boss Multifaros\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"st_price\": 9,\n                \"created_at\": \"2023-04-16T18:59:22.842478Z\"\n            },\n            {\n                \"id\": 6,\n                \"title\": \"Boss Multifaros\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"st_price\": 9,\n                \"created_at\": \"2023-04-16T18:04:10.304334Z\"\n            },\n            {\n                \"id\": 5,\n                \"title\": \"Alisa VIRTUES\",\n                \"description\": \"Theodora VIRTUES\",\n                \"st_price\": 9,\n                \"created_at\": \"2023-04-16T17:41:21.314871Z\"\n            },\n            {\n                \"id\": 4,\n                \"title\": \"Alicia VIRTUES\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"st_price\": 9,\n                \"created_at\": \"2023-04-16T17:39:16.430489Z\"\n            },\n            {\n                \"id\": 3,\n                \"title\": \"Alicia VIRTUES\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"st_price\": 9,\n                \"created_at\": \"2023-04-16T17:38:38.105643Z\"\n            },\n            {\n                \"id\": 2,\n                \"title\": \"title\",\n                \"description\": \"desc\",\n                \"st_price\": 20.3,\n                \"created_at\": \"2023-04-16T16:40:35.418757Z\"\n            },\n            {\n                \"id\": 1,\n                \"title\": \"title\",\n                \"description\": \"desc\",\n                \"st_price\": 20.3,\n                \"created_at\": \"2023-04-16T15:54:01.377804Z\"\n            }\n        ],\n        \"list\": {\n            \"page\": 1,\n            \"page_size\": 10,\n            \"num_pages\": 1,\n            \"total_count\": 8\n        }\n    },\n    \"message\": \"Амжилттай!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "update_profile",
@@ -122,7 +275,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjM1MjA4LCJpYXQiOjE2ODE2MzE2MDgsImp0aSI6Ijg2ODk5ZDc5MjVjZDQxZGZhNmFjMjljYmY4MjFkYWRiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.KM7RO-pUgwTx5zrmNcPJLk1BiWJxj_ewLnzSbVCqS28",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
 									"type": "string"
 								}
 							]
@@ -161,7 +314,201 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "update_profile",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "Sandy",
+											"type": "text"
+										},
+										{
+											"key": "summary",
+											"value": "I am inside Ruufii's Hideout. Which is mine now tee~hee!",
+											"type": "text"
+										},
+										{
+											"key": "profile_picture",
+											"type": "file",
+											"src": "jonathan-romeo-feb-seraphine-kda-sd.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/u/update/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"u",
+										"update",
+										""
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:31:40 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, PUT"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "58"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Амжилттай шинэчлэгдсэн!\"\n}"
+						}
+					]
+				},
+				{
+					"name": "search_from_products",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/content/search/?keyword=cia&page=1",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"content",
+								"search",
+								""
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "cia"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "search_from_products",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/content/search/?keyword=cia&page=1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"content",
+										"search",
+										""
+									],
+									"query": [
+										{
+											"key": "keyword",
+											"value": "cia"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:30:39 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, GET"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "392"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"products\": [\n            {\n                \"id\": 4,\n                \"name\": \"Alicia VIRTUES\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"creator\": 20230203,\n                \"price\": 9,\n                \"created_at\": \"2023-04-16T17:39:16\"\n            },\n            {\n                \"id\": 3,\n                \"name\": \"Alicia VIRTUES\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"creator\": 20230203,\n                \"price\": 9,\n                \"created_at\": \"2023-04-16T17:38:38\"\n            }\n        ],\n        \"pagination\": {\n            \"page\": 1,\n            \"limit\": 10,\n            \"total_count\": 2,\n            \"total_pages\": 1\n        }\n    },\n    \"message\": \"Амжилттай!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "get_contents",
@@ -189,7 +536,79 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get_contents",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/content/get/?page=1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"content",
+										"get",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:31:48 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, GET"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1249"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 8,\n            \"title\": \"Boss Multifaros\",\n            \"description\": \"LoRA V2 Camelliamix\",\n            \"subcategory_id\": 20,\n            \"st_price\": 9,\n            \"created_at\": \"2023-04-16T19:00:02.501015Z\"\n        },\n        {\n            \"id\": 7,\n            \"title\": \"Boss Multifaros\",\n            \"description\": \"LoRA V2 Camelliamix\",\n            \"subcategory_id\": 20,\n            \"st_price\": 9,\n            \"created_at\": \"2023-04-16T18:59:22.842478Z\"\n        },\n        {\n            \"id\": 6,\n            \"title\": \"Boss Multifaros\",\n            \"description\": \"LoRA V2 Camelliamix\",\n            \"subcategory_id\": 20,\n            \"st_price\": 9,\n            \"created_at\": \"2023-04-16T18:04:10.304334Z\"\n        },\n        {\n            \"id\": 5,\n            \"title\": \"Alisa VIRTUES\",\n            \"description\": \"Theodora VIRTUES\",\n            \"subcategory_id\": 20,\n            \"st_price\": 9,\n            \"created_at\": \"2023-04-16T17:41:21.314871Z\"\n        },\n        {\n            \"id\": 4,\n            \"title\": \"Alicia VIRTUES\",\n            \"description\": \"LoRA V2 Camelliamix\",\n            \"subcategory_id\": 20,\n            \"st_price\": 9,\n            \"created_at\": \"2023-04-16T17:39:16.430489Z\"\n        },\n        {\n            \"id\": 3,\n            \"title\": \"Alicia VIRTUES\",\n            \"description\": \"LoRA V2 Camelliamix\",\n            \"subcategory_id\": 20,\n            \"st_price\": 9,\n            \"created_at\": \"2023-04-16T17:38:38.105643Z\"\n        },\n        {\n            \"id\": 2,\n            \"title\": \"title\",\n            \"description\": \"desc\",\n            \"subcategory_id\": 20,\n            \"st_price\": 20.3,\n            \"created_at\": \"2023-04-16T16:40:35.418757Z\"\n        },\n        {\n            \"id\": 1,\n            \"title\": \"title\",\n            \"description\": \"desc\",\n            \"subcategory_id\": 20,\n            \"st_price\": 20.3,\n            \"created_at\": \"2023-04-16T15:54:01.377804Z\"\n        }\n    ],\n    \"pagination\": {\n        \"total_count\": 8,\n        \"page_count\": 1,\n        \"page\": 1,\n        \"page_size\": 10\n    },\n    \"message\": \"Амжилттай!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "get_content_details",
@@ -212,7 +631,74 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get_content_details",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/content/get/5/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"content",
+										"get",
+										"5",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:31:52 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, GET"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "598"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 5,\n        \"title\": \"Alisa VIRTUES\",\n        \"description\": \"Theodora VIRTUES\",\n        \"schedule\": \"2023-04-16T17:41:21.314871\",\n        \"owner\": 20230203,\n        \"start_date\": null,\n        \"end_date\": null,\n        \"categories\": 20,\n        \"hashtags\": null,\n        \"price\": 9,\n        \"published\": \"2023-04-16T17:41:21.314871\",\n        \"edited\": \"2023-04-16T18:35:31.060646\",\n        \"gallery\": [\n            \"public/img/96510861_p0.jpg\",\n            \"public/img/Fcd82laacAAyVvX_8m9q4hQ.jfif\",\n            \"public/img/FYr93D8X0AAWiRB.jfif\"\n        ],\n        \"link\": [\n            \"https://mega.nz/file/VPUjXSAD#7-9TMLliWIeyJ229IK4e9UIUDhXaUhqITva7_3KqSoM\",\n            \"https://mega.nz/file/VJFhGQiL#5A8eQ79gC4k6s2eFDLq0u2p46lUvZJc-ZMd3c9zO0xU\"\n        ]\n    },\n    \"message\": \"Амжилттай!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "upload_content",
@@ -222,7 +708,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjQ2MzU0LCJpYXQiOjE2ODE2NDI3NTQsImp0aSI6IjA5ZWUxODY4OTIxNjQ5NzRhNTBmZWI5OGM3YjAyNTZiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.3_kCZqFWaSvEXOKxPr-LwafjCWeiT6Zns3dZXV-7ZBQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
 									"type": "string"
 								}
 							]
@@ -316,7 +802,148 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "upload_content",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Boss Multifaros",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "LoRA V2 Camelliamix",
+											"type": "text"
+										},
+										{
+											"key": "schedule",
+											"value": "2023-04-02 20:30:00.000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "start_date",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "end_date",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "subcategory_id",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "hashtags",
+											"value": "#myllodia&#whatdoyouneed&#aijou",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "st_price",
+											"value": "9",
+											"type": "text"
+										},
+										{
+											"key": "source",
+											"value": "https://mega.nz/file/9KgkkJqR#dc8zzkvhkJ_AjxuM7cSmPMWPXJXkJuu17ZfxzzdRziw",
+											"type": "text"
+										},
+										{
+											"key": "resource",
+											"type": "file",
+											"src": [
+												"Fcd82laacAAyVvX.jfif",
+												"FN_RxynaQAAnUrf.jpg",
+												"FZn9KqMaQAQqjgO.jfif"
+											]
+										},
+										{
+											"key": "membership_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/content/create/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"content",
+										"create",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:32:01 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, POST"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "56"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Байршуулалт амжилттай!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "update_content",
@@ -326,7 +953,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjQ0OTI0LCJpYXQiOjE2ODE2NDEzMjQsImp0aSI6IjI3YzVkNDcyN2Q1NzQ2MzhhNmMyZWQ2MGM2NTMxNDAwIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.OaqEV07GJcjLrdfdVx67rWkZ8MrqtJgke8oLRr1X-Do",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
 									"type": "string"
 								}
 							]
@@ -413,7 +1040,141 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "update_content",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Alisa VIRTUES",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Theodora VIRTUES",
+											"type": "text"
+										},
+										{
+											"key": "subcategory_id",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "hashtags",
+											"value": "#myllodia",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "st_price",
+											"value": "9",
+											"type": "text"
+										},
+										{
+											"key": "source",
+											"value": "https://mega.nz/file/VPUjXSAD#7-9TMLliWIeyJ229IK4e9UIUDhXaUhqITva7_3KqSoM&https://mega.nz/file/VJFhGQiL#5A8eQ79gC4k6s2eFDLq0u2p46lUvZJc-ZMd3c9zO0xU",
+											"type": "text"
+										},
+										{
+											"key": "resource",
+											"type": "file",
+											"src": [
+												"96510861_p0.jpg",
+												"Fcd82laacAAyVvX.jfif",
+												"FYr93D8X0AAWiRB.jfif"
+											]
+										},
+										{
+											"key": "membership_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "resource_deleted",
+											"value": "public/img/superoaonova-chutu-04.jpg&public/img/superoaonova-huizhi-02.jpg",
+											"type": "text"
+										},
+										{
+											"key": "source_deleted",
+											"value": "https://mega.nz/file/9KgkkJqR#dc8zzkvhkJ_AjxuM7cSmPMWPXJXkJuu17ZfxzzdRziw",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/content/update/5/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"content",
+										"update",
+										"5",
+										""
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:32:09 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, PUT"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "58"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Амжилттай шинэчлэгдлээ!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "delete_content",
@@ -423,7 +1184,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjQ0OTI0LCJpYXQiOjE2ODE2NDEzMjQsImp0aSI6IjI3YzVkNDcyN2Q1NzQ2MzhhNmMyZWQ2MGM2NTMxNDAwIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.OaqEV07GJcjLrdfdVx67rWkZ8MrqtJgke8oLRr1X-Do",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
 									"type": "string"
 								}
 							]
@@ -431,19 +1192,86 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/content/delete/1/",
+							"raw": "{{api}}/content/delete/2/",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"content",
 								"delete",
-								"1",
+								"2",
 								""
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "delete_content",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/content/delete/2/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"content",
+										"delete",
+										"2",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:32:19 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, PUT"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Амжилттай устгагдлаа!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "get_wishlist",
@@ -453,7 +1281,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjUxNTAzLCJpYXQiOjE2ODE2NDc5MDMsImp0aSI6IjM1MGE5NWRkMDhkNDRkYmI5NWY2YzRkZjdlN2M0MzU3IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.Pqj5YZlhCsH4hsZzSHN9kB0pvrT4P0W-HyxuTTFjFSo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
 									"type": "string"
 								}
 							]
@@ -473,7 +1301,74 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get_wishlist",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/u/wishlist/get/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"u",
+										"wishlist",
+										"get",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:32:26 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, GET"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "186"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 4,\n            \"title\": \"Alicia VIRTUES\",\n            \"st_price\": 9\n        },\n        {\n            \"id\": 5,\n            \"title\": \"Alisa VIRTUES\",\n            \"st_price\": 9\n        }\n    ],\n    \"total_items\": 2,\n    \"page_size\": 10,\n    \"page_number\": 1,\n    \"message\": \"Амжилттай!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "add_to_or_remove_from_wishlist",
@@ -483,7 +1378,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjUxNTAzLCJpYXQiOjE2ODE2NDc5MDMsImp0aSI6IjM1MGE5NWRkMDhkNDRkYmI5NWY2YzRkZjdlN2M0MzU3IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.Pqj5YZlhCsH4hsZzSHN9kB0pvrT4P0W-HyxuTTFjFSo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
 									"type": "string"
 								}
 							]
@@ -513,7 +1408,84 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "add_to_or_remove_from_wishlist",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "4",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/u/toggle/wishlist/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"u",
+										"toggle",
+										"wishlist",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:32:34 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, POST"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "92"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Хүслийн жагсаалтнаас амжилттай хасагдлаа!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "get_content_reviews",
@@ -533,7 +1505,74 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get_content_reviews",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/review/get/5/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"review",
+										"get",
+										"5",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:32:40 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, GET"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "190"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"score\": 5,\n            \"comment\": \"Wow, my comment has made it!\",\n            \"user_id\": null,\n            \"created_at\": \"2023-04-16T21:02:52.004982Z\"\n        }\n    ],\n    \"pagination\": {\n        \"has_next\": true,\n        \"cursor\": 1\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				},
 				{
 					"name": "create_review",
@@ -543,7 +1582,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjUzNTEwLCJpYXQiOjE2ODE2NDk5MTAsImp0aSI6IjEzODMwYjMxZGI1ZDQwNTA4YTNiOGVjMzQ4YWE4N2M2IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.7RxBugxkUfc2YCuN3ahgNovGx0SyXwK1rqNARAPPL8s",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
 									"type": "string"
 								}
 							]
@@ -578,7 +1617,89 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "create_review",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "score",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "comment",
+											"value": "Wow, my comment has made it!",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/review/create/5/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"review",
+										"create",
+										"5",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:32:47 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, POST"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "183"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 3,\n        \"score\": \"5\",\n        \"comment\": \"Wow, my comment has made it!\",\n        \"fab_user_id\": 20230203,\n        \"product_id\": 5,\n        \"created_at\": \"2023-04-16T21:32:47.149003Z\"\n    },\n    \"message\": \"Амжилттай!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "create_review Copy",
@@ -588,7 +1709,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU0MzEwLCJpYXQiOjE2ODE2NTA3MTAsImp0aSI6IjlmODAzYWEzM2Y5ZjQ4MDU5YzQzNWIzYmE1ZjU3ZDU0IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.nQxFSzes07d_-jdy6d5tD2MWaNAJlAq2YaJtA2m1HW4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
 									"type": "string"
 								}
 							]
@@ -596,19 +1717,86 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/review/delete/2/",
+							"raw": "{{api}}/review/delete/3/",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"review",
 								"delete",
-								"2",
+								"3",
 								""
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "create_review Copy",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/review/delete/3/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"review",
+										"delete",
+										"3",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:32:53 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, DELETE"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Амжилттай устгалаа!\"\n}"
+						}
+					]
 				}
 			]
 		}
