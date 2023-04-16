@@ -57,7 +57,7 @@ CREATE TABLE customer (
     fab_user_id bigint NOT NULL,
     product_id bigint NOT NULL,
     created_at timestamp without time zone DEFAULT now() NOT NULL,
-    in_cart boolean DEFAULT false NOT NULL,
+    in_cart boolean DEFAULT true NOT NULL,
     is_bought boolean DEFAULT false NOT NULL
 );
 

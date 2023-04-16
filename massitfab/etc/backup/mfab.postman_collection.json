@@ -1797,6 +1797,103 @@
 							"body": "{\n    \"message\": \"Амжилттай устгалаа!\"\n}"
 						}
 					]
+				},
+				{
+					"name": "add_product_to_cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU2NDcwLCJpYXQiOjE2ODE2NTI4NzAsImp0aSI6ImYxMzE3MzVhNzNlMzRkNThiMWZkYTA2MGI2Njg0NmY2IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.n0Uak27KejgKDBZyy8ixYUHich2xbMEfip189bYm9qQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/cart/create/5/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"cart",
+								"create",
+								"5",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "add_product_to_cart",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/cart/create/5/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"cart",
+										"create",
+										"5",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 16 Apr 2023 13:48:35 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "113"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"cart_id\": 2,\n    \"user_id\": 20230203,\n    \"product_id\": 5,\n    \"message\": \"Сагсанд амжилттай нэмэгдлээ!\"\n}"
+						}
+					]
 				}
 			]
 		}

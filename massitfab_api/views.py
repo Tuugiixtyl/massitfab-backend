@@ -624,7 +624,7 @@ def search_products(request):
     try:
         conn = connectDB()
         cur = conn.cursor()
-        
+
         # get the total number of matching products
         cur.execute(
             "SELECT COUNT(*) FROM product WHERE title ILIKE %s", ['%'+keyword+'%'])
@@ -984,3 +984,59 @@ def delete_review(request, review_id):
     finally:
         if conn is not None:
             disconnectDB(conn)
+
+@api_view(['POST'])
+def add_product_to_cart(request, product_id):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth.get('status') != 200):
+        return Response(
+            {'message': auth.get('error')},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    user_id = auth.get('user_id')
+    
+    conn = None
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
+
+        cur.execute(
+            """
+            INSERT INTO customer (fab_user_id, product_id)
+            VALUES (%s, %s)
+            RETURNING id
+            """,
+            (user_id, product_id)
+        )
+        cart_id = cur.fetchone()[0] # type: ignore
+        conn.commit()
+
+        resp = {
+            "cart_id": cart_id,
+            "user_id": user_id,
+            "product_id": product_id,
+            "message": "Сагсанд амжилттай нэмэгдлээ!",
+        }
+        return Response(
+            resp,
+            status=status.HTTP_200_OK
+        )
+    except Exception as error:
+        log_error('delete_review', json.dumps(
+            {"product_id": product_id, "user_id": user_id}), str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+@api_view(['POST'])
+def checkout_cart(request):
+    pass
+
+@api_view(['DELETE'])
+def remove_from_cart(request, product_id):
+    pass
