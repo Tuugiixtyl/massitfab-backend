@@ -275,7 +275,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU1NDk0LCJpYXQiOjE2ODE2NTE4OTQsImp0aSI6IjRjNjFlMWJiNmFiZDQ4NDFiNDRiMTcwNDMwMGI1YzljIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.6vV7aX049XJ5B1a0E2-SiyKHxz5nUgxf8OxW_V07R7E",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjY1NDIzLCJpYXQiOjE2ODE2NjE4MjMsImp0aSI6ImNmZDNiZjNhNTE5NTQ0ZDZhZDRiMTZmODlmZmU2MjNmIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.vLwhvCt2lTsULXMF7ObZTSAXx-73gueoXaZo3fcdqHk",
 									"type": "string"
 								}
 							]
@@ -298,7 +298,7 @@
 								{
 									"key": "profile_picture",
 									"type": "file",
-									"src": "jonathan-romeo-feb-seraphine-kda-sd.jpg"
+									"src": "guang-chen-huamulan.jpg"
 								}
 							]
 						},
@@ -1189,7 +1189,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "{{api}}/content/delete/2/",
@@ -1208,7 +1208,7 @@
 						{
 							"name": "delete_content",
 							"originalRequest": {
-								"method": "PUT",
+								"method": "DELETE",
 								"header": [],
 								"url": {
 									"raw": "{{api}}/content/delete/2/",

@@ -1,6 +1,5 @@
 # Third party libraries
 import os
-import uuid
 from datetime import datetime
 from django.conf import settings
 from rest_framework.permissions import AllowAny
@@ -139,24 +138,28 @@ def update_profile(request):
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        upload_folder = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
+        # Get the old profile picture from the database
         cur.execute(
             "SELECT profile_picture FROM fab_user WHERE id=%s", [fab_id])
         oldpro = str(cur.fetchone()[0])  # type: ignore
-        pro = data.get('profile_picture').read()  # type: ignore
+        pro = data.get('profile_picture')  # type: ignore
         profile_picture = None
+
+        # Check if the request is valid
         if pro:
-            # file_data = base64.b64decode(pro)
-            file_data = pro
-            filename = str(uuid.uuid4()) + '.jpg'
+            file_path = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
+            storage = FileSystemStorage(location=file_path)
+
+            # Remove the old profile picture from local storage
             if oldpro != 'public/img/sandy.png':
                 full_path = os.path.join(settings.MEDIA_ROOT, oldpro)
                 if os.path.isfile(full_path):
                     os.remove(full_path)
-            with open(os.path.join(upload_folder, filename), 'wb') as f:
-                f.write(file_data)
+            filename = storage.save(pro.name, pro)
             profile_picture = os.path.join(
-                upload_folder, filename).replace('\\', '/')
+                file_path, filename).replace('\\', '/')
+
+        # Add the local path into the database
         values = (data.get('username'), data.get('summary') if data.get('summary')  # type: ignore
                   else None, profile_picture, fab_id)  # type: ignore
         cur.execute(
@@ -559,7 +562,7 @@ def update_product(request, id):
             disconnectDB(conn)
 
 
-@api_view(['PUT'])
+@api_view(['DELETE'])
 def delete_product(request, id):
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
@@ -629,7 +632,7 @@ def search_products(request):
         cur.execute(
             "SELECT COUNT(*) FROM product WHERE title ILIKE %s", ['%'+keyword+'%'])
         total_count = cur.fetchone()[0]  # type: ignore
-        
+
         # get a list of products matching the keyword, paginated
         cur.execute(
             "SELECT id, title, description, fab_user_id, st_price, created_at "
@@ -640,7 +643,7 @@ def search_products(request):
             ['%'+keyword+'%', limit, (page-1)*limit]
         )
         rows = cur.fetchall()
-        
+
         products = []
         for row in rows:
             products.append({
@@ -985,6 +988,7 @@ def delete_review(request, review_id):
         if conn is not None:
             disconnectDB(conn)
 
+
 @api_view(['POST'])
 def add_product_to_cart(request, product_id):
     auth_header = request.headers.get('Authorization')
@@ -995,7 +999,7 @@ def add_product_to_cart(request, product_id):
             status=status.HTTP_401_UNAUTHORIZED
         )
     user_id = auth.get('user_id')
-    
+
     conn = None
     try:
         conn = connectDB()
@@ -1009,7 +1013,7 @@ def add_product_to_cart(request, product_id):
             """,
             (user_id, product_id)
         )
-        cart_id = cur.fetchone()[0] # type: ignore
+        cart_id = cur.fetchone()[0]  # type: ignore
         conn.commit()
 
         resp = {
@@ -1033,9 +1037,11 @@ def add_product_to_cart(request, product_id):
         if conn is not None:
             disconnectDB(conn)
 
+
 @api_view(['POST'])
 def checkout_cart(request):
     pass
+
 
 @api_view(['DELETE'])
 def remove_from_cart(request, product_id):
