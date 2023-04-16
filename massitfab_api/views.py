@@ -1,14 +1,11 @@
 # Third party libraries
 import os
 import uuid
-import base64
-from datetime import datetime
 from django.conf import settings
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from datetime import datetime
 from django.core.files.storage import FileSystemStorage
 
 # Local Imports
@@ -54,7 +51,8 @@ def get_profile(request, username):
             status=status.HTTP_200_OK
         )
     except Exception as error:
-        log_error('get_profile', "{}", str(error))
+        log_error('get_profile', json.dumps(
+            {"username": username}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -68,9 +66,9 @@ def get_profile(request, username):
 def update_profile(request):
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
-    if(auth['status'] != 200):
+    if(auth.get('status') != 200):
         return Response(
-            {'message': auth['error']},
+            {'message': auth.get('error')},
             status=status.HTTP_401_UNAUTHORIZED
         )
     serializer = UpdateProfileSerializer(data=request.data)
@@ -78,7 +76,7 @@ def update_profile(request):
     data = serializer.validated_data
 
     conn = None
-    fab_id = auth['user_id']
+    fab_id = auth.get('user_id')
     try:
         conn = connectDB()
         cur = conn.cursor()
@@ -126,7 +124,8 @@ def update_profile(request):
         )
 
     except Exception as error:
-        log_error('update_profile', "{}", str(error))
+        log_error('update_profile', json.dumps(
+            {"user_id": fab_id, "data": data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -150,7 +149,7 @@ def get_product(request, id):
         result = cur.fetchone()
 
         if result is None or result[-1] != False:
-            log_error('product', "{}",
+            log_error('get_product', json.dumps({'product_id': id}),
                       'This product is removed or does not exist')
             return Response(
                 {'message': 'Product does not exist'},
@@ -202,9 +201,9 @@ def get_product(request, id):
 def create_product(request):
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
-    if(auth['status'] != 200):
+    if(auth.get('status') != 200):
         return Response(
-            {'message': auth['error']},
+            {'message': auth.get('error')},
             status=status.HTTP_401_UNAUTHORIZED
         )
     serializer = CreateProductSerializer(data=request.data)
@@ -241,14 +240,14 @@ def create_product(request):
         #     cur.execute(
         #         """INSERT INTO product
         #             VALUES (DEFAULT, %s, %s, CAST(%s AS timestamp without time zone), %s, CAST(%s AS timestamp without time zone), CAST(%s AS timestamp without time zone), %s, %s, %s, DEFAULT, DEFAULT, %s) RETURNING id""",
-        #         (*opening, schedule, auth['user_id'],
+        #         (*opening, schedule, auth.get('user_id'),
         #          start_date, end_date, *ending, None)
         #     )
         # else:
         #     cur.execute(
         #         """INSERT INTO product
         #             VALUES (DEFAULT, %s, %s, DEFAULT, %s, CAST(%s AS timestamp without time zone), CAST(%s AS timestamp without time zone), %s, %s, %s, DEFAULT, DEFAULT, %s) RETURNING id""",
-        #         (*opening, auth['user_id'],
+        #         (*opening, auth.get('user_id'),
         #          start_date, end_date, *ending, None)
         #     )
 
@@ -256,9 +255,9 @@ def create_product(request):
         values = (
             data.get('title'),  # type: ignore
             data.get('description'),  # type: ignore
-            auth['user_id'],
+            auth.get('user_id'),
             int(data.get('subcategory_id')),  # type: ignore
-            float(data.get('st_price', 0)) # type: ignore
+            float(data.get('st_price', 0))  # type: ignore
         )
         cur.execute("""INSERT INTO product(title, description, fab_user_id, subcategory_id, st_price)
                         VALUES (%s, %s, %s, %s, %s) RETURNING id;""", values)
@@ -304,7 +303,8 @@ def create_product(request):
         )
 
     except Exception as error:
-        log_error('create_product', data, str(error))
+        log_error('create_product', json.dumps(
+            {"user_id": auth.get('user_id'), "data": data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -318,9 +318,9 @@ def create_product(request):
 def update_product(request, id):
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
-    if(auth['status'] != 200):
+    if(auth.get('status') != 200):
         return Response(
-            {'message': auth['error']},
+            {'message': auth.get('error')},
             status=status.HTTP_401_UNAUTHORIZED
         )
     serializer = UpdateProductSerializer(data=request.data)
@@ -333,7 +333,7 @@ def update_product(request, id):
         conn = connectDB()
         cur = conn.cursor()
 
-        values = (id, auth['user_id'])
+        values = (id, auth.get('user_id'))
         cur.execute(
             'SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
         content_id, uid = cur.fetchone() or (None, None)  # type: ignore
@@ -347,10 +347,10 @@ def update_product(request, id):
         # Update the product data
         values = []
         query = "UPDATE product SET updated_at=now()"
-        title = data.get('title') # type: ignore
-        description = data.get('description') # type: ignore
-        subcategory_id = data.get('subcategory_id') # type: ignore
-        st_price = data.get('st_price') # type: ignore
+        title = data.get('title')  # type: ignore
+        description = data.get('description')  # type: ignore
+        subcategory_id = data.get('subcategory_id')  # type: ignore
+        st_price = data.get('st_price')  # type: ignore
         if title:
             query += ", title=%s"
             values.append(title)
@@ -368,7 +368,7 @@ def update_product(request, id):
         cur.execute(query, values)
 
         # Delete deleted gallery files and rows from the database
-        resource_deleted = data.get('resource_deleted') # type: ignore
+        resource_deleted = data.get('resource_deleted')  # type: ignore
         if resource_deleted:
             res_list = resource_deleted.split('&')
             for deleted in res_list:
@@ -382,7 +382,7 @@ def update_product(request, id):
                 )
 
         # Delete deleted source files and rows from the database
-        source_deleted = data.get('source_deleted') # type: ignore
+        source_deleted = data.get('source_deleted')  # type: ignore
         if source_deleted:
             src_list = source_deleted.split('&')
             for deleted in src_list:
@@ -396,7 +396,7 @@ def update_product(request, id):
                 )
 
         # Insert new source files into the database
-        sources = data.get('source') # type: ignore
+        sources = data.get('source')  # type: ignore
         if sources:
             srcs = sources.split('&')
             for source in srcs:
@@ -435,7 +435,8 @@ def update_product(request, id):
         )
 
     except Exception as error:
-        log_error('update_product', data, str(error))
+        log_error('update_product', json.dumps(
+            {"user_id": auth.get("user_id"), "data": data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -449,9 +450,9 @@ def update_product(request, id):
 def delete_product(request, id):
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
-    if(auth['status'] != 200):
+    if(auth.get('status') != 200):
         return Response(
-            {'message': auth['error']},
+            {'message': auth.get('error')},
             status=status.HTTP_401_UNAUTHORIZED
         )
 
@@ -461,7 +462,7 @@ def delete_product(request, id):
         conn = connectDB()
         cur = conn.cursor()
 
-        values = (id, auth['user_id'])
+        values = (id, auth.get('user_id'))
         cur.execute(
             'SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
         row = cur.fetchone()
@@ -487,7 +488,8 @@ def delete_product(request, id):
         )
 
     except Exception as error:
-        log_error('delete_product', json.dumps(request.data), str(error))
+        log_error('delete_product', json.dumps({"user_id": auth.get(
+            'user_id'), "data": request.data, "product_id": id}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
