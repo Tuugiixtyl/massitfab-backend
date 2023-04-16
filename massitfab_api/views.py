@@ -11,7 +11,7 @@ import math
 
 # Local Imports
 from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error, json
-from .serializers import CreateProductSerializer, UpdateProductSerializer, UpdateProfileSerializer
+from .serializers import CreateProductSerializer, UpdateProductSerializer, UpdateProfileSerializer, AddToWishlistSerializer
 
 
 @api_view(['GET'])
@@ -199,7 +199,7 @@ def get_products(request):  # Recently uploaded products
 
         # Get total number of products
         cur.execute("SELECT COUNT(*) FROM product")
-        total_count = cur.fetchone()[0] # type: ignore
+        total_count = cur.fetchone()[0]  # type: ignore
 
         # Get paginated products data
         cur.execute("""
@@ -605,6 +605,128 @@ def delete_product(request, id):
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+
+@api_view(['POST'])
+# User should not be able to add it's own products to this list
+def add_to_wishlist(request):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth.get('status') != 200):
+        return Response(
+            {'message': auth.get('error')},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    serializer = AddToWishlistSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    data = serializer.validated_data
+    product_id = int(data.get('product_id'))  # type: ignore
+    user_id = auth.get('user_id')
+
+    conn = None
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # Check if product exists
+        cur.execute(
+            "SELECT id FROM product WHERE id = %s",
+            [product_id]
+        )
+        result = cur.fetchone()
+        if result is None:
+            log_error('add_to_wishlist', json.dumps(
+                {"message": 'Энэхүү бүтээгдэхүүн нь систэмд бүртгэлгүй байна.', "data": data}), 'error. result is none')
+            return Response({'message': 'Энэхүү бүтээгдэхүүн нь систэмд бүртгэлгүй байна.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Check if product is already in wishlist
+        cur.execute(
+            "SELECT id FROM wishlist WHERE fab_user_id = %s AND product_id = %s",
+            [user_id, product_id]
+        )
+        result = cur.fetchone()
+        if result is not None:
+            cur.execute("DELETE FROM wishlist WHERE id=%s", [result])
+            conn.commit()
+            return Response({'message': 'Хүслийн жагсаалтнаас амжилттай хасагдлаа!'}, status=status.HTTP_200_OK)
+
+        # Add product to wishlist
+        cur.execute(
+            "INSERT INTO wishlist (fab_user_id, product_id) VALUES (%s, %s) RETURNING id",
+            [user_id, product_id]
+        )
+        wishlist_id = cur.fetchone()[0]  # type: ignore
+        conn.commit()
+
+        return Response({'message': 'Хүслийн жагсаалтад амжилттай бүртгэгдлээ!', 'wishlist_id': wishlist_id}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        log_error('add_to_wishlist', json.dumps({"data": data}), str(e))
+        return Response({'message': 'Unable to add product to wishlist'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+
+@api_view(['GET'])
+def get_wishlist(request):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth.get('status') != 200):
+        return Response(
+            {'message': auth.get('error')},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    print('wtf')
+    user_id = auth.get('user_id')
+    page_size = request.query_params.get('page_size', 10)
+    page_number = request.query_params.get('page_number', 1)
+
+    conn = None
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # Get count of total wishlist items
+        cur.execute(
+            "SELECT COUNT(*) FROM wishlist WHERE fab_user_id = %s",
+            [user_id]
+        )
+        total_items = cur.fetchone()[0]  # type: ignore
+
+        # Calculate offset and limit for pagination
+        offset = (page_number - 1) * page_size
+        limit = page_size
+
+        # Get wishlist items for the requested page
+        cur.execute(
+            "SELECT product.id, product.title, product.st_price FROM product JOIN wishlist ON wishlist.product_id = product.id WHERE wishlist.fab_user_id = %s ORDER BY wishlist.created_at DESC OFFSET %s LIMIT %s",
+            [user_id, offset, limit]
+        )
+        wishlist_items = []
+        for row in cur.fetchall():
+            wishlist_items.append({
+                'id': row[0],
+                'title': row[1],
+                'st_price': row[2],
+            })
+
+        # Build response
+        resp = {
+            'data': wishlist_items,
+            'total_items': total_items,
+            'page_size': page_size,
+            'page_number': page_number,
+            'message': 'Амжилттай!',
+        }
+
+        return Response(resp, status=status.HTTP_200_OK)
+    except Exception as e:
+        log_error('get_wishlist', json.dumps(
+            {"user_id": user_id, "data": request.data}), str(e))
+        return Response({'message': 'Хүслийн жагсаалт руу хандаж чадсангүй!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     finally:
         if conn is not None:
             disconnectDB(conn)

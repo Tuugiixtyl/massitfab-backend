@@ -75,3 +75,7 @@ class UpdateProductSerializer(serializers.Serializer):
     resource = serializers.ListField(child=serializers.ImageField())
     source_deleted = serializers.CharField(required=False, allow_blank=True)
     resource_deleted = serializers.CharField(required=False, allow_blank=True)
+
+
+class AddToWishlistSerializer(serializers.Serializer):
+    product_id = serializers.CharField()
