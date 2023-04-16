@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
+from django.core.files.storage import FileSystemStorage
 
 # Local Imports
 from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error, json
@@ -93,9 +94,10 @@ def update_profile(request):
             )
 
         upload_folder = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
-        cur.execute("SELECT profile_picture FROM fab_user WHERE id=%s", [fab_id])
-        oldpro = str(cur.fetchone()[0])
-        pro = data['profile_picture'].read()  # type: ignore
+        cur.execute(
+            "SELECT profile_picture FROM fab_user WHERE id=%s", [fab_id])
+        oldpro = str(cur.fetchone()[0])  # type: ignore
+        pro = data.get('profile_picture').read()  # type: ignore
         profile_picture = None
         if pro:
             # file_data = base64.b64decode(pro)
@@ -105,12 +107,11 @@ def update_profile(request):
                 full_path = os.path.join(settings.MEDIA_ROOT, oldpro)
                 if os.path.isfile(full_path):
                     os.remove(full_path)
-                cur.execute("DELETE FROM gallery WHERE resource=%s", [oldpro])
             with open(os.path.join(upload_folder, filename), 'wb') as f:
                 f.write(file_data)
             profile_picture = os.path.join(
                 upload_folder, filename).replace('\\', '/')
-        values = (data['username'], data['summary'] if data['summary']
+        values = (data.get('username'), data.get('summary') if data.get('summary')  # type: ignore
                   else None, profile_picture, fab_id)  # type: ignore
         cur.execute(
             "UPDATE fab_user SET username=%s, summary=%s, profile_picture=%s WHERE id=%s", values)
@@ -198,7 +199,7 @@ def get_product(request, id):
 
 
 @api_view(['POST'])
-def create_product(request, format=None):
+def create_product(request):
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
     if(auth['status'] != 200):
@@ -223,42 +224,50 @@ def create_product(request, format=None):
         # Start a new transaction
         cur.execute("BEGIN")
 
+        # content_data = data.get('content')  # type: ignore
+        # schedule = datetime.strptime(content_data.get('schedule'), '%Y-%m-%d %H:%M:%S.%f') if content_data.get('schedule') else None
+        # start_date = datetime.strptime(content_data.get('start_date'), '%Y-%m-%d %H:%M:%S.%f') if content_data.get('start_date') else None
+        # end_date = datetime.strptime(content_data.get('end_date'), '%Y-%m-%d %H:%M:%S.%f') if content_data.get('end_date') else None
+        # opening = (
+        #     content_data.get('title'),
+        #     content_data.get('description'),
+        # )
+        # ending = (
+        #     content_data.get('subcategory_id'),
+        #     content_data.get('hashtags') if content_data.get('hashtags') else '',
+        #     float(content_data.get('st_price')) if content_data.get('st_price') else 0,
+        # )
+        # if schedule is not None:
+        #     cur.execute(
+        #         """INSERT INTO product
+        #             VALUES (DEFAULT, %s, %s, CAST(%s AS timestamp without time zone), %s, CAST(%s AS timestamp without time zone), CAST(%s AS timestamp without time zone), %s, %s, %s, DEFAULT, DEFAULT, %s) RETURNING id""",
+        #         (*opening, schedule, auth['user_id'],
+        #          start_date, end_date, *ending, None)
+        #     )
+        # else:
+        #     cur.execute(
+        #         """INSERT INTO product
+        #             VALUES (DEFAULT, %s, %s, DEFAULT, %s, CAST(%s AS timestamp without time zone), CAST(%s AS timestamp without time zone), %s, %s, %s, DEFAULT, DEFAULT, %s) RETURNING id""",
+        #         (*opening, auth['user_id'],
+        #          start_date, end_date, *ending, None)
+        #     )
+
         # Execute an query using parameters
-        content_data = data['content']  # type: ignore
-        schedule = datetime.strptime(
-            content_data['schedule'], '%Y-%m-%d %H:%M:%S.%f') if content_data['schedule'] else None
-        start_date = datetime.strptime(
-            content_data['start_date'], '%Y-%m-%d %H:%M:%S.%f') if content_data['start_date'] else None
-        end_date = datetime.strptime(
-            content_data['end_date'], '%Y-%m-%d %H:%M:%S.%f') if content_data['end_date'] else None
-        opening = (
-            content_data['title'],
-            content_data['description'],
+        values = (
+            data.get('title'),  # type: ignore
+            data.get('description'),  # type: ignore
+            auth['user_id'],
+            int(data.get('subcategory_id')),  # type: ignore
+            float(data.get('st_price', 0)) # type: ignore
         )
-        ending = (
-            content_data['subcategory_id'],
-            content_data['hashtags'] if content_data['hashtags'] else '',
-            float(content_data['st_price']) if content_data['st_price'] else 0,
-        )
-        if schedule is not None:
-            cur.execute(
-                """INSERT INTO product 
-                    VALUES (DEFAULT, %s, %s, CAST(%s AS timestamp without time zone), %s, CAST(%s AS timestamp without time zone), CAST(%s AS timestamp without time zone), %s, %s, %s, DEFAULT, DEFAULT, %s) RETURNING id""",
-                (*opening, schedule, auth['user_id'],
-                 start_date, end_date, *ending, None)
-            )
-        else:
-            cur.execute(
-                """INSERT INTO product 
-                    VALUES (DEFAULT, %s, %s, DEFAULT, %s, CAST(%s AS timestamp without time zone), CAST(%s AS timestamp without time zone), %s, %s, %s, DEFAULT, DEFAULT, %s) RETURNING id""",
-                (*opening, auth['user_id'],
-                 start_date, end_date, *ending, None)
-            )
+        cur.execute("""INSERT INTO product(title, description, fab_user_id, subcategory_id, st_price)
+                        VALUES (%s, %s, %s, %s, %s) RETURNING id;""", values)
         content_id = cur.fetchone()[0]  # type: ignore
 
-        sources = data['source']        # type: ignore
+        sources = data.get('source')        # type: ignore
         if sources:
-            for source in sources:
+            sauces = sources.split("&")
+            for source in sauces:
                 values = (source, content_id)
                 cur.execute(
                     """INSERT INTO route(source, product_id) 
@@ -267,23 +276,19 @@ def create_product(request, format=None):
                 )
 
         # Set the upload folder to the public/img directory
-        upload_folder = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
-        gallery_data = data['gallery']  # type: ignore
+        file_path = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
+        gallery_data = data.get('resource')  # type: ignore
         if gallery_data:
-            for data in gallery_data:
-                file_data = base64.b64decode(data['resource'])
-
-                # Generate a unique filename for the uploaded file
-                filename = str(uuid.uuid4()) + '.jpg'
-
-                # Save the uploaded file to disk
-                with open(os.path.join(upload_folder, filename), 'wb') as f:
-                    f.write(file_data)
-                values = (os.path.join(upload_folder, filename).replace('\\', '/'), content_id,
-                          data['membership_id'] if data['membership_id'] else None)
+            storage = FileSystemStorage(location=file_path)
+            filenames = []
+            for image_file in gallery_data:
+                filename = storage.save(image_file.name, image_file)
+                filenames.append(filename)
+                values = (os.path.join(file_path, filename).replace(
+                    '\\', '/'), content_id)
                 cur.execute(
-                    """INSERT INTO gallery
-                        VALUES (DEFAULT, %s, %s, %s)""",
+                    """INSERT INTO gallery (resource, product_id)
+                        VALUES (%s, %s)""",
                     values
                 )
 
@@ -339,78 +344,84 @@ def update_product(request, id):
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        # # Use the connection's autocommit attribute to ensure all queries are part of the same transaction
-        # conn.autocommit = False
-
-        # # Start a new transaction
-        # cur.execute("BEGIN")
-
         # Update the product data
-        content_data = data.get('content', {})
-        values = (
-            content_data.get('title'),
-            content_data.get('description'),
-            int(content_data.get('subcategory_id', 0)),
-            content_data.get('hashtags', ''),
-            float(content_data.get('st_price', 0)),
-            id,
-        )
-        cur.execute(
-            """UPDATE product SET title=%s, description=%s, subcategory_id=%s, hashtags=%s, st_price=%s, updated_at=now() WHERE id=%s""",
-            values
-        )
+        values = []
+        query = "UPDATE product SET updated_at=now()"
+        title = data.get('title') # type: ignore
+        description = data.get('description') # type: ignore
+        subcategory_id = data.get('subcategory_id') # type: ignore
+        st_price = data.get('st_price') # type: ignore
+        if title:
+            query += ", title=%s"
+            values.append(title)
+        if description:
+            query += ", description=%s"
+            values.append(description)
+        if subcategory_id:
+            query += ", subcategory_id=%s"
+            values.append(int(subcategory_id))
+        if st_price:
+            query += ", st_price=%s"
+            values.append(float(st_price))
+        query += " WHERE id=%s"
+        values.append(id)
+        cur.execute(query, values)
 
         # Delete deleted gallery files and rows from the database
-        is_deleted = data.get('deleted', {})
-        for deleted in is_deleted[0].get('gallery', []):
-            # Delete the file from the Django media directory
-            full_path = os.path.join(settings.MEDIA_ROOT, deleted)
-            if os.path.isfile(full_path):
-                os.remove(full_path)
-            values = (deleted, id)
-            cur.execute(
-                "DELETE FROM gallery WHERE resource = %s AND product_id = %s", values
-            )
+        resource_deleted = data.get('resource_deleted') # type: ignore
+        if resource_deleted:
+            res_list = resource_deleted.split('&')
+            for deleted in res_list:
+                # Delete the file from the Django media directory
+                full_path = os.path.join(settings.MEDIA_ROOT, deleted)
+                if os.path.isfile(full_path):
+                    os.remove(full_path)
+                values = (deleted, id)
+                cur.execute(
+                    "DELETE FROM gallery WHERE resource = %s AND product_id = %s", values
+                )
 
         # Delete deleted source files and rows from the database
-        for deleted in is_deleted[0].get('source', []):
-            # Delete the file from the Django media directory
-            full_path = os.path.join(settings.MEDIA_ROOT, deleted)
-            if os.path.isfile(full_path):
-                os.remove(full_path)
-            values = (deleted, id)
-            cur.execute(
-                "DELETE FROM route WHERE source = %s AND product_id = %s", values
-            )
+        source_deleted = data.get('source_deleted') # type: ignore
+        if source_deleted:
+            src_list = source_deleted.split('&')
+            for deleted in src_list:
+                # Delete the file from the Django media directory
+                full_path = os.path.join(settings.MEDIA_ROOT, deleted)
+                if os.path.isfile(full_path):
+                    os.remove(full_path)
+                values = (deleted, id)
+                cur.execute(
+                    "DELETE FROM route WHERE source = %s AND product_id = %s", values
+                )
 
         # Insert new source files into the database
-        sources = data.get('source', [])
-        for source in sources:
-            values = (source, content_id)
-            cur.execute(
-                "INSERT INTO route(source, product_id) VALUES (%s, %s)",
-                values
-            )
+        sources = data.get('source') # type: ignore
+        if sources:
+            srcs = sources.split('&')
+            for source in srcs:
+                values = (source, content_id)
+                cur.execute(
+                    "INSERT INTO route(source, product_id) VALUES (%s, %s)",
+                    values
+                )
 
         # Insert new gallery files into the database
-        upload_folder = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
-        gallery_data = data.get('gallery', [])
-        for data in gallery_data:
-            file_data = base64.b64decode(data.get('resource'))
-
-            # Generate a unique filename for the uploaded file
-            filename = str(uuid.uuid4()) + '.jpg'
-
-            # Save the uploaded file to disk
-            with open(os.path.join(upload_folder, filename), 'wb') as f:
-                f.write(file_data)
-            values = (os.path.join(upload_folder, filename).replace('\\', '/'), content_id,
-                      data.get('membership_id') if data.get('membership_id') != '' else None)
-            cur.execute(
-                """INSERT INTO gallery
-                    VALUES (DEFAULT, %s, %s, %s)""",
-                values
-            )
+        file_path = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
+        gallery_data = data.get('resource')  # type: ignore
+        if gallery_data:
+            storage = FileSystemStorage(location=file_path)
+            filenames = []
+            for image_file in gallery_data:
+                filename = storage.save(image_file.name, image_file)
+                filenames.append(filename)
+                values = (os.path.join(file_path, filename).replace(
+                    '\\', '/'), content_id)
+                cur.execute(
+                    """INSERT INTO gallery (resource, product_id)
+                        VALUES (%s, %s)""",
+                    values
+                )
 
         # Commit the changes to the database
         conn.commit()
