@@ -1,6 +1,7 @@
 # Third party libraries
 import os
 import uuid
+from datetime import datetime
 from django.conf import settings
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -11,7 +12,7 @@ import math
 
 # Local Imports
 from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error, json
-from .serializers import CreateProductSerializer, UpdateProductSerializer, UpdateProfileSerializer, AddToWishlistSerializer
+from .serializers import CreateProductSerializer, CreateReviewSerializer, UpdateProductSerializer, UpdateProfileSerializer, AddToWishlistSerializer
 
 
 @api_view(['GET'])
@@ -277,6 +278,7 @@ def get_product_details(request, id):
 
         resp = {
             "data": {
+                "id": id,
                 "title": result[0],
                 "description": result[1],
                 "schedule": result[2],
@@ -610,6 +612,74 @@ def delete_product(request, id):
             disconnectDB(conn)
 
 
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def search_product(request):
+    keyword = request.GET.get('keyword', '')
+    page = request.GET.get('page', 1)
+    limit = request.GET.get('limit', 10)
+
+    conn = None
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # get the total number of matching products
+        cur.execute(
+            "SELECT COUNT(*) FROM product WHERE name ILIKE %s", ['%'+keyword+'%'])
+        total_count = cur.fetchone()[0]  # type: ignore
+
+        # get a list of products matching the keyword, paginated
+        cur.execute(
+            "SELECT id, name, description, image, price, created_at "
+            "FROM product "
+            "WHERE name ILIKE %s "
+            "ORDER BY created_at DESC "
+            "LIMIT %s OFFSET %s",
+            ['%'+keyword+'%', limit, (page-1)*limit]
+        )
+        rows = cur.fetchall()
+
+        products = []
+        for row in rows:
+            products.append({
+                'id': row[0],
+                'name': row[1],
+                'description': row[2],
+                'image': row[3],
+                'price': row[4],
+                'created_at': row[5].strftime('%Y-%m-%dT%H:%M:%S')
+            })
+
+        resp = {
+            'data': {
+                'products': products,
+                'pagination': {
+                    'page': page,
+                    'limit': limit,
+                    'total_count': total_count,
+                    'total_pages': math.ceil(total_count / limit)
+                }
+            },
+            'message': 'Амжилттай!'
+        }
+
+        return Response(resp, status=status.HTTP_200_OK)
+
+    except Exception as error:
+        log_error('search_product', json.dumps(
+            {"keyword": keyword, "page": page, "limit": limit}), str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+
 @api_view(['POST'])
 # User should not be able to add it's own products to this list
 def add_to_wishlist(request):
@@ -727,6 +797,192 @@ def get_wishlist(request):
         log_error('get_wishlist', json.dumps(
             {"user_id": user_id, "data": request.data}), str(e))
         return Response({'message': 'Хүслийн жагсаалт руу хандаж чадсангүй!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+
+@api_view(['POST'])
+def create_review(request, product_id):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth.get('status') != 200):
+        return Response(
+            {'message': auth.get('error')},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    serializer = CreateReviewSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    data = serializer.validated_data
+    user_id = auth.get('user_id')  # type: ignore
+
+    conn = None
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # check if the product exists
+        cur.execute(
+            "SELECT id FROM product WHERE id = %s", [product_id]
+        )
+        result = cur.fetchone()
+
+        if result is None:
+            log_error('create_review', json.dumps(
+                {"product_id": product_id}), 'Product does not exist')
+            return Response(
+                {'message': 'Product does not exist'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # insert review into the database
+        cur.execute(
+            "INSERT INTO review (score, comment, fab_user_id, product_id) VALUES (%s, %s, %s, %s) RETURNING id",
+            [int(data.get('score')), data.get('comment', None),
+             user_id, product_id]  # type: ignore
+        )
+        review_id = cur.fetchone()[0]   # type: ignore
+        conn.commit()
+
+        resp = {
+            "data": {
+                "id": review_id,
+                "score": data.get('score'),  # type: ignore
+                "comment": data.get('comment', None),  # type: ignore
+                "fab_user_id": user_id,
+                "product_id": product_id,
+                "created_at": datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            },
+            "message": "Амжилттай!"
+        }
+        return Response(
+            resp,
+            status=status.HTTP_201_CREATED
+        )
+    except Exception as error:
+        log_error('create_review', json.dumps(
+            {"product_id": product_id}), str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг хийхэд алдаа гарлаа.'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def get_reviews(request, product_id):
+    conn = None
+    try:
+        # establish database connection
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # get pagination parameters from request
+        limit = int(request.GET.get('limit', 20))
+        cursor = int(request.GET.get('cursor', 0))
+
+        # retrieve reviews using cursor-based pagination
+        cur.execute(
+            """SELECT id, score, comment, fab_user_id, created_at FROM review WHERE product_id=%s AND id > %s ORDER BY id LIMIT %s""",
+            [product_id, cursor, limit]
+        )
+        rows = cur.fetchall()
+
+        # construct response data
+        reviews = []
+        for row in rows:
+            review = {
+                'id': row[0],
+                'score': row[1],
+                'comment': row[2],
+                'user_id': row[3],
+                'created_at': row[4].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            }
+            reviews.append(review)
+
+        # construct response with pagination information
+        resp = {
+            "data": reviews,
+            "pagination": {
+                "has_next": bool(rows),
+                "cursor": rows[-1][0] if rows else None
+            },
+            "message": "Success"
+        }
+
+        return Response(resp, status=status.HTTP_200_OK)
+    except Exception as error:
+        log_error('get_reviews', json.dumps(
+            {"product_id": product_id}), str(error))
+        return Response({'message': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+
+@api_view(['DELETE'])
+def delete_review(request, review_id):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth.get('status') != 200):
+        return Response(
+            {'message': auth.get('error')},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+
+    conn = None
+    try:
+        # establish database connection
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # Check if review exists
+        cur.execute(
+            "SELECT fab_user_id FROM review WHERE id = %s", [review_id]
+        )
+        result = cur.fetchone()
+
+        if result is None:
+            log_error('delete_review', "{}", 'Review does not exist')
+            return Response(
+                {'message': 'Review does not exist'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Check if user is authorized to delete the review
+        user_id = auth.get('user_id')
+        if user_id != result[0]:
+            log_error('delete_review', "{}", 'Unauthorized')
+            return Response(
+                {'message': 'Unauthorized'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        # Delete the review
+        cur.execute(
+            "DELETE FROM review WHERE id = %s", [review_id]
+        )
+        conn.commit()
+
+        resp = {
+            "message": "Амжилттай устгалаа!"
+        }
+        return Response(
+            resp,
+            status=status.HTTP_200_OK
+        )
+
+    except Exception as error:
+        log_error('delete_review', json.dumps(
+            {"review_id": review_id}), str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
     finally:
         if conn is not None:
             disconnectDB(conn)

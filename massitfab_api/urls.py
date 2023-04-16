@@ -16,4 +16,8 @@ urlpatterns = [
 
     path('u/toggle/wishlist/', add_to_wishlist, name='toggle_wishlist'),
     path('u/wishlist/get/', get_wishlist, name='get_wishlist'),
+
+    path('review/create/<int:product_id>/', create_review, name='create_review'),
+    path('review/get/<int:product_id>/', get_reviews, name="get_reviews"),
+    path('review/delete/<int:review_id>/', delete_review, name='delete_review'),
 ]

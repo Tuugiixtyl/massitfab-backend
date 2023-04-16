@@ -79,3 +79,7 @@ class UpdateProductSerializer(serializers.Serializer):
 
 class AddToWishlistSerializer(serializers.Serializer):
     product_id = serializers.CharField()
+
+class CreateReviewSerializer(serializers.Serializer):
+    score = serializers.CharField()
+    comment = serializers.CharField(required=False, allow_blank=True)

@@ -192,7 +192,7 @@
 					"response": []
 				},
 				{
-					"name": "get_conten_details",
+					"name": "get_content_details",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -200,14 +200,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/content/get/1/",
+							"raw": "{{api}}/content/get/5/",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"content",
 								"get",
-								"1",
+								"5",
 								""
 							]
 						}
@@ -439,6 +439,171 @@
 								"content",
 								"delete",
 								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_wishlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjUxNTAzLCJpYXQiOjE2ODE2NDc5MDMsImp0aSI6IjM1MGE5NWRkMDhkNDRkYmI5NWY2YzRkZjdlN2M0MzU3IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.Pqj5YZlhCsH4hsZzSHN9kB0pvrT4P0W-HyxuTTFjFSo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/u/wishlist/get/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"u",
+								"wishlist",
+								"get",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_to_or_remove_from_wishlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjUxNTAzLCJpYXQiOjE2ODE2NDc5MDMsImp0aSI6IjM1MGE5NWRkMDhkNDRkYmI5NWY2YzRkZjdlN2M0MzU3IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.Pqj5YZlhCsH4hsZzSHN9kB0pvrT4P0W-HyxuTTFjFSo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product_id",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/u/toggle/wishlist/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"u",
+								"toggle",
+								"wishlist",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_content_reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/review/get/5/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"review",
+								"get",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjUzNTEwLCJpYXQiOjE2ODE2NDk5MTAsImp0aSI6IjEzODMwYjMxZGI1ZDQwNTA4YTNiOGVjMzQ4YWE4N2M2IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.7RxBugxkUfc2YCuN3ahgNovGx0SyXwK1rqNARAPPL8s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "score",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "Wow, my comment has made it!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/review/create/5/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"review",
+								"create",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_review Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjU0MzEwLCJpYXQiOjE2ODE2NTA3MTAsImp0aSI6IjlmODAzYWEzM2Y5ZjQ4MDU5YzQzNWIzYmE1ZjU3ZDU0IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.nQxFSzes07d_-jdy6d5tD2MWaNAJlAq2YaJtA2m1HW4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/review/delete/2/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"review",
+								"delete",
+								"2",
 								""
 							]
 						}
