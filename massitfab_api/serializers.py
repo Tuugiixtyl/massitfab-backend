@@ -37,7 +37,7 @@ class CreateProductSerializer(serializers.Serializer):
     subcategory_id = serializers.CharField()
     st_price = serializers.CharField()
     source = serializers.CharField()
-    resource = serializers.ListField(child=serializers.FileField())
+    resource = serializers.ListField(child=serializers.ImageField())
 
 # class UpdateContentSerializer(serializers.Serializer):
 #     title = serializers.CharField()
@@ -62,7 +62,8 @@ class CreateProductSerializer(serializers.Serializer):
 class UpdateProfileSerializer(serializers.Serializer):
     username = serializers.CharField()
     summary = serializers.CharField(allow_blank=True, required=False)
-    profile_picture = serializers.ImageField(max_length=None, allow_empty_file=True)
+    profile_picture = serializers.ImageField(
+        max_length=None, allow_empty_file=True)
 
 
 class UpdateProductSerializer(serializers.Serializer):
@@ -71,6 +72,6 @@ class UpdateProductSerializer(serializers.Serializer):
     subcategory_id = serializers.CharField(required=False, allow_blank=True)
     st_price = serializers.CharField(required=False, allow_blank=True)
     source = serializers.CharField(required=False, allow_blank=True)
-    resource = serializers.ListField(child=serializers.FileField())
+    resource = serializers.ListField(child=serializers.ImageField())
     source_deleted = serializers.CharField(required=False, allow_blank=True)
     resource_deleted = serializers.CharField(required=False, allow_blank=True)

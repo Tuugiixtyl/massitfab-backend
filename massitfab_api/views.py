@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.files.storage import FileSystemStorage
+import math
 
 # Local Imports
 from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error, json
@@ -25,24 +26,69 @@ def get_profile(request, username):
 
         # Check if user does not exists while also retrieving the information
         cur.execute(
-            "SELECT username, summary, profile_picture, created_at FROM fab_user WHERE username = %s",
+            "SELECT id, username, summary, profile_picture, created_at FROM fab_user WHERE username = %s",
             [username]
         )
         result = cur.fetchone()
 
         if result is None:
-            log_error('get_profile', "{}", 'User does not exist')
+            log_error('get_profile', json.dumps({"username": username}), 'User does not exist')
             return Response(
                 {'message': 'User does not exist'},
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        # Get the page number and page size from the query parameters
+        page = int(request.GET.get('page', 1))
+        page_size = int(request.GET.get('page_size', 10))
+
+        # Calculate the offset based on the page number and page size
+        offset = (page - 1) * page_size
+
+        # Query the related products with pagination
+        cur.execute(
+            """SELECT id, title, description, st_price, created_at FROM product
+               WHERE fab_user_id = %s
+               ORDER BY created_at DESC
+               LIMIT %s OFFSET %s""",
+            [result[0], page_size, offset]
+        )
+        results = cur.fetchall()
+
+        # Convert the result rows to a list of dictionaries
+        products = []
+        for row in results:
+            products.append({
+                'id': row[0],
+                'title': row[1],
+                'description': row[2],
+                'st_price': float(row[3]),
+                'created_at': row[4].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            })
+
+        # Get the total count of related products
+        cur.execute(
+            "SELECT COUNT(*) FROM product WHERE fab_user_id = %s",
+            [result[0]]
+        )
+        total_count = cur.fetchone()[0]
+
+        # Calculate the number of pages based on the total count and page size
+        num_pages = math.ceil(total_count / page_size)
+
         resp = {
             "data": {
-                'username': result[0],
-                'summary': result[1],
-                'profile_picture': result[2],
-                'created_at': result[3].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+                'username': result[1],
+                'summary': result[2],
+                'profile_picture': result[3],
+                'created_at': result[4].strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                'related_products': products,
+                'list': {
+                    'page': page,
+                    'page_size': page_size,
+                    'num_pages': num_pages,
+                    'total_count': total_count
+                }
             },
             "message": "Амжилттай!"
         }
@@ -60,6 +106,7 @@ def get_profile(request, username):
     finally:
         if conn is not None:
             disconnectDB(conn)
+
 
 
 @api_view(["PUT"])
