@@ -32,7 +32,8 @@ def get_profile(request, username):
         result = cur.fetchone()
 
         if result is None:
-            log_error('get_profile', json.dumps({"username": username}), 'User does not exist')
+            log_error('get_profile', json.dumps(
+                {"username": username}), 'User does not exist')
             return Response(
                 {'message': 'User does not exist'},
                 status=status.HTTP_404_NOT_FOUND
@@ -71,7 +72,7 @@ def get_profile(request, username):
             "SELECT COUNT(*) FROM product WHERE fab_user_id = %s",
             [result[0]]
         )
-        total_count = cur.fetchone()[0]
+        total_count = cur.fetchone()[0]  # type: ignore
 
         # Calculate the number of pages based on the total count and page size
         num_pages = math.ceil(total_count / page_size)
@@ -106,7 +107,6 @@ def get_profile(request, username):
     finally:
         if conn is not None:
             disconnectDB(conn)
-
 
 
 @api_view(["PUT"])
@@ -185,7 +185,71 @@ def update_profile(request):
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([AllowAny])
-def get_product(request, id):
+def get_products(request):  # Recently uploaded products
+    conn = None
+    try:
+        # establish database connection
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # Get pagination parameters from query string
+        page = int(request.query_params.get('page', 1))
+        page_size = int(request.query_params.get('page_size', 10))
+        offset = (page - 1) * page_size
+
+        # Get total number of products
+        cur.execute("SELECT COUNT(*) FROM product")
+        total_count = cur.fetchone()[0] # type: ignore
+
+        # Get paginated products data
+        cur.execute("""
+            SELECT id, title, description, subcategory_id, st_price, created_at
+            FROM product
+            ORDER BY created_at DESC
+            LIMIT %s OFFSET %s
+        """, [page_size, offset])
+        rows = cur.fetchall()
+
+        # Serialize product data
+        products = []
+        for row in rows:
+            product = {
+                'id': row[0],
+                'title': row[1],
+                'description': row[2],
+                'subcategory_id': row[3],
+                'st_price': float(row[4]),
+                'created_at': row[5].strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+            }
+            products.append(product)
+
+        # Build response dictionary with pagination information
+        resp = {
+            'data': products,
+            'pagination': {
+                'total_count': total_count,
+                'page_count': math.ceil(total_count / page_size),
+                'page': page,
+                'page_size': page_size,
+            },
+            'message': 'Амжилттай!',
+        }
+        return Response(resp, status=status.HTTP_200_OK)
+    except Exception as error:
+        log_error('get_products', json.dumps({}), str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def get_product_details(request, id):
     conn = None
     try:
         con = connectDB()

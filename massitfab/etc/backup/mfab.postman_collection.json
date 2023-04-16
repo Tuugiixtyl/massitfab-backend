@@ -145,7 +145,7 @@
 								{
 									"key": "profile_picture",
 									"type": "file",
-									"src": "/C:/Users/Ruufii/Downloads/roselle-gaw-illustration-fleur-logo-100dpi-1by1.jpg"
+									"src": "jonathan-romeo-feb-seraphine-kda-sd.jpg"
 								}
 							]
 						},
@@ -164,7 +164,35 @@
 					"response": []
 				},
 				{
-					"name": "get_content",
+					"name": "get_contents",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/content/get/?page=1",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"content",
+								"get",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_conten_details",
 					"request": {
 						"auth": {
 							"type": "noauth"

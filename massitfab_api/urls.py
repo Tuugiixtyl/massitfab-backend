@@ -11,5 +11,6 @@ urlpatterns = [
     path('content/create/', create_product, name='upload_content'),
     path('content/update/<int:id>/', update_product, name='update_content'),
     path('content/delete/<int:id>/', delete_product, name='delete_content'),
-    path('content/get/<int:id>/', get_product, name='get_content'),
+    path('content/get/<int:id>/', get_product_details, name='get_content_details'),
+    path('content/get/', get_products, name='get_contents'),
 ]
