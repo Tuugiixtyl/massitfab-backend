@@ -99,7 +99,7 @@ def get_profile(request, username):
         )
     except Exception as error:
         log_error('get_profile', json.dumps(
-            {"username": username}), str(error))
+            {"username": username, 'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -130,6 +130,7 @@ def update_profile(request):
 
         cur.execute(
             'SELECT username, summary, profile_picture FROM fab_user WHERE id=%s', [fab_id])
+        colnames = [desc[0] for desc in cur.description]
         result = cur.fetchone()
 
         if result is None:
@@ -137,6 +138,10 @@ def update_profile(request):
                 {'message': 'You are not authorized to update this profile!'},
                 status=status.HTTP_401_UNAUTHORIZED
             )
+        else:
+            result_dict = {}
+            for i, value in enumerate(result):
+                result_dict[colnames[i]] = value
 
         # Get the old profile picture from the database
         cur.execute(
@@ -166,14 +171,14 @@ def update_profile(request):
             "UPDATE fab_user SET username=%s, summary=%s, profile_picture=%s WHERE id=%s", values)
         conn.commit()
 
-        data = {
-            'message': 'Амжилттай шинэчлэгдсэн!'
+        resp = {
+            "data": result_dict,
+            'message': 'Амжилттай шинэчлэгдсэн!',
         }
         return Response(
-            data,
+            resp,
             status=status.HTTP_202_ACCEPTED
         )
-
     except Exception as error:
         log_error('update_profile', json.dumps(
             {"user_id": fab_id, "data": data}), str(error))
@@ -229,18 +234,19 @@ def get_products(request):  # Recently uploaded products
 
         # Build response dictionary with pagination information
         resp = {
-            'data': products,
-            'pagination': {
-                'total_count': total_count,
-                'page_count': math.ceil(total_count / page_size),
-                'page': page,
-                'page_size': page_size,
-            },
+            'data': [{"products": products}, {
+                'pagination': {
+                    'total_count': total_count,
+                    'page_count': math.ceil(total_count / page_size),
+                    'page': page,
+                    'page_size': page_size,
+                }
+            }],
             'message': 'Амжилттай!',
         }
         return Response(resp, status=status.HTTP_200_OK)
     except Exception as error:
-        log_error('get_products', json.dumps({}), str(error))
+        log_error('get_products', json.dumps({'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -303,7 +309,7 @@ def get_product_details(request, id):
             status=status.HTTP_200_OK
         )
     except Exception as error:
-        log_error('get_product', "{}", str(error))
+        log_error('get_product', json.dumps({'product_id': id, 'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -366,22 +372,29 @@ def create_product(request):
         #         (*opening, auth.get('user_id'),
         #          start_date, end_date, *ending, None)
         #     )
+        title = data.get('title'),  # type: ignore
+        description = data.get('description'), # type: ignore
+        user_id = auth.get('user_id'), # type: ignore
+        subcategory_id = int(data.get('subcategory_id')), # type: ignore
+        st_price = float(data.get('st_price')), # type: ignore
 
         # Execute an query using parameters
         values = (
-            data.get('title'),  # type: ignore
-            data.get('description'),  # type: ignore
-            auth.get('user_id'),
-            int(data.get('subcategory_id')),  # type: ignore
-            float(data.get('st_price', 0))  # type: ignore
+            title,
+            description,
+            user_id,
+            subcategory_id,
+            st_price,
         )
         cur.execute("""INSERT INTO product(title, description, fab_user_id, subcategory_id, st_price)
                         VALUES (%s, %s, %s, %s, %s) RETURNING id;""", values)
         content_id = cur.fetchone()[0]  # type: ignore
 
+        sources_list = []
         sources = data.get('source')        # type: ignore
         if sources:
             sauces = sources.split("&")
+            sources_list = sources_list + sauces
             for source in sauces:
                 values = (source, content_id)
                 cur.execute(
@@ -393,9 +406,9 @@ def create_product(request):
         # Set the upload folder to the public/img directory
         file_path = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
         gallery_data = data.get('resource')  # type: ignore
+        filenames = []
         if gallery_data:
             storage = FileSystemStorage(location=file_path)
-            filenames = []
             for image_file in gallery_data:
                 filename = storage.save(image_file.name, image_file)
                 filenames.append(filename)
@@ -410,14 +423,22 @@ def create_product(request):
         # Commit the changes to the database
         conn.commit()
 
-        data = {
+        resp = {
+            'data': {
+                'title': title[0],
+                'description': description[0],
+                'user_id': user_id[0],
+                'subcategory_id': subcategory_id[0],
+                'st_price': st_price[0],
+                'link': sources_list,
+                'files': filenames,
+            },
             'message': 'Байршуулалт амжилттай!'
         }
         return Response(
-            data,
+            resp,
             status=status.HTTP_201_CREATED
         )
-
     except Exception as error:
         log_error('create_product', json.dumps(
             {"user_id": auth.get('user_id'), "data": data}), str(error))
@@ -442,6 +463,7 @@ def update_product(request, id):
     serializer = UpdateProductSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data
+    user_id = auth.get('user_id')
 
     conn = None
     try:
@@ -483,10 +505,12 @@ def update_product(request, id):
         values.append(id)
         cur.execute(query, values)
 
+        deleted_files = []
         # Delete deleted gallery files and rows from the database
         resource_deleted = data.get('resource_deleted')  # type: ignore
         if resource_deleted:
             res_list = resource_deleted.split('&')
+            deleted_files = deleted_files + res_list
             for deleted in res_list:
                 # Delete the file from the Django media directory
                 full_path = os.path.join(settings.MEDIA_ROOT, deleted)
@@ -497,10 +521,12 @@ def update_product(request, id):
                     "DELETE FROM gallery WHERE resource = %s AND product_id = %s", values
                 )
 
+        deleted_sources = []
         # Delete deleted source files and rows from the database
         source_deleted = data.get('source_deleted')  # type: ignore
         if source_deleted:
             src_list = source_deleted.split('&')
+            deleted_sources = deleted_sources + src_list
             for deleted in src_list:
                 # Delete the file from the Django media directory
                 full_path = os.path.join(settings.MEDIA_ROOT, deleted)
@@ -511,10 +537,12 @@ def update_product(request, id):
                     "DELETE FROM route WHERE source = %s AND product_id = %s", values
                 )
 
+        sources_list = []
         # Insert new source files into the database
         sources = data.get('source')  # type: ignore
         if sources:
             srcs = sources.split('&')
+            sources_list = sources_list + srcs
             for source in srcs:
                 values = (source, content_id)
                 cur.execute(
@@ -525,9 +553,9 @@ def update_product(request, id):
         # Insert new gallery files into the database
         file_path = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
         gallery_data = data.get('resource')  # type: ignore
+        filenames = []
         if gallery_data:
             storage = FileSystemStorage(location=file_path)
-            filenames = []
             for image_file in gallery_data:
                 filename = storage.save(image_file.name, image_file)
                 filenames.append(filename)
@@ -542,14 +570,24 @@ def update_product(request, id):
         # Commit the changes to the database
         conn.commit()
 
-        data = {
+        resp = {
+            'data': {
+                'title': title[0] if title else None,
+                'description': description if description else None,
+                'user_id': user_id,
+                'subcategory_id': subcategory_id[0] if subcategory_id else None,
+                'st_price': st_price[0] if st_price else None,
+                'link': sources_list,
+                'files': filenames,
+                'deleted_link': deleted_sources,
+                'deleted_files': deleted_files,
+            },
             'message': 'Амжилттай шинэчлэгдлээ!'
         }
         return Response(
-            data,
+            resp,
             status=status.HTTP_202_ACCEPTED
         )
-
     except Exception as error:
         log_error('update_product', json.dumps(
             {"user_id": auth.get("user_id"), "data": data}), str(error))
@@ -581,6 +619,7 @@ def delete_product(request, id):
         values = (id, auth.get('user_id'))
         cur.execute(
             'SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
+        colnames = [desc[0] for desc in cur.description]
         row = cur.fetchone()
 
         if row is None:
@@ -588,6 +627,10 @@ def delete_product(request, id):
                 {'message': 'You are not authorized to edit this product!'},
                 status=status.HTTP_401_UNAUTHORIZED
             )
+        else:
+            result_dict = {}
+            for i, value in enumerate(row):
+                result_dict[colnames[i]] = value
 
         cur.execute(
             'UPDATE product SET is_removed = True WHERE id = %s AND fab_user_id = %s', values)
@@ -595,17 +638,18 @@ def delete_product(request, id):
         # Commit the changes to the database
         conn.commit()
 
-        data = {
+        resp = {
+            'data': result_dict,
             'message': 'Амжилттай устгагдлаа!'
         }
         return Response(
-            data,
-            status=status.HTTP_201_CREATED
+            resp,
+            status=status.HTTP_202_ACCEPTED
         )
 
     except Exception as error:
         log_error('delete_product', json.dumps({"user_id": auth.get(
-            'user_id'), "data": request.data, "product_id": id}), str(error))
+            'user_id'), "product_id": id, "data": request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -654,7 +698,7 @@ def search_products(request):
                 'price': row[4],
                 'created_at': row[5].strftime('%Y-%m-%dT%H:%M:%S')
             })
-        print('resp')
+
         resp = {
             'data': {
                 'products': products,
@@ -671,7 +715,7 @@ def search_products(request):
         return Response(resp, status=status.HTTP_200_OK)
     except Exception as error:
         log_error('search_product', json.dumps(
-            {"keyword": keyword, "page": page, "limit": limit}), str(error))
+            {"keyword": keyword, "page": page, "limit": limit, 'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -732,9 +776,17 @@ def add_to_wishlist(request):
         wishlist_id = cur.fetchone()[0]  # type: ignore
         conn.commit()
 
-        return Response({'message': 'Хүслийн жагсаалтад амжилттай бүртгэгдлээ!', 'wishlist_id': wishlist_id}, status=status.HTTP_201_CREATED)
+        resp = {
+            'data': {
+                'product_id': product_id,
+                'wishlist_id': wishlist_id,
+                'user_id': user_id,
+            },
+            'message': 'Хүслийн жагсаалтад амжилттай бүртгэгдлээ!',
+        }
+        return Response(resp, status=status.HTTP_201_CREATED)
     except Exception as e:
-        log_error('add_to_wishlist', json.dumps({"data": data}), str(e))
+        log_error('add_to_wishlist', json.dumps({'user_id': user_id, 'product_id': product_id, "data": data}), str(e))
         return Response({'message': 'Unable to add product to wishlist'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     finally:
         if conn is not None:
@@ -750,7 +802,6 @@ def get_wishlist(request):
             {'message': auth.get('error')},
             status=status.HTTP_401_UNAUTHORIZED
         )
-    print('wtf')
     user_id = auth.get('user_id')
     page_size = request.query_params.get('page_size', 10)
     page_number = request.query_params.get('page_number', 1)
@@ -786,10 +837,12 @@ def get_wishlist(request):
 
         # Build response
         resp = {
-            'data': wishlist_items,
-            'total_items': total_items,
-            'page_size': page_size,
-            'page_number': page_number,
+            'data': {
+                'wishlist_items': wishlist_items,
+                'total_items': total_items,
+                'page_size': page_size,
+                'page_number': page_number,
+            },
             'message': 'Амжилттай!',
         }
 
@@ -839,7 +892,7 @@ def create_review(request, product_id):
         # insert review into the database
         cur.execute(
             "INSERT INTO review (score, comment, fab_user_id, product_id) VALUES (%s, %s, %s, %s) RETURNING id",
-            [int(data.get('score')), data.get('comment', None),
+            [int(data.get('score')), data.get('comment', None),  # type: ignore
              user_id, product_id]  # type: ignore
         )
         review_id = cur.fetchone()[0]   # type: ignore
@@ -862,7 +915,7 @@ def create_review(request, product_id):
         )
     except Exception as error:
         log_error('create_review', json.dumps(
-            {"product_id": product_id}), str(error))
+            {"product_id": product_id, 'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг хийхэд алдаа гарлаа.'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -907,18 +960,20 @@ def get_reviews(request, product_id):
 
         # construct response with pagination information
         resp = {
-            "data": reviews,
-            "pagination": {
-                "has_next": bool(rows),
-                "cursor": rows[-1][0] if rows else None
+            "data": {
+                'reviews': reviews,
+                "pagination": {
+                    "has_next": bool(rows),
+                    "cursor": rows[-1][0] if rows else None
+                },
             },
-            "message": "Success"
+            "message": "Амжилттай!"
         }
 
         return Response(resp, status=status.HTTP_200_OK)
     except Exception as error:
         log_error('get_reviews', json.dumps(
-            {"product_id": product_id}), str(error))
+            {"product_id": product_id, 'data': request.data}), str(error))
         return Response({'message': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     finally:
         if conn is not None:
@@ -943,8 +998,9 @@ def delete_review(request, review_id):
 
         # Check if review exists
         cur.execute(
-            "SELECT fab_user_id FROM review WHERE id = %s", [review_id]
+            "SELECT * FROM review WHERE id = %s", [review_id]
         )
+        colnames = [desc[0] for desc in cur.description]
         result = cur.fetchone()
 
         if result is None:
@@ -953,10 +1009,14 @@ def delete_review(request, review_id):
                 {'message': 'Review does not exist'},
                 status=status.HTTP_404_NOT_FOUND
             )
+        else:
+            result_dict = {}
+            for i, value in enumerate(result):
+                result_dict[colnames[i]] = value
 
         # Check if user is authorized to delete the review
         user_id = auth.get('user_id')
-        if user_id != result[0]:
+        if user_id != result[3]:
             log_error('delete_review', "{}", 'Unauthorized')
             return Response(
                 {'message': 'Unauthorized'},
@@ -970,6 +1030,7 @@ def delete_review(request, review_id):
         conn.commit()
 
         resp = {
+            'data': result_dict,
             "message": "Амжилттай устгалаа!"
         }
         return Response(
@@ -979,7 +1040,7 @@ def delete_review(request, review_id):
 
     except Exception as error:
         log_error('delete_review', json.dumps(
-            {"review_id": review_id}), str(error))
+            {"review_id": review_id, 'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -1017,18 +1078,20 @@ def add_product_to_cart(request, product_id):
         conn.commit()
 
         resp = {
-            "cart_id": cart_id,
-            "user_id": user_id,
-            "product_id": product_id,
+            'data': {
+                "cart_id": cart_id,
+                "user_id": user_id,
+                "product_id": product_id,
+            },
             "message": "Сагсанд амжилттай нэмэгдлээ!",
         }
         return Response(
             resp,
-            status=status.HTTP_200_OK
+            status=status.HTTP_201_CREATED,
         )
     except Exception as error:
         log_error('delete_review', json.dumps(
-            {"product_id": product_id, "user_id": user_id}), str(error))
+            {"product_id": product_id, "user_id": user_id, 'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -1038,11 +1101,134 @@ def add_product_to_cart(request, product_id):
             disconnectDB(conn)
 
 
-@api_view(['POST'])
-def checkout_cart(request):
-    pass
+@api_view(['PUT'])
+def checkout_cart(request): # One click buy everything
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth.get('status') != 200):
+        return Response(
+            {'message': auth.get('error')},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    user_id = auth.get('user_id')
+
+    conn = None
+    try:
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # Calculate total price
+        cur.execute("""SELECT SUM(st_price) as total_price FROM customer c LEFT JOIN product p on c.product_id=p.id
+                        WHERE c.fab_user_id = %s AND c.in_cart = true""", [user_id])
+        total_amount = cur.fetchone()[0] or (0)    # type: ignore
+
+        # Get the user's current balance
+        cur.execute("SELECT balance FROM fab_user WHERE id = %s", [user_id])
+        user_balance = cur.fetchone()[0]    # type: ignore
+
+        # Check if the user can purchase the items in the cart
+        equals = user_balance - total_amount
+        if equals < 0:
+            return Response({'message': 'Уучлаарай, үлдэгдэл хүрэлцэхгүй байна.'},
+            status=status.HTTP_406_NOT_ACCEPTABLE
+        )
+
+        # Finalize the request
+        cur.execute("UPDATE customer SET in_cart = false, is_bought = true WHERE fab_user_id = %s AND in_cart = true", [user_id])
+        affected_rows = cur.rowcount
+        cur.execute("UPDATE fab_user SET balance = %s WHERE id = %s", [equals, user_id])
+        conn.commit()
+
+        resp = {
+            'data': {
+                'balance': equals,
+                'bought_items': affected_rows,
+            },
+            "message": "Амжилттай!",
+        }
+        return Response(
+            resp,
+            status=status.HTTP_202_ACCEPTED
+        )
+    except Exception as error:
+        log_error('checkout_cart', json.dumps(
+            {"user_id": user_id, 'data': request.data}), str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
 
 
 @api_view(['DELETE'])
 def remove_from_cart(request, product_id):
-    pass
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth.get('status') != 200):
+        return Response(
+            {'message': auth.get('error')},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+
+    conn = None
+    try:
+        # establish database connection
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # Check if review exists
+        cur.execute(
+            "SELECT * FROM customer WHERE product_id = %s AND in_cart = true", [product_id]
+        )
+        colnames = [desc[0] for desc in cur.description]
+        result = cur.fetchone()
+
+        if result is None:
+            log_error('remove_from_cart', "{}", 'Product does not exist in the cart')
+            return Response(
+                {'message': 'Product does not exist in the cart'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        else:
+            result_dict = {}
+            for i, value in enumerate(result):
+                result_dict[colnames[i]] = value
+
+        # Check if user is authorized to delete the review
+        user_id = auth.get('user_id')
+        if user_id != result[1]:
+            log_error('remove_from_cart', "{}", 'Unauthorized')
+            return Response(
+                {'message': 'Unauthorized'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        # Delete the review
+        cur.execute(
+            "DELETE FROM customer WHERE id = %s", [result[0]]
+        )
+        conn.commit()
+
+        resp = {
+            'data': {
+                'result': result_dict,
+            },
+            "message": "Амжилттай устгалаа!"
+        }
+        return Response(
+            resp,
+            status=status.HTTP_202_ACCEPTED
+        )
+
+    except Exception as error:
+        log_error('delete_review', json.dumps(
+            {"product_id": product_id, 'data': request.data}), str(error))
+        return Response(
+            {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    finally:
+        if conn is not None:
+            disconnectDB(conn)

@@ -22,5 +22,7 @@ urlpatterns = [
     path('review/get/<int:product_id>/', get_reviews, name="get_reviews"),
     path('review/delete/<int:review_id>/', delete_review, name='delete_review'),
 
-    path('cart/create/<int:product_id>/', add_product_to_cart, name="add_product_to_cart")
+    path('cart/create/<int:product_id>/', add_product_to_cart, name="add_product_to_cart"),
+    path('cart/checkout/', checkout_cart, name='checkout_cart'), 
+    path('cart/delete/<int:product_id>/', remove_from_cart, name='remove_from_cart'),
 ]
