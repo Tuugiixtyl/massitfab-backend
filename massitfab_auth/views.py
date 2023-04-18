@@ -88,7 +88,7 @@ class LoginUserApi(APIView):
 
             # Check if email exists
             cur.execute(
-                "SELECT id, username, password FROM fab_user WHERE email = %s",
+                "SELECT id, username, password, refresh_token FROM fab_user WHERE email = %s",
                 (data['email'],)    # type: ignore
             )
             result = cur.fetchone()

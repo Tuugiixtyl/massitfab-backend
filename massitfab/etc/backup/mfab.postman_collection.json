@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "863818c6-8283-45ac-8b06-b61f4037688f",
+		"_postman_id": "5c423770-f462-4d9d-be41-d4a08b8c8e93",
 		"name": "mfab",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "21051532"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -45,7 +44,92 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "tuugiiremph@gmail.com",
+											"type": "default"
+										},
+										{
+											"key": "username",
+											"value": "Sandy",
+											"type": "default"
+										},
+										{
+											"key": "password",
+											"value": "ruufii",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{auth}}/register/",
+									"host": [
+										"{{auth}}"
+									],
+									"path": [
+										"register",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 18 Apr 2023 02:08:45 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.10"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "323"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzg3MzI1LCJpYXQiOjE2ODE3ODM3MjUsImp0aSI6IjA5ZDg3M2M2ZWQ5NDQ4ODI5YTVjNWY5ZmZjNWRjMzVmIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.vqkbokP8qj1tC-rUH8Gx1jws1e8baEiXU4wQPQaZHJU\",\n    \"message\": \"Бүртгэл амжилттай!\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Login",
@@ -275,7 +359,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzUwMTg5LCJpYXQiOjE2ODE3NDY1ODksImp0aSI6IjlmMDM2ZmFhMzRiNTQwMTE5YjU3ZTkzMjlhZjZjMTdiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.zaxubJa3-C_STtBTkslPWyXiCf8NJmieHSrEQU6LwAo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzg3MzI1LCJpYXQiOjE2ODE3ODM3MjUsImp0aSI6IjA5ZDg3M2M2ZWQ5NDQ4ODI5YTVjNWY5ZmZjNWRjMzVmIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.vqkbokP8qj1tC-rUH8Gx1jws1e8baEiXU4wQPQaZHJU",
 									"type": "string"
 								}
 							]
@@ -292,13 +376,13 @@
 								},
 								{
 									"key": "summary",
-									"value": "I am inside Ruufii's Hideout. Which is mine now tee~hee!",
+									"value": "I am inside Ruufii's Hideout. Which is mine now tee~hee!.",
 									"type": "text"
 								},
 								{
 									"key": "profile_picture",
 									"type": "file",
-									"src": "Fcd82laacAAyVvX.jfif"
+									"src": "/C:/Users/student3/Pictures/Saved Pictures/violetevergarden.jpg"
 								}
 							]
 						},
@@ -708,7 +792,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzUwMTg5LCJpYXQiOjE2ODE3NDY1ODksImp0aSI6IjlmMDM2ZmFhMzRiNTQwMTE5YjU3ZTkzMjlhZjZjMTdiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.zaxubJa3-C_STtBTkslPWyXiCf8NJmieHSrEQU6LwAo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzg3MzI1LCJpYXQiOjE2ODE3ODM3MjUsImp0aSI6IjA5ZDg3M2M2ZWQ5NDQ4ODI5YTVjNWY5ZmZjNWRjMzVmIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.vqkbokP8qj1tC-rUH8Gx1jws1e8baEiXU4wQPQaZHJU",
 									"type": "string"
 								}
 							]
@@ -776,11 +860,7 @@
 								{
 									"key": "resource",
 									"type": "file",
-									"src": [
-										"Fcd82laacAAyVvX.jfif",
-										"FN_RxynaQAAnUrf.jpg",
-										"FZn9KqMaQAQqjgO.jfif"
-									]
+									"src": []
 								},
 								{
 									"key": "membership_id",
@@ -942,6 +1022,142 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": {\n        \"title\": \"Boss Multifaros\",\n        \"description\": \"LoRA V2 Camelliamix\",\n        \"user_id\": 20230203,\n        \"subcategory_id\": 20,\n        \"st_price\": 9,\n        \"link\": [\n            \"https://mega.nz/file/9KgkkJqR#dc8zzkvhkJ_AjxuM7cSmPMWPXJXkJuu17ZfxzzdRziw\"\n        ],\n        \"files\": [\n            \"Fcd82laacAAyVvX_WTQmZNq.jfif\",\n            \"FN_RxynaQAAnUrf_iTbTSEY.jpg\",\n            \"FZn9KqMaQAQqjgO_4Pb136B.jfif\"\n        ]\n    },\n    \"message\": \"Байршуулалт амжилттай!\"\n}"
+						},
+						{
+							"name": "upload_content",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Boss Multifaros",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "LoRA V2 Camelliamix",
+											"type": "text"
+										},
+										{
+											"key": "schedule",
+											"value": "2023-04-02 20:30:00.000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "start_date",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "end_date",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "subcategory_id",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "hashtags",
+											"value": "#myllodia&#whatdoyouneed&#aijou",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "st_price",
+											"value": "9",
+											"type": "text"
+										},
+										{
+											"key": "source",
+											"value": "https://mega.nz/file/9KgkkJqR#dc8zzkvhkJ_AjxuM7cSmPMWPXJXkJuu17ZfxzzdRziw",
+											"type": "text"
+										},
+										{
+											"key": "resource",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "membership_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/content/create/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"content",
+										"create",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 18 Apr 2023 02:26:23 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.10"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "94"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"resource\": {\n        \"0\": [\n            \"The submitted data was not a file. Check the encoding type on the form.\"\n        ]\n    }\n}"
 						}
 					]
 				},

@@ -37,7 +37,7 @@ class CreateProductSerializer(serializers.Serializer):
     subcategory_id = serializers.CharField()
     st_price = serializers.CharField()
     source = serializers.CharField()
-    resource = serializers.ListField(child=serializers.ImageField())
+    resource = serializers.ListField(child=serializers.ImageField(), allow_null=True)
 
 # class UpdateContentSerializer(serializers.Serializer):
 #     title = serializers.CharField()
@@ -62,7 +62,7 @@ class CreateProductSerializer(serializers.Serializer):
 class UpdateProfileSerializer(serializers.Serializer):
     username = serializers.CharField()
     summary = serializers.CharField(allow_blank=True, required=False)
-    profile_picture = serializers.ImageField()
+    profile_picture = serializers.ImageField(required=False)
 
 
 class UpdateProductSerializer(serializers.Serializer):

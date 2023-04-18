@@ -4,7 +4,6 @@ import environ
 import psycopg2 as ps
 import hashlib
 import jwt
-import json
 
 # ==============================================================================
 # TYPE SAFETY START POINT
@@ -57,8 +56,9 @@ params = {
 # SESSION_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
+    '*'
+    # '127.0.0.1',
+    # 'localhost',
     ]
 
 INSTALLED_APPS = [

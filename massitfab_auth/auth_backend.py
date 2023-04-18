@@ -17,7 +17,7 @@ class Sandy(BaseBackend):   # CustomBackend
                     if user.check_password(password): # type: ignore
                         return user
         except Exception as e:
-            log_error('create_product', '{}', str(e))
+            log_error('Sandy - authenticate', '{}', str(e))
         return None
 
     def get_user(self, user_id):
@@ -29,7 +29,7 @@ class Sandy(BaseBackend):   # CustomBackend
                 if row:
                     return UserModel(*row)
         except Exception as e:
-            log_error('create_product', '{}', str(e))
+            log_error('Sandy - get_user', '{}', str(e))
         return None
 
 

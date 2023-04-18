@@ -8,9 +8,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.files.storage import FileSystemStorage
 import math
+import json
 
 # Local Imports
-from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error, json
+from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error
 from .serializers import CreateProductSerializer, CreateReviewSerializer, UpdateProductSerializer, UpdateProfileSerializer, AddToWishlistSerializer
 
 
@@ -163,6 +164,7 @@ def update_profile(request):
             filename = storage.save(pro.name, pro)
             profile_picture = os.path.join(
                 file_path, filename).replace('\\', '/')
+        result_dict['profile_picture'] = profile_picture
 
         # Add the local path into the database
         values = (data.get('username'), data.get('summary') if data.get('summary')  # type: ignore
@@ -171,6 +173,8 @@ def update_profile(request):
             "UPDATE fab_user SET username=%s, summary=%s, profile_picture=%s WHERE id=%s", values)
         conn.commit()
 
+        result_dict['username'] = data.get('username')
+        result_dict['summary'] = data.get('summary') if data.get('summary') else None
         resp = {
             "data": result_dict,
             'message': 'Амжилттай шинэчлэгдсэн!',
