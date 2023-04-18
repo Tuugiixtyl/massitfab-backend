@@ -14,6 +14,10 @@ import json
 from massitfab.settings import connectDB, disconnectDB, verifyToken, log_error
 from .serializers import CreateProductSerializer, CreateReviewSerializer, UpdateProductSerializer, UpdateProfileSerializer, AddToWishlistSerializer
 
+# ==============================================================================
+# PROFILE
+# ==============================================================================
+
 
 @api_view(['GET'])
 @authentication_classes([])
@@ -73,7 +77,7 @@ def get_profile(request, username):
             "SELECT COUNT(*) FROM product WHERE fab_user_id = %s",
             [result[0]]
         )
-        total_count = cur.fetchone()[0]  # type: ignore
+        total_count = cur.fetchone()[0]
 
         # Calculate the number of pages based on the total count and page size
         num_pages = math.ceil(total_count / page_size)
@@ -147,8 +151,8 @@ def update_profile(request):
         # Get the old profile picture from the database
         cur.execute(
             "SELECT profile_picture FROM fab_user WHERE id=%s", [fab_id])
-        oldpro = str(cur.fetchone()[0])  # type: ignore
-        pro = data.get('profile_picture')  # type: ignore
+        oldpro = str(cur.fetchone()[0])
+        pro = data.get('profile_picture')
         profile_picture = None
 
         # Check if the request is valid
@@ -167,14 +171,15 @@ def update_profile(request):
         result_dict['profile_picture'] = profile_picture
 
         # Add the local path into the database
-        values = (data.get('username'), data.get('summary') if data.get('summary')  # type: ignore
-                  else None, profile_picture, fab_id)  # type: ignore
+        values = (data.get('username'), data.get('summary') if data.get('summary')
+                  else None, profile_picture, fab_id)
         cur.execute(
             "UPDATE fab_user SET username=%s, summary=%s, profile_picture=%s WHERE id=%s", values)
         conn.commit()
 
         result_dict['username'] = data.get('username')
-        result_dict['summary'] = data.get('summary') if data.get('summary') else None
+        result_dict['summary'] = data.get(
+            'summary') if data.get('summary') else None
         resp = {
             "data": result_dict,
             'message': 'Амжилттай шинэчлэгдсэн!',
@@ -194,6 +199,10 @@ def update_profile(request):
         if conn is not None:
             disconnectDB(conn)
 
+# ==============================================================================
+# PRODUCTS
+# ==============================================================================
+
 
 @api_view(['GET'])
 @authentication_classes([])
@@ -212,7 +221,7 @@ def get_products(request):  # Recently uploaded products
 
         # Get total number of products
         cur.execute("SELECT COUNT(*) FROM product")
-        total_count = cur.fetchone()[0]  # type: ignore
+        total_count = cur.fetchone()[0]
 
         # Get paginated products data
         cur.execute("""
@@ -250,7 +259,8 @@ def get_products(request):  # Recently uploaded products
         }
         return Response(resp, status=status.HTTP_200_OK)
     except Exception as error:
-        log_error('get_products', json.dumps({'data': request.data}), str(error))
+        log_error('get_products', json.dumps(
+            {'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.', },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -313,7 +323,8 @@ def get_product_details(request, id):
             status=status.HTTP_200_OK
         )
     except Exception as error:
-        log_error('get_product', json.dumps({'product_id': id, 'data': request.data}), str(error))
+        log_error('get_product', json.dumps(
+            {'product_id': id, 'data': request.data}), str(error))
         return Response(
             {'message': 'Уучлаарай, үйлдлийг гүйцэтгэхэд алдаа гарлаа.'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -349,7 +360,7 @@ def create_product(request):
         # Start a new transaction
         cur.execute("BEGIN")
 
-        # content_data = data.get('content')  # type: ignore
+        # content_data = data.get('content')
         # schedule = datetime.strptime(content_data.get('schedule'), '%Y-%m-%d %H:%M:%S.%f') if content_data.get('schedule') else None
         # start_date = datetime.strptime(content_data.get('start_date'), '%Y-%m-%d %H:%M:%S.%f') if content_data.get('start_date') else None
         # end_date = datetime.strptime(content_data.get('end_date'), '%Y-%m-%d %H:%M:%S.%f') if content_data.get('end_date') else None
@@ -376,11 +387,11 @@ def create_product(request):
         #         (*opening, auth.get('user_id'),
         #          start_date, end_date, *ending, None)
         #     )
-        title = data.get('title'),  # type: ignore
-        description = data.get('description'), # type: ignore
-        user_id = auth.get('user_id'), # type: ignore
-        subcategory_id = int(data.get('subcategory_id')), # type: ignore
-        st_price = float(data.get('st_price')), # type: ignore
+        title = data.get('title'),
+        description = data.get('description'),
+        user_id = auth.get('user_id'),
+        subcategory_id = int(data.get('subcategory_id')),
+        st_price = float(data.get('st_price')),
 
         # Execute an query using parameters
         values = (
@@ -392,10 +403,10 @@ def create_product(request):
         )
         cur.execute("""INSERT INTO product(title, description, fab_user_id, subcategory_id, st_price)
                         VALUES (%s, %s, %s, %s, %s) RETURNING id;""", values)
-        content_id = cur.fetchone()[0]  # type: ignore
+        content_id = cur.fetchone()[0]
 
         sources_list = []
-        sources = data.get('source')        # type: ignore
+        sources = data.get('source')
         if sources:
             sauces = sources.split("&")
             sources_list = sources_list + sauces
@@ -409,7 +420,7 @@ def create_product(request):
 
         # Set the upload folder to the public/img directory
         file_path = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
-        gallery_data = data.get('resource')  # type: ignore
+        gallery_data = data.get('resource')
         filenames = []
         if gallery_data:
             storage = FileSystemStorage(location=file_path)
@@ -478,7 +489,7 @@ def update_product(request, id):
         values = (id, auth.get('user_id'))
         cur.execute(
             'SELECT id, fab_user_id FROM product WHERE id = %s AND fab_user_id = %s', values)
-        content_id, uid = cur.fetchone() or (None, None)  # type: ignore
+        content_id, uid = cur.fetchone() or (None, None)
 
         if content_id is None:
             return Response(
@@ -489,10 +500,10 @@ def update_product(request, id):
         # Update the product data
         values = []
         query = "UPDATE product SET updated_at=now()"
-        title = data.get('title')  # type: ignore
-        description = data.get('description')  # type: ignore
-        subcategory_id = data.get('subcategory_id')  # type: ignore
-        st_price = data.get('st_price')  # type: ignore
+        title = data.get('title')
+        description = data.get('description')
+        subcategory_id = data.get('subcategory_id')
+        st_price = data.get('st_price')
         if title:
             query += ", title=%s"
             values.append(title)
@@ -511,7 +522,7 @@ def update_product(request, id):
 
         deleted_files = []
         # Delete deleted gallery files and rows from the database
-        resource_deleted = data.get('resource_deleted')  # type: ignore
+        resource_deleted = data.get('resource_deleted')
         if resource_deleted:
             res_list = resource_deleted.split('&')
             deleted_files = deleted_files + res_list
@@ -527,7 +538,7 @@ def update_product(request, id):
 
         deleted_sources = []
         # Delete deleted source files and rows from the database
-        source_deleted = data.get('source_deleted')  # type: ignore
+        source_deleted = data.get('source_deleted')
         if source_deleted:
             src_list = source_deleted.split('&')
             deleted_sources = deleted_sources + src_list
@@ -543,7 +554,7 @@ def update_product(request, id):
 
         sources_list = []
         # Insert new source files into the database
-        sources = data.get('source')  # type: ignore
+        sources = data.get('source')
         if sources:
             srcs = sources.split('&')
             sources_list = sources_list + srcs
@@ -556,7 +567,7 @@ def update_product(request, id):
 
         # Insert new gallery files into the database
         file_path = os.path.join(settings.MEDIA_ROOT, 'public', 'img')
-        gallery_data = data.get('resource')  # type: ignore
+        gallery_data = data.get('resource')
         filenames = []
         if gallery_data:
             storage = FileSystemStorage(location=file_path)
@@ -679,7 +690,7 @@ def search_products(request):
         # get the total number of matching products
         cur.execute(
             "SELECT COUNT(*) FROM product WHERE title ILIKE %s", ['%'+keyword+'%'])
-        total_count = cur.fetchone()[0]  # type: ignore
+        total_count = cur.fetchone()[0]
 
         # get a list of products matching the keyword, paginated
         cur.execute(
@@ -728,6 +739,10 @@ def search_products(request):
         if conn is not None:
             disconnectDB(conn)
 
+# ==============================================================================
+# WISHLISTING
+# ==============================================================================
+
 
 @api_view(['POST'])
 # User should not be able to add it's own products to this list
@@ -742,7 +757,7 @@ def add_to_wishlist(request):
     serializer = AddToWishlistSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data
-    product_id = int(data.get('product_id'))  # type: ignore
+    product_id = int(data.get('product_id'))
     user_id = auth.get('user_id')
 
     conn = None
@@ -777,7 +792,7 @@ def add_to_wishlist(request):
             "INSERT INTO wishlist (fab_user_id, product_id) VALUES (%s, %s) RETURNING id",
             [user_id, product_id]
         )
-        wishlist_id = cur.fetchone()[0]  # type: ignore
+        wishlist_id = cur.fetchone()[0]
         conn.commit()
 
         resp = {
@@ -790,7 +805,8 @@ def add_to_wishlist(request):
         }
         return Response(resp, status=status.HTTP_201_CREATED)
     except Exception as e:
-        log_error('add_to_wishlist', json.dumps({'user_id': user_id, 'product_id': product_id, "data": data}), str(e))
+        log_error('add_to_wishlist', json.dumps(
+            {'user_id': user_id, 'product_id': product_id, "data": data}), str(e))
         return Response({'message': 'Unable to add product to wishlist'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     finally:
         if conn is not None:
@@ -820,7 +836,7 @@ def get_wishlist(request):
             "SELECT COUNT(*) FROM wishlist WHERE fab_user_id = %s",
             [user_id]
         )
-        total_items = cur.fetchone()[0]  # type: ignore
+        total_items = cur.fetchone()[0]
 
         # Calculate offset and limit for pagination
         offset = (page_number - 1) * page_size
@@ -859,6 +875,10 @@ def get_wishlist(request):
         if conn is not None:
             disconnectDB(conn)
 
+# ==============================================================================
+# REVIEWS
+# ==============================================================================
+
 
 @api_view(['POST'])
 def create_review(request, product_id):
@@ -872,7 +892,7 @@ def create_review(request, product_id):
     serializer = CreateReviewSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data
-    user_id = auth.get('user_id')  # type: ignore
+    user_id = auth.get('user_id')
 
     conn = None
     try:
@@ -896,17 +916,17 @@ def create_review(request, product_id):
         # insert review into the database
         cur.execute(
             "INSERT INTO review (score, comment, fab_user_id, product_id) VALUES (%s, %s, %s, %s) RETURNING id",
-            [int(data.get('score')), data.get('comment', None),  # type: ignore
-             user_id, product_id]  # type: ignore
+            [int(data.get('score')), data.get('comment', None),
+             user_id, product_id]
         )
-        review_id = cur.fetchone()[0]   # type: ignore
+        review_id = cur.fetchone()[0]
         conn.commit()
 
         resp = {
             "data": {
                 "id": review_id,
-                "score": data.get('score'),  # type: ignore
-                "comment": data.get('comment', None),  # type: ignore
+                "score": data.get('score'),
+                "comment": data.get('comment', None),
                 "fab_user_id": user_id,
                 "product_id": product_id,
                 "created_at": datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
@@ -1053,6 +1073,10 @@ def delete_review(request, review_id):
         if conn is not None:
             disconnectDB(conn)
 
+# ==============================================================================
+# CART
+# ==============================================================================
+
 
 @api_view(['POST'])
 def add_product_to_cart(request, product_id):
@@ -1078,7 +1102,7 @@ def add_product_to_cart(request, product_id):
             """,
             (user_id, product_id)
         )
-        cart_id = cur.fetchone()[0]  # type: ignore
+        cart_id = cur.fetchone()[0]
         conn.commit()
 
         resp = {
@@ -1106,7 +1130,7 @@ def add_product_to_cart(request, product_id):
 
 
 @api_view(['PUT'])
-def checkout_cart(request): # One click buy everything
+def checkout_cart(request):  # One click buy everything. Also check if there are any items favorited and update the wishlist
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
     if(auth.get('status') != 200):
@@ -1124,23 +1148,25 @@ def checkout_cart(request): # One click buy everything
         # Calculate total price
         cur.execute("""SELECT SUM(st_price) as total_price FROM customer c LEFT JOIN product p on c.product_id=p.id
                         WHERE c.fab_user_id = %s AND c.in_cart = true""", [user_id])
-        total_amount = cur.fetchone()[0] or (0)    # type: ignore
+        total_amount = cur.fetchone()[0] or (0)
 
         # Get the user's current balance
         cur.execute("SELECT balance FROM fab_user WHERE id = %s", [user_id])
-        user_balance = cur.fetchone()[0]    # type: ignore
+        user_balance = cur.fetchone()[0]
 
         # Check if the user can purchase the items in the cart
         equals = user_balance - total_amount
         if equals < 0:
             return Response({'message': 'Уучлаарай, үлдэгдэл хүрэлцэхгүй байна.'},
-            status=status.HTTP_406_NOT_ACCEPTABLE
-        )
+                            status=status.HTTP_406_NOT_ACCEPTABLE
+                            )
 
         # Finalize the request
-        cur.execute("UPDATE customer SET in_cart = false, is_bought = true WHERE fab_user_id = %s AND in_cart = true", [user_id])
+        cur.execute(
+            "UPDATE customer SET in_cart = false, is_bought = true WHERE fab_user_id = %s AND in_cart = true", [user_id])
         affected_rows = cur.rowcount
-        cur.execute("UPDATE fab_user SET balance = %s WHERE id = %s", [equals, user_id])
+        cur.execute("UPDATE fab_user SET balance = %s WHERE id = %s", [
+                    equals, user_id])
         conn.commit()
 
         resp = {
@@ -1167,7 +1193,7 @@ def checkout_cart(request): # One click buy everything
 
 
 @api_view(['DELETE'])
-def remove_from_cart(request, product_id):
+def remove_from_cart(request, product_id):  # remove from cart one by one
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
     if(auth.get('status') != 200):
@@ -1184,13 +1210,15 @@ def remove_from_cart(request, product_id):
 
         # Check if review exists
         cur.execute(
-            "SELECT * FROM customer WHERE product_id = %s AND in_cart = true", [product_id]
+            "SELECT * FROM customer WHERE product_id = %s AND in_cart = true", [
+                product_id]
         )
         colnames = [desc[0] for desc in cur.description]
         result = cur.fetchone()
 
         if result is None:
-            log_error('remove_from_cart', "{}", 'Product does not exist in the cart')
+            log_error('remove_from_cart', "{}",
+                      'Product does not exist in the cart')
             return Response(
                 {'message': 'Product does not exist in the cart'},
                 status=status.HTTP_404_NOT_FOUND
@@ -1203,7 +1231,7 @@ def remove_from_cart(request, product_id):
         # Check if user is authorized to delete the review
         user_id = auth.get('user_id')
         if user_id != result[1]:
-            log_error('remove_from_cart', "{}", 'Unauthorized')
+            log_error('remove_from_cart', json.dumps(), 'Unauthorized')
             return Response(
                 {'message': 'Unauthorized'},
                 status=status.HTTP_401_UNAUTHORIZED
@@ -1236,3 +1264,27 @@ def remove_from_cart(request, product_id):
     finally:
         if conn is not None:
             disconnectDB(conn)
+
+
+@api_view(['DELETE'])
+def remove_all_from_cart(request):
+    pass
+
+# ==============================================================================
+# EXTRAS
+# ==============================================================================
+
+
+@api_view(['PUT'])
+def change_email(request):
+    pass
+
+
+@api_view(['PUT'])
+def change_password(request):
+    pass
+
+
+@api_view(['PUT'])
+def one_click_buy(request): # check if the product was in wish list and update that as well
+    pass

@@ -27,7 +27,7 @@ class RegisterUserApi(APIView):
             # Check if email or username already exists
             cur.execute(
                 "SELECT id FROM fab_user WHERE email = %s OR username = %s",
-                (data['email'], data['username'])   # type: ignore
+                (data.get('email'), data.get('username'))   
             )
             result = cur.fetchone()
             # is_active True uyd shalgah
@@ -39,19 +39,19 @@ class RegisterUserApi(APIView):
                 )
 
             # Create user
-            password = hashPassword(data['password'])   # type: ignore
+            password = hashPassword(data.get('password'))   
             cur.execute(
                 "INSERT INTO fab_user (username, email, password) VALUES (%s, %s, %s) RETURNING id",
-                (data['username'], data['email'], password) # type: ignore
+                (data.get('username'), data.get('email'), password) 
             )
-            user_id = cur.fetchone()[0] # type: ignore
+            user_id = cur.fetchone()[0] 
             conn.commit()
 
             # Generate Token
             user_id = Fab_user(user_id)
             refresh = RefreshToken.for_user(user_id)
             access = refresh.access_token
-            access['username'] = data['username']
+            access['username'] = data.get('username')
 
             return Response(
                 {
@@ -89,7 +89,7 @@ class LoginUserApi(APIView):
             # Check if email exists
             cur.execute(
                 "SELECT id, username, password, refresh_token FROM fab_user WHERE email = %s",
-                (data['email'],)    # type: ignore
+                (data.get('email'),)    
             )
             result = cur.fetchone()
 
@@ -100,8 +100,8 @@ class LoginUserApi(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            user_id, username, password = result
-            user_pass = hashPassword(data['password'])  # type: ignore
+            user_id, username, password, refresh_token = result
+            user_pass = hashPassword(data.get('password'))  
             if not verifyPassword(user_pass, password):
                 log_error('Login', data, 'Нууц үг буруу байна.')
                 return Response(
@@ -122,7 +122,7 @@ class LoginUserApi(APIView):
 
             cur.execute(
                 f"UPDATE fab_user SET refresh_token = %s WHERE id = %s",
-                (str(refresh), user_id_serialized['id'])
+                (str(refresh), user_id_serialized.get('id'))
             )
             conn.commit()
 

@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
 from django.db import connections
@@ -17,7 +18,7 @@ class Sandy(BaseBackend):   # CustomBackend
                     if user.check_password(password): # type: ignore
                         return user
         except Exception as e:
-            log_error('Sandy - authenticate', '{}', str(e))
+            log_error('Sandy - authenticate', json.dumps(request.data), str(e))
         return None
 
     def get_user(self, user_id):
@@ -29,7 +30,7 @@ class Sandy(BaseBackend):   # CustomBackend
                 if row:
                     return UserModel(*row)
         except Exception as e:
-            log_error('Sandy - get_user', '{}', str(e))
+            log_error('Sandy - get_user', json.dumps({"user_id": user_id}), str(e))
         return None
 
 
