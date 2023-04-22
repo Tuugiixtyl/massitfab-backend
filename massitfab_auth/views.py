@@ -1,11 +1,13 @@
 # Third Party Libraries
+import jwt
+import time
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # Local Imports
-from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword, log_error
+from massitfab.settings import connectDB, disconnectDB, ps, hashPassword, verifyPassword, log_error, SECRET_KEY as sandy
 from .serializers import RegisterUserSerializer, LoginUserSerializer, FabUserSerializer
 from .classess import Fab_user
 
@@ -88,7 +90,7 @@ class LoginUserApi(APIView):
 
             # Check if email exists
             cur.execute(
-                "SELECT id, username, password, refresh_token FROM fab_user WHERE email = %s",
+                "SELECT id, username, email, password, summary, profile_picture, balance, refresh_token, created_at FROM fab_user WHERE email = %s",
                 (data.get('email'),)    
             )
             result = cur.fetchone()
@@ -100,7 +102,20 @@ class LoginUserApi(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            user_id, username, password, refresh_token = result
+            user_id, username, email, password, summary, profile_picture, balance, refresh_token, created_at = result
+            access_payload = {
+                'username': username,
+                'email': email,
+                'summary': summary,
+                'profilePic': profile_picture,
+                'balance': balance,
+                'joinDate': created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            }
+            # decoded_token = jwt.decode(refresh_token, sandy, algorithms=["HS256"])
+            # current_time = time.time()
+            # expiration_time = decoded_token.get("exp")
+            # is_expired = current_time > expiration_time
+
             user_pass = hashPassword(data.get('password'))  
             if not verifyPassword(user_pass, password):
                 log_error('Login', data, 'Нууц үг буруу байна.')
@@ -113,12 +128,13 @@ class LoginUserApi(APIView):
             user_id = Fab_user(user_id)
             user_id_serialized = FabUserSerializer(user_id).data
             refresh = RefreshToken.for_user(user_id)
-            access_payload = {
-                'username': username,
-                # 'user_id': user_id_serialized,
-            }
             access = refresh.access_token
-            access['username'] = access_payload['username']
+            access['username'] = access_payload.get('username')
+            # access['email'] = access_payload.get('email')
+            # access['summary'] = access_payload.get('summary')
+            # access['profilePic'] = access_payload.get('profilePic')
+            # access['balance'] = access_payload.get('balance')
+            # access['joinDate'] = access_payload.get('joinDate')
 
             cur.execute(
                 f"UPDATE fab_user SET refresh_token = %s WHERE id = %s",

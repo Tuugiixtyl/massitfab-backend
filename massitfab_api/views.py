@@ -31,7 +31,7 @@ def get_profile(request, username):
 
         # Check if user does not exists while also retrieving the information
         cur.execute(
-            "SELECT id, username, summary, profile_picture, created_at FROM fab_user WHERE username = %s",
+            "SELECT id, username, email, summary, profile_picture, balance, created_at FROM fab_user WHERE username = %s",
             [username]
         )
         result = cur.fetchone()
@@ -53,10 +53,14 @@ def get_profile(request, username):
 
         # Query the related products with pagination
         cur.execute(
-            """SELECT id, title, description, st_price, created_at FROM product
-               WHERE fab_user_id = %s
-               ORDER BY created_at DESC
-               LIMIT %s OFFSET %s""",
+            """
+                SELECT p.id, title, description, MIN(resource) as banner, st_price, created_at FROM product p
+                INNER JOIN gallery g on p.id = g.product_id
+                WHERE fab_user_id = %s AND is_removed = false
+                GROUP BY p.id
+                ORDER BY created_at DESC
+                LIMIT %s OFFSET %s
+            """,
             [result[0], page_size, offset]
         )
         results = cur.fetchall()
@@ -68,8 +72,9 @@ def get_profile(request, username):
                 'id': row[0],
                 'title': row[1],
                 'description': row[2],
-                'st_price': float(row[3]),
-                'created_at': row[4].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+                'banner': row[3],
+                'st_price': float(row[-2]),
+                'created_at': row[-1].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
             })
 
         # Get the total count of related products
@@ -85,9 +90,11 @@ def get_profile(request, username):
         resp = {
             "data": {
                 'username': result[1],
-                'summary': result[2],
-                'profile_picture': result[3],
-                'created_at': result[4].strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                'email': result[2],
+                'summary': result[3],
+                'profile_picture': result[4],
+                'balance': result[5],
+                'created_at': result[6].strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
                 'related_products': products,
                 'list': {
                     'page': page,
@@ -225,8 +232,10 @@ def get_products(request):  # Recently uploaded products
 
         # Get paginated products data
         cur.execute("""
-            SELECT id, title, description, subcategory_id, st_price, created_at
-            FROM product
+            SELECT p.id, title, description, MIN(resource) as banner, subcategory_id, st_price, created_at
+            FROM product p INNER JOIN gallery g ON p.id = g.product_id
+            WHERE is_removed = FALSE
+            GROUP BY p.id
             ORDER BY created_at DESC
             LIMIT %s OFFSET %s
         """, [page_size, offset])
@@ -239,9 +248,10 @@ def get_products(request):  # Recently uploaded products
                 'id': row[0],
                 'title': row[1],
                 'description': row[2],
-                'subcategory_id': row[3],
-                'st_price': float(row[4]),
-                'created_at': row[5].strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                'banner': row[3],
+                'subcategory_id': row[-3],
+                'st_price': float(row[-2]),
+                'created_at': row[-1].strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
             }
             products.append(product)
 
