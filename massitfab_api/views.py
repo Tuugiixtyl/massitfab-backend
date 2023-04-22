@@ -46,7 +46,7 @@ def get_profile(request, username):
 
         # Get the page number and page size from the query parameters
         page = int(request.GET.get('page', 1))
-        page_size = int(request.GET.get('page_size', 10))
+        page_size = int(request.GET.get('page_size', 9))
 
         # Calculate the offset based on the page number and page size
         offset = (page - 1) * page_size
@@ -223,11 +223,11 @@ def get_products(request):  # Recently uploaded products
 
         # Get pagination parameters from query string
         page = int(request.query_params.get('page', 1))
-        page_size = int(request.query_params.get('page_size', 10))
+        page_size = int(request.query_params.get('page_size', 9))
         offset = (page - 1) * page_size
 
         # Get total number of products
-        cur.execute("SELECT COUNT(*) FROM product")
+        cur.execute("SELECT COUNT(*) FROM product WHERE is_removed = false")
         total_count = cur.fetchone()[0]
 
         # Get paginated products data
@@ -1086,6 +1086,54 @@ def delete_review(request, review_id):
 # ==============================================================================
 # CART
 # ==============================================================================
+
+
+@api_view(['GET'])
+def get_cart_details(request):
+    auth_header = request.headers.get('Authorization')
+    auth = verifyToken(auth_header)
+    if(auth.get('status') != 200):
+        return Response(
+            {'message': auth.get('error')},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    user_id = auth.get('user_id')
+
+    conn = None
+    try:
+        # establish database connection
+        conn = connectDB()
+        cur = conn.cursor()
+
+        cur.execute(
+            """SELECT title, MIN(resource), st_price FROM customer c 
+                INNER JOIN product p ON p.id=c.product_id INNER JOIN gallery g ON p.id=g.product_id
+                WHERE in_cart = TRUE AND is_bought = FALSE AND c.fab_user_id = %s
+                GROUP BY title, st_price""",
+            [user_id]
+        )
+        rows = cur.fetchall()
+
+        # construct response data
+        columns = cur.description
+        respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in rows]
+
+        # construct response with pagination information
+        resp = {
+            "data": {
+                'in_cart': respRow,
+            },
+            "message": "Амжилттай!"
+        }
+
+        return Response(resp, status=status.HTTP_200_OK)
+    except Exception as error:
+        log_error('get_reviews', json.dumps(
+            {"user_id": user_id, 'data': request.data}), str(error))
+        return Response({'message': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
 
 
 @api_view(['POST'])

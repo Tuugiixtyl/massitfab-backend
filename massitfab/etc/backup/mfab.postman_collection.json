@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "5c423770-f462-4d9d-be41-d4a08b8c8e93",
+		"_postman_id": "863818c6-8283-45ac-8b06-b61f4037688f",
 		"name": "mfab",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21051532"
 	},
 	"item": [
 		{
@@ -44,92 +45,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Register",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "email",
-											"value": "tuugiiremph@gmail.com",
-											"type": "default"
-										},
-										{
-											"key": "username",
-											"value": "Sandy",
-											"type": "default"
-										},
-										{
-											"key": "password",
-											"value": "ruufii",
-											"type": "default"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{auth}}/register/",
-									"host": [
-										"{{auth}}"
-									],
-									"path": [
-										"register",
-										""
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Tue, 18 Apr 2023 02:08:45 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.10.10"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Allow",
-									"value": "POST, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "323"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzg3MzI1LCJpYXQiOjE2ODE3ODM3MjUsImp0aSI6IjA5ZDg3M2M2ZWQ5NDQ4ODI5YTVjNWY5ZmZjNWRjMzVmIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.vqkbokP8qj1tC-rUH8Gx1jws1e8baEiXU4wQPQaZHJU\",\n    \"message\": \"Бүртгэл амжилттай!\"\n}"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Login",
@@ -359,7 +275,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzg3MzI1LCJpYXQiOjE2ODE3ODM3MjUsImp0aSI6IjA5ZDg3M2M2ZWQ5NDQ4ODI5YTVjNWY5ZmZjNWRjMzVmIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.vqkbokP8qj1tC-rUH8Gx1jws1e8baEiXU4wQPQaZHJU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzUwMTg5LCJpYXQiOjE2ODE3NDY1ODksImp0aSI6IjlmMDM2ZmFhMzRiNTQwMTE5YjU3ZTkzMjlhZjZjMTdiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.zaxubJa3-C_STtBTkslPWyXiCf8NJmieHSrEQU6LwAo",
 									"type": "string"
 								}
 							]
@@ -376,13 +292,13 @@
 								},
 								{
 									"key": "summary",
-									"value": "I am inside Ruufii's Hideout. Which is mine now tee~hee!.",
+									"value": "I am inside Ruufii's Hideout. Which is mine now tee~hee!",
 									"type": "text"
 								},
 								{
 									"key": "profile_picture",
 									"type": "file",
-									"src": "/C:/Users/student3/Pictures/Saved Pictures/violetevergarden.jpg"
+									"src": "Fcd82laacAAyVvX.jfif"
 								}
 							]
 						},
@@ -627,7 +543,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/content/get/?page=1",
+									"raw": "{{api}}/content/get/",
 									"host": [
 										"{{api}}"
 									],
@@ -635,12 +551,6 @@
 										"content",
 										"get",
 										""
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										}
 									]
 								}
 							},
@@ -691,6 +601,77 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": [\n        {\n            \"products\": [\n                {\n                    \"id\": 9,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T21:32:01.460797Z\"\n                },\n                {\n                    \"id\": 8,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T19:00:02.501015Z\"\n                },\n                {\n                    \"id\": 7,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T18:59:22.842478Z\"\n                },\n                {\n                    \"id\": 6,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T18:04:10.304334Z\"\n                },\n                {\n                    \"id\": 5,\n                    \"title\": \"Alisa VIRTUES\",\n                    \"description\": \"Theodora VIRTUES\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T17:41:21.314871Z\"\n                },\n                {\n                    \"id\": 4,\n                    \"title\": \"Alicia VIRTUES\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T17:39:16.430489Z\"\n                },\n                {\n                    \"id\": 3,\n                    \"title\": \"Alicia VIRTUES\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T17:38:38.105643Z\"\n                },\n                {\n                    \"id\": 2,\n                    \"title\": \"title\",\n                    \"description\": \"desc\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 20.3,\n                    \"created_at\": \"2023-04-16T16:40:35.418757Z\"\n                },\n                {\n                    \"id\": 1,\n                    \"title\": \"title\",\n                    \"description\": \"desc\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 20.3,\n                    \"created_at\": \"2023-04-16T15:54:01.377804Z\"\n                }\n            ]\n        },\n        {\n            \"pagination\": {\n                \"total_count\": 9,\n                \"page_count\": 1,\n                \"page\": 1,\n                \"page_size\": 10\n            }\n        }\n    ],\n    \"message\": \"Амжилттай!\"\n}"
+						},
+						{
+							"name": "get_contents",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/content/get/?page=2",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"content",
+										"get",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Apr 2023 15:20:51 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, GET"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1498"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"products\": [\n                {\n                    \"id\": 13,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"banner\": \"public/img/Fcd82laacAAyVvX_16Z1YTX.jfif\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-18T00:06:25.623435Z\"\n                },\n                {\n                    \"id\": 10,\n                    \"title\": \"Alisa VIRTUES\",\n                    \"description\": \"Theodora VIRTUES\",\n                    \"banner\": \"public/img/96510861_p0_DNpqDij.jpg\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-17T23:57:26.658767Z\"\n                },\n                {\n                    \"id\": 9,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"banner\": \"public/img/Fcd82laacAAyVvX.jfif\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T21:32:01.460797Z\"\n                },\n                {\n                    \"id\": 8,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"banner\": \"public/img/Fcd82laacAAyVvX_Q0asnct.jfif\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T19:00:02.501015Z\"\n                },\n                {\n                    \"id\": 7,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"banner\": \"public/img/superoaonova-chutu-04.jpg\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T18:59:22.842478Z\"\n                },\n                {\n                    \"id\": 6,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"banner\": \"public/img/superoaonova-chutu-04_xtBI2Ty.jpg\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T18:04:10.304334Z\"\n                },\n                {\n                    \"id\": 5,\n                    \"title\": \"Alisa VIRTUES\",\n                    \"description\": \"Theodora VIRTUES\",\n                    \"banner\": \"public/img/96510861_p0.jpg\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T17:41:21.314871Z\"\n                }\n            ]\n        },\n        {\n            \"pagination\": {\n                \"total_count\": 17,\n                \"page_count\": 2,\n                \"page\": 2,\n                \"page_size\": 10\n            }\n        }\n    ],\n    \"message\": \"Амжилттай!\"\n}"
 						}
 					]
 				},
@@ -703,14 +684,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/content/get/5/",
+							"raw": "{{api}}/content/get/6/",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"content",
 								"get",
-								"5",
+								"6",
 								""
 							]
 						}
@@ -792,7 +773,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzg3MzI1LCJpYXQiOjE2ODE3ODM3MjUsImp0aSI6IjA5ZDg3M2M2ZWQ5NDQ4ODI5YTVjNWY5ZmZjNWRjMzVmIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.vqkbokP8qj1tC-rUH8Gx1jws1e8baEiXU4wQPQaZHJU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyMTc5NTc1LCJpYXQiOjE2ODIxNzU5NzUsImp0aSI6IjhjNGIxMTY2YTYwOTQ1OGNiZDI0MTQ2ZWMxY2QyODAzIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.nhOrPcd95WmcI1NmgWv1I3zAWkUV4WE8TEzwQguZjwo",
 									"type": "string"
 								}
 							]
@@ -860,7 +841,11 @@
 								{
 									"key": "resource",
 									"type": "file",
-									"src": []
+									"src": [
+										"Fcd82laacAAyVvX.jfif",
+										"FN_RxynaQAAnUrf.jpg",
+										"FZn9KqMaQAQqjgO.jfif"
+									]
 								},
 								{
 									"key": "membership_id",
@@ -1022,142 +1007,6 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": {\n        \"title\": \"Boss Multifaros\",\n        \"description\": \"LoRA V2 Camelliamix\",\n        \"user_id\": 20230203,\n        \"subcategory_id\": 20,\n        \"st_price\": 9,\n        \"link\": [\n            \"https://mega.nz/file/9KgkkJqR#dc8zzkvhkJ_AjxuM7cSmPMWPXJXkJuu17ZfxzzdRziw\"\n        ],\n        \"files\": [\n            \"Fcd82laacAAyVvX_WTQmZNq.jfif\",\n            \"FN_RxynaQAAnUrf_iTbTSEY.jpg\",\n            \"FZn9KqMaQAQqjgO_4Pb136B.jfif\"\n        ]\n    },\n    \"message\": \"Байршуулалт амжилттай!\"\n}"
-						},
-						{
-							"name": "upload_content",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "title",
-											"value": "Boss Multifaros",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "LoRA V2 Camelliamix",
-											"type": "text"
-										},
-										{
-											"key": "schedule",
-											"value": "2023-04-02 20:30:00.000",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "start_date",
-											"value": "",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "end_date",
-											"value": "",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "subcategory_id",
-											"value": "20",
-											"type": "text"
-										},
-										{
-											"key": "hashtags",
-											"value": "#myllodia&#whatdoyouneed&#aijou",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "st_price",
-											"value": "9",
-											"type": "text"
-										},
-										{
-											"key": "source",
-											"value": "https://mega.nz/file/9KgkkJqR#dc8zzkvhkJ_AjxuM7cSmPMWPXJXkJuu17ZfxzzdRziw",
-											"type": "text"
-										},
-										{
-											"key": "resource",
-											"type": "file",
-											"src": []
-										},
-										{
-											"key": "membership_id",
-											"value": "",
-											"type": "text",
-											"disabled": true
-										}
-									]
-								},
-								"url": {
-									"raw": "{{api}}/content/create/",
-									"host": [
-										"{{api}}"
-									],
-									"path": [
-										"content",
-										"create",
-										""
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Tue, 18 Apr 2023 02:26:23 GMT"
-								},
-								{
-									"key": "Server",
-									"value": "WSGIServer/0.2 CPython/3.10.10"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Allow",
-									"value": "POST, OPTIONS"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Length",
-									"value": "94"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "Referrer-Policy",
-									"value": "same-origin"
-								},
-								{
-									"key": "Cross-Origin-Opener-Policy",
-									"value": "same-origin"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"resource\": {\n        \"0\": [\n            \"The submitted data was not a file. Check the encoding type on the form.\"\n        ]\n    }\n}"
 						}
 					]
 				},
@@ -1169,7 +1018,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzUwMTg5LCJpYXQiOjE2ODE3NDY1ODksImp0aSI6IjlmMDM2ZmFhMzRiNTQwMTE5YjU3ZTkzMjlhZjZjMTdiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.zaxubJa3-C_STtBTkslPWyXiCf8NJmieHSrEQU6LwAo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyMTc5NTc1LCJpYXQiOjE2ODIxNzU5NzUsImp0aSI6IjhjNGIxMTY2YTYwOTQ1OGNiZDI0MTQ2ZWMxY2QyODAzIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.nhOrPcd95WmcI1NmgWv1I3zAWkUV4WE8TEzwQguZjwo",
 									"type": "string"
 								}
 							]
@@ -1208,7 +1057,7 @@
 								},
 								{
 									"key": "st_price",
-									"value": "9",
+									"value": "99",
 									"type": "text"
 								},
 								{
@@ -1219,11 +1068,7 @@
 								{
 									"key": "resource",
 									"type": "file",
-									"src": [
-										"96510861_p0.jpg",
-										"Fcd82laacAAyVvX.jfif",
-										"FYr93D8X0AAWiRB.jfif"
-									]
+									"src": "jonathan-romeo-feb-widowmaker-sd.jpg"
 								},
 								{
 									"key": "membership_id",
@@ -1233,7 +1078,7 @@
 								},
 								{
 									"key": "resource_deleted",
-									"value": "public/img/superoaonova-chutu-04.jpg&public/img/superoaonova-huizhi-02.jpg",
+									"value": "public/img/Fcd82laacAAyVvX_Q0asnct.jfif&public/img/FN_RxynaQAAnUrf.jpg&public/img/FZn9KqMaQAQqjgO.jfif",
 									"type": "text"
 								},
 								{
@@ -1244,14 +1089,14 @@
 							]
 						},
 						"url": {
-							"raw": "{{api}}/content/update/10/",
+							"raw": "{{api}}/content/update/8/",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"content",
 								"update",
-								"10",
+								"8",
 								""
 							]
 						}
@@ -1400,7 +1245,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzUwMTg5LCJpYXQiOjE2ODE3NDY1ODksImp0aSI6IjlmMDM2ZmFhMzRiNTQwMTE5YjU3ZTkzMjlhZjZjMTdiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.zaxubJa3-C_STtBTkslPWyXiCf8NJmieHSrEQU6LwAo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyMTgwNzI1LCJpYXQiOjE2ODIxNzcxMjUsImp0aSI6IjhmOTRiMzgyMGY2ZDQ4YzJhNmFkZmQ4NjViMGQxMmViIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ._4FmfHWWmRI6ieNLetgJ0UHmR1gz3LnQa8QkEUUYJeE",
 									"type": "string"
 								}
 							]
@@ -1408,14 +1253,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/content/delete/3/",
+							"raw": "{{api}}/content/delete/13/",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"content",
 								"delete",
-								"3",
+								"13",
 								""
 							]
 						}
@@ -2091,6 +1936,101 @@
 					]
 				},
 				{
+					"name": "get_cart_details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyMTc5NTc1LCJpYXQiOjE2ODIxNzU5NzUsImp0aSI6IjhjNGIxMTY2YTYwOTQ1OGNiZDI0MTQ2ZWMxY2QyODAzIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.nhOrPcd95WmcI1NmgWv1I3zAWkUV4WE8TEzwQguZjwo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/cart/get/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"cart",
+								"get",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get_cart_details",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/cart/get/",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"cart",
+										"get",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Apr 2023 15:09:34 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.8"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "OPTIONS, GET"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "137"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"in_cart\": [\n            {\n                \"title\": \"Boss Multifaros\",\n                \"min\": \"public/img/Fcd82laacAAyVvX.jfif\",\n                \"st_price\": 9\n            }\n        ]\n    },\n    \"message\": \"Амжилттай!\"\n}"
+						}
+					]
+				},
+				{
 					"name": "add_product_to_cart",
 					"request": {
 						"auth": {
@@ -2098,7 +2038,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzQ2NTc1LCJpYXQiOjE2ODE3NDI5NzUsImp0aSI6Ijc2NWVmNGRlNWRlNDQ4MWZhMWI3M2QzZGE5ZWRmNDQ5IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.Wgx0N9-fi4YWsdMpHj1IpzyfiJ9Sx0yNEd9c8p-Mu3E",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyMTc5NTc1LCJpYXQiOjE2ODIxNzU5NzUsImp0aSI6IjhjNGIxMTY2YTYwOTQ1OGNiZDI0MTQ2ZWMxY2QyODAzIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.nhOrPcd95WmcI1NmgWv1I3zAWkUV4WE8TEzwQguZjwo",
 									"type": "string"
 								}
 							]
@@ -2106,14 +2046,14 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/cart/create/5/",
+							"raw": "{{api}}/cart/create/9/",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"cart",
 								"create",
-								"5",
+								"9",
 								""
 							]
 						}
