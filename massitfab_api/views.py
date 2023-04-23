@@ -79,7 +79,7 @@ def get_profile(request, username):
 
         # Get the total count of related products
         cur.execute(
-            "SELECT COUNT(*) FROM product WHERE fab_user_id = %s",
+            "SELECT COUNT(*) FROM product WHERE fab_user_id = %s AND is_removed = False",
             [result[0]]
         )
         total_count = cur.fetchone()[0]
@@ -1008,7 +1008,7 @@ def get_reviews(request, product_id):
     except Exception as error:
         log_error('get_reviews', json.dumps(
             {"product_id": product_id, 'data': request.data}), str(error))
-        return Response({'message': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'message': 'Дотоод алдаа!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     finally:
         if conn is not None:
             disconnectDB(conn)
@@ -1118,19 +1118,27 @@ def get_cart_details(request):
         columns = cur.description
         respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in rows]
 
-        # construct response with pagination information
+        # calculate the total price of each rows
+        total_price = 0
+        for row in respRow:
+            total_price += row.get("st_price", 0)
+
+
+        # construct response with information
         resp = {
             "data": {
                 'in_cart': respRow,
+                'total_in_cart': len(respRow),
+                'total_price': total_price,
             },
             "message": "Амжилттай!"
         }
 
         return Response(resp, status=status.HTTP_200_OK)
     except Exception as error:
-        log_error('get_reviews', json.dumps(
+        log_error('get_wishlist_details', json.dumps(
             {"user_id": user_id, 'data': request.data}), str(error))
-        return Response({'message': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'message': 'Дотоод алдаа!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     finally:
         if conn is not None:
             disconnectDB(conn)
@@ -1332,6 +1340,52 @@ def remove_all_from_cart(request):
 # EXTRAS
 # ==============================================================================
 
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def get_categories(request):
+    conn = None
+    try:
+        # establish database connection
+        conn = connectDB()
+        cur = conn.cursor()
+
+        # Get all categories from the "category" table
+        cur.execute("SELECT * from category")
+        categories = cur.fetchall()
+
+        # Loop through each category and get its related subcategories
+        resp = []
+        for category in categories:
+            cur.execute("SELECT name FROM subcategory WHERE category_id = %s", (category[0],))
+            subcategories = cur.fetchall()
+            flattened_list = [item[0] for item in subcategories]
+
+            # Assign the subcategories to the category key in a dictionary
+            category_dict = {
+                "id": category[0],
+                "category": category[1],
+                "subcategories": flattened_list,
+            }
+            resp.append(category_dict)
+
+        # construct response with information
+        resp = {
+            "data": {
+                "categories": resp,
+            },
+            "message": "Амжилттай!"
+        }
+
+        return Response(resp, status=status.HTTP_200_OK)
+    except Exception as error:
+        log_error('get_categories', json.dumps(
+            {'data': request.data}), str(error))
+        return Response({'message': 'Дотоод алдаа!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    finally:
+        if conn is not None:
+            disconnectDB(conn)
 
 @api_view(['PUT'])
 def change_email(request):
