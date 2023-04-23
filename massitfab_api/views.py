@@ -1358,15 +1358,17 @@ def get_categories(request):
         # Loop through each category and get its related subcategories
         resp = []
         for category in categories:
-            cur.execute("SELECT name FROM subcategory WHERE category_id = %s", (category[0],))
+            flattened_dict = {}
+            cur.execute("SELECT id, name FROM subcategory WHERE category_id = %s", (category[0],))
             subcategories = cur.fetchall()
-            flattened_list = [item[0] for item in subcategories]
+            for item in subcategories:
+                flattened_dict.update({item[0]: item[1]})
 
             # Assign the subcategories to the category key in a dictionary
             category_dict = {
                 "id": category[0],
                 "category": category[1],
-                "subcategories": flattened_list,
+                "subcategories": flattened_dict,
             }
             resp.append(category_dict)
 
