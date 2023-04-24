@@ -33,7 +33,7 @@ from datetime import datetime
 
 class CreateProductSerializer(serializers.Serializer):
     title = serializers.CharField()
-    description = serializers.CharField()
+    description = serializers.CharField(allow_blank=True, required=False)
     subcategory_id = serializers.CharField()
     st_price = serializers.CharField()
     source = serializers.CharField()
