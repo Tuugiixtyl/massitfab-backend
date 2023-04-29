@@ -257,14 +257,15 @@ def get_products(request):  # Recently uploaded products
 
         # Build response dictionary with pagination information
         resp = {
-            'data': [{"products": products}, {
+            'data': {
+                "products": products,
                 'pagination': {
-                    'total_count': total_count,
-                    'page_count': math.ceil(total_count / page_size),
                     'page': page,
                     'page_size': page_size,
+                    'num_pages': math.ceil(total_count / page_size),
+                    'total_count': total_count,
                 }
-            }],
+            },
             'message': 'Амжилттай!',
         }
         return Response(resp, status=status.HTTP_200_OK)
@@ -1116,13 +1117,13 @@ def get_cart_details(request):
 
         # construct response data
         columns = cur.description
-        respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in rows]
+        respRow = [{columns[index][0]:column for index,
+                    column in enumerate(value)} for value in rows]
 
         # calculate the total price of each rows
         total_price = 0
         for row in respRow:
             total_price += row.get("st_price", 0)
-
 
         # construct response with information
         resp = {
@@ -1196,7 +1197,8 @@ def add_product_to_cart(request, product_id):
 
 
 @api_view(['PUT'])
-def checkout_cart(request):  # One click buy everything. Also check if there are any items favorited and update the wishlist
+# One click buy everything. Also check if there are any items favorited and update the wishlist
+def checkout_cart(request):
     auth_header = request.headers.get('Authorization')
     auth = verifyToken(auth_header)
     if(auth.get('status') != 200):
@@ -1359,7 +1361,8 @@ def get_categories(request):
         resp = []
         for category in categories:
             flattened_dict = {}
-            cur.execute("SELECT id, name FROM subcategory WHERE category_id = %s", (category[0],))
+            cur.execute(
+                "SELECT id, name FROM subcategory WHERE category_id = %s", (category[0],))
             subcategories = cur.fetchall()
             for item in subcategories:
                 flattened_dict.update({item[0]: item[1]})
@@ -1389,6 +1392,7 @@ def get_categories(request):
         if conn is not None:
             disconnectDB(conn)
 
+
 @api_view(['PUT'])
 def change_email(request):
     pass
@@ -1400,5 +1404,5 @@ def change_password(request):
 
 
 @api_view(['PUT'])
-def one_click_buy(request): # check if the product was in wish list and update that as well
+def one_click_buy(request):  # check if the product was in wish list and update that as well
     pass

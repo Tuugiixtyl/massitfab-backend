@@ -33,6 +33,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 encoding = "utf-8"
 USE_TZ = True
+APPEND_SLASH = False
 
 params = {
     'database': env('DATABASE_NAME'),
