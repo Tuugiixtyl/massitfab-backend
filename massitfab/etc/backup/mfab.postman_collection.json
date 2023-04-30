@@ -1977,14 +1977,14 @@
 							]
 						},
 						{
-							"name": "add_product_to_cart",
+							"name": "add_n_remove_product_from_cart",
 							"request": {
 								"auth": {
 									"type": "bearer",
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyMTc5NTc1LCJpYXQiOjE2ODIxNzU5NzUsImp0aSI6IjhjNGIxMTY2YTYwOTQ1OGNiZDI0MTQ2ZWMxY2QyODAzIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.nhOrPcd95WmcI1NmgWv1I3zAWkUV4WE8TEzwQguZjwo",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyODU5ODk5LCJpYXQiOjE2ODI4NTYyOTksImp0aSI6ImU3ZTJlM2RkZWIzYzRjMDZiMGVlZDk1MDg5OTc5Yzg0IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.ATidBlu9woAiQOWIAGKfFGQyzgnObSFLU9i8XG_WZco",
 											"type": "string"
 										}
 									]
@@ -1992,33 +1992,32 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/cart/create/9",
+									"raw": "{{api}}/cart/toggle/5",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"cart",
-										"create",
-										"9"
+										"toggle",
+										"5"
 									]
 								}
 							},
 							"response": [
 								{
-									"name": "add_product_to_cart",
+									"name": "add_n_remove_product_from_cart",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
 										"url": {
-											"raw": "{{api}}/cart/create/5/",
+											"raw": "{{api}}/cart/toggle/5",
 											"host": [
 												"{{api}}"
 											],
 											"path": [
 												"cart",
-												"create",
-												"5",
-												""
+												"toggle",
+												"5"
 											]
 										}
 									},
@@ -2028,7 +2027,7 @@
 									"header": [
 										{
 											"key": "Date",
-											"value": "Mon, 17 Apr 2023 15:49:26 GMT"
+											"value": "Sun, 30 Apr 2023 12:16:59 GMT"
 										},
 										{
 											"key": "Server",
@@ -2068,7 +2067,72 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": {\n        \"cart_id\": 3,\n        \"user_id\": 20230203,\n        \"product_id\": 5\n    },\n    \"message\": \"Сагсанд амжилттай нэмэгдлээ!\"\n}"
+									"body": "{\n    \"data\": {\n        \"cart_id\": 2,\n        \"user_id\": 20230203,\n        \"product_id\": 5\n    },\n    \"message\": \"Сагсанд амжилттай нэмэгдлээ!\"\n}"
+								},
+								{
+									"name": "add_n_remove_product_from_cart",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{api}}/cart/toggle/5",
+											"host": [
+												"{{api}}"
+											],
+											"path": [
+												"cart",
+												"toggle",
+												"5"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 30 Apr 2023 12:17:15 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.10.8"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Allow",
+											"value": "OPTIONS, POST"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "69"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Сагснаас амжилттай хасагдлаа!\"\n}"
 								}
 							]
 						},
@@ -2163,102 +2227,6 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"data\": {\n        \"balance\": 82,\n        \"bought_items\": 2\n    },\n    \"message\": \"Амжилттай!\"\n}"
-								}
-							]
-						},
-						{
-							"name": "remove_from_cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzUwMTg5LCJpYXQiOjE2ODE3NDY1ODksImp0aSI6IjlmMDM2ZmFhMzRiNTQwMTE5YjU3ZTkzMjlhZjZjMTdiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.zaxubJa3-C_STtBTkslPWyXiCf8NJmieHSrEQU6LwAo",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{api}}/cart/delete/5",
-									"host": [
-										"{{api}}"
-									],
-									"path": [
-										"cart",
-										"delete",
-										"5"
-									]
-								}
-							},
-							"response": [
-								{
-									"name": "remove_from_cart",
-									"originalRequest": {
-										"method": "DELETE",
-										"header": [],
-										"url": {
-											"raw": "{{api}}/cart/delete/5/",
-											"host": [
-												"{{api}}"
-											],
-											"path": [
-												"cart",
-												"delete",
-												"5",
-												""
-											]
-										}
-									},
-									"status": "Accepted",
-									"code": 202,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Mon, 17 Apr 2023 15:52:06 GMT"
-										},
-										{
-											"key": "Server",
-											"value": "WSGIServer/0.2 CPython/3.10.8"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										},
-										{
-											"key": "Allow",
-											"value": "OPTIONS, DELETE"
-										},
-										{
-											"key": "X-Frame-Options",
-											"value": "DENY"
-										},
-										{
-											"key": "Content-Length",
-											"value": "190"
-										},
-										{
-											"key": "Vary",
-											"value": "Origin"
-										},
-										{
-											"key": "X-Content-Type-Options",
-											"value": "nosniff"
-										},
-										{
-											"key": "Referrer-Policy",
-											"value": "same-origin"
-										},
-										{
-											"key": "Cross-Origin-Opener-Policy",
-											"value": "same-origin"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"data\": {\n        \"result\": {\n            \"id\": 3,\n            \"fab_user_id\": 20230203,\n            \"product_id\": 5,\n            \"created_at\": \"2023-04-17T23:49:26.376992\",\n            \"in_cart\": true,\n            \"is_bought\": false\n        }\n    },\n    \"message\": \"Амжилттай устгалаа!\"\n}"
 								}
 							]
 						}
