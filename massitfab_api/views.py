@@ -1277,7 +1277,7 @@ def add_n_remove_from_cart(request, product_id):
             disconnectDB(conn)
 
 
-@api_view(['PUT'])
+@api_view(['POST'])
 # One click buy everything. Also check if there are any items favorited and update the wishlist
 def checkout_cart(request):
     auth_header = request.headers.get('Authorization')
