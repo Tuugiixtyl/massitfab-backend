@@ -1284,7 +1284,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyMjM0OTMxLCJpYXQiOjE2ODIyMzEzMzEsImp0aSI6Ijc4ZGNhMWY1YzU1MDQ3MmM4NTIzMjQzYjgxMDdjYTU3IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.URZQK0uJIcbgCDAH5vAf4fRKbqwbVJmlqavdRS-y3X8",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyODU5ODk5LCJpYXQiOjE2ODI4NTYyOTksImp0aSI6ImU3ZTJlM2RkZWIzYzRjMDZiMGVlZDk1MDg5OTc5Yzg0IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.ATidBlu9woAiQOWIAGKfFGQyzgnObSFLU9i8XG_WZco",
 											"type": "string"
 										}
 									]
@@ -1373,6 +1373,101 @@
 							]
 						},
 						{
+							"name": "get_allWishlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyODY2NjU4LCJpYXQiOjE2ODI4NjMwNTgsImp0aSI6ImFmMmFmODA1ODA2YjQwODdhOTljMzYwNDQ5NDVhZmMzIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.ywobYSA16vkLu2XliVpXWsLx3uQXv_7FDKPZE9jAGkk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/u/wishlist/getAll",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"u",
+										"wishlist",
+										"getAll"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "get_allWishlist",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{api}}/u/wishlist/getAll",
+											"host": [
+												"{{api}}"
+											],
+											"path": [
+												"u",
+												"wishlist",
+												"getAll"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 30 Apr 2023 12:46:16 GMT"
+										},
+										{
+											"key": "Server",
+											"value": "WSGIServer/0.2 CPython/3.10.8"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Allow",
+											"value": "OPTIONS, GET"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "Content-Length",
+											"value": "243"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": {\n        \"wishlist_items\": [\n            {\n                \"id\": 2,\n                \"title\": \"Unity salt & pepper girl w/WidowMaker\",\n                \"st_price\": 0\n            },\n            {\n                \"id\": 3,\n                \"title\": \"skimpy clumse\",\n                \"st_price\": 69696\n            },\n            {\n                \"id\": 4,\n                \"title\": \"Test 10\",\n                \"st_price\": 0\n            }\n        ],\n        \"total_items\": 3\n    },\n    \"message\": \"Амжилттай!\"\n}"
+								}
+							]
+						},
+						{
 							"name": "add_to_or_remove_from_wishlist",
 							"request": {
 								"auth": {
@@ -1380,7 +1475,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzUwMTg5LCJpYXQiOjE2ODE3NDY1ODksImp0aSI6IjlmMDM2ZmFhMzRiNTQwMTE5YjU3ZTkzMjlhZjZjMTdiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.zaxubJa3-C_STtBTkslPWyXiCf8NJmieHSrEQU6LwAo",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyODU5ODk5LCJpYXQiOjE2ODI4NTYyOTksImp0aSI6ImU3ZTJlM2RkZWIzYzRjMDZiMGVlZDk1MDg5OTc5Yzg0IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.ATidBlu9woAiQOWIAGKfFGQyzgnObSFLU9i8XG_WZco",
 											"type": "string"
 										}
 									]
@@ -1392,20 +1487,20 @@
 									"formdata": [
 										{
 											"key": "product_id",
-											"value": "4",
+											"value": "2",
 											"type": "text"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{api}}/u/toggle/wishlist",
+									"raw": "{{api}}/u/wishlist/toggle",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"u",
-										"toggle",
-										"wishlist"
+										"wishlist",
+										"toggle"
 									]
 								}
 							},

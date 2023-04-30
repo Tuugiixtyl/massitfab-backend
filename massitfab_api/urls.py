@@ -15,7 +15,7 @@ urlpatterns = [
     path('content/get', get_products, name='get_contents'),
     path('content/search', search_products, name='search_products'),
 
-    path('u/toggle/wishlist', add_n_remove_from_wishlist, name='toggle_wishlist'),
+    path('u/wishlist/toggle', add_n_remove_from_wishlist, name='toggle_wishlist'),
     path('u/wishlist/getAll', get_allWishlist, name='get_allWishlist'),
     path('u/wishlist/get', get_wishlist, name='get_wishlist'),
 
