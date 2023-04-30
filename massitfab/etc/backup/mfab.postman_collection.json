@@ -35,13 +35,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{auth}}/register/",
+							"raw": "{{auth}}/register",
 							"host": [
 								"{{auth}}"
 							],
 							"path": [
-								"register",
-								""
+								"register"
 							]
 						}
 					},
@@ -68,13 +67,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{auth}}/login/",
+							"raw": "{{auth}}/login",
 							"host": [
 								"{{auth}}"
 							],
 							"path": [
-								"login",
-								""
+								"login"
 							]
 						}
 					},
@@ -278,7 +276,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNzUwMTg5LCJpYXQiOjE2ODE3NDY1ODksImp0aSI6IjlmMDM2ZmFhMzRiNTQwMTE5YjU3ZTkzMjlhZjZjMTdiIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.zaxubJa3-C_STtBTkslPWyXiCf8NJmieHSrEQU6LwAo",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyNzc5MzY3LCJpYXQiOjE2ODI3NzU3NjcsImp0aSI6IjUzYjRiNTgyYTJlOTQ1NzFhMzYzZmY2YTNmZGEwYjI5IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.GdgcjHOxu_QTJ_vcujVYzYdnd8Om8ajcORIiGagx3lg",
 											"type": "string"
 										}
 									]
@@ -301,19 +299,18 @@
 										{
 											"key": "profile_picture",
 											"type": "file",
-											"src": "Fcd82laacAAyVvX.jfif"
+											"src": "jungmin-jin-dospi-1111.jpg"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{api}}/u/update/",
+									"raw": "{{api}}/u/update",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"u",
-										"update",
-										""
+										"update"
 									]
 								}
 							},
@@ -419,19 +416,18 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/content/search/?keyword=cia&page=1",
+									"raw": "{{api}}/content/search?keyword=test&page=1",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"content",
-										"search",
-										""
+										"search"
 									],
 									"query": [
 										{
 											"key": "keyword",
-											"value": "cia"
+											"value": "test"
 										},
 										{
 											"key": "page",
@@ -447,19 +443,18 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{api}}/content/search/?keyword=cia&page=1",
+											"raw": "{{api}}/content/search?keyword=test&page=1",
 											"host": [
 												"{{api}}"
 											],
 											"path": [
 												"content",
-												"search",
-												""
+												"search"
 											],
 											"query": [
 												{
 													"key": "keyword",
-													"value": "cia"
+													"value": "test"
 												},
 												{
 													"key": "page",
@@ -474,7 +469,7 @@
 									"header": [
 										{
 											"key": "Date",
-											"value": "Mon, 17 Apr 2023 15:56:45 GMT"
+											"value": "Sun, 30 Apr 2023 10:12:35 GMT"
 										},
 										{
 											"key": "Server",
@@ -486,7 +481,7 @@
 										},
 										{
 											"key": "Allow",
-											"value": "OPTIONS, GET"
+											"value": "GET, OPTIONS"
 										},
 										{
 											"key": "X-Frame-Options",
@@ -494,7 +489,7 @@
 										},
 										{
 											"key": "Content-Length",
-											"value": "392"
+											"value": "576"
 										},
 										{
 											"key": "Vary",
@@ -514,7 +509,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": {\n        \"products\": [\n            {\n                \"id\": 4,\n                \"name\": \"Alicia VIRTUES\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"creator\": 20230203,\n                \"price\": 9,\n                \"created_at\": \"2023-04-16T17:39:16\"\n            },\n            {\n                \"id\": 3,\n                \"name\": \"Alicia VIRTUES\",\n                \"description\": \"LoRA V2 Camelliamix\",\n                \"creator\": 20230203,\n                \"price\": 9,\n                \"created_at\": \"2023-04-16T17:38:38\"\n            }\n        ],\n        \"pagination\": {\n            \"page\": 1,\n            \"limit\": 10,\n            \"total_count\": 2,\n            \"total_pages\": 1\n        }\n    },\n    \"message\": \"Амжилттай!\"\n}"
+									"body": "{\n    \"data\": {\n        \"products\": [\n            {\n                \"id\": 6,\n                \"title\": \"test 10\",\n                \"description\": \"adjhjaksdgkas hj\",\n                \"banner\": \"public/img/343137950_197578576407635_2923865701856465420_n.jpg\",\n                \"subcategory_id\": 82,\n                \"price\": 0,\n                \"created_at\": \"2023-04-29T16:40:14\"\n            },\n            {\n                \"id\": 4,\n                \"title\": \"Test 10\",\n                \"description\": \"lorem ipsum ashdjsakghjasgd jhfkasdgf hj fasg fhajhgajgf jasghfsa kfga jgfa\",\n                \"banner\": \"public/img/illust_62071994_20210209_123425_RqOsDel.jpg\",\n                \"subcategory_id\": 11,\n                \"price\": 0,\n                \"created_at\": \"2023-04-26T17:00:43\"\n            }\n        ],\n        \"pagination\": {\n            \"page\": 1,\n            \"page_size\": 9,\n            \"num_pages\": 1,\n            \"total_count\": 2\n        }\n    },\n    \"message\": \"Амжилттай!\"\n}"
 								}
 							]
 						},
@@ -527,14 +522,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/content/get/?page=1",
+									"raw": "{{api}}/content/get?page=1",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"content",
-										"get",
-										""
+										"get"
 									],
 									"query": [
 										{
@@ -545,71 +539,6 @@
 								}
 							},
 							"response": [
-								{
-									"name": "get_contents",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{api}}/content/get/",
-											"host": [
-												"{{api}}"
-											],
-											"path": [
-												"content",
-												"get",
-												""
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Mon, 17 Apr 2023 15:56:55 GMT"
-										},
-										{
-											"key": "Server",
-											"value": "WSGIServer/0.2 CPython/3.10.8"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										},
-										{
-											"key": "Allow",
-											"value": "OPTIONS, GET"
-										},
-										{
-											"key": "X-Frame-Options",
-											"value": "DENY"
-										},
-										{
-											"key": "Content-Length",
-											"value": "1415"
-										},
-										{
-											"key": "Vary",
-											"value": "Origin"
-										},
-										{
-											"key": "X-Content-Type-Options",
-											"value": "nosniff"
-										},
-										{
-											"key": "Referrer-Policy",
-											"value": "same-origin"
-										},
-										{
-											"key": "Cross-Origin-Opener-Policy",
-											"value": "same-origin"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"data\": [\n        {\n            \"products\": [\n                {\n                    \"id\": 9,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T21:32:01.460797Z\"\n                },\n                {\n                    \"id\": 8,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T19:00:02.501015Z\"\n                },\n                {\n                    \"id\": 7,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T18:59:22.842478Z\"\n                },\n                {\n                    \"id\": 6,\n                    \"title\": \"Boss Multifaros\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T18:04:10.304334Z\"\n                },\n                {\n                    \"id\": 5,\n                    \"title\": \"Alisa VIRTUES\",\n                    \"description\": \"Theodora VIRTUES\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T17:41:21.314871Z\"\n                },\n                {\n                    \"id\": 4,\n                    \"title\": \"Alicia VIRTUES\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T17:39:16.430489Z\"\n                },\n                {\n                    \"id\": 3,\n                    \"title\": \"Alicia VIRTUES\",\n                    \"description\": \"LoRA V2 Camelliamix\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 9,\n                    \"created_at\": \"2023-04-16T17:38:38.105643Z\"\n                },\n                {\n                    \"id\": 2,\n                    \"title\": \"title\",\n                    \"description\": \"desc\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 20.3,\n                    \"created_at\": \"2023-04-16T16:40:35.418757Z\"\n                },\n                {\n                    \"id\": 1,\n                    \"title\": \"title\",\n                    \"description\": \"desc\",\n                    \"subcategory_id\": 20,\n                    \"st_price\": 20.3,\n                    \"created_at\": \"2023-04-16T15:54:01.377804Z\"\n                }\n            ]\n        },\n        {\n            \"pagination\": {\n                \"total_count\": 9,\n                \"page_count\": 1,\n                \"page\": 1,\n                \"page_size\": 10\n            }\n        }\n    ],\n    \"message\": \"Амжилттай!\"\n}"
-								},
 								{
 									"name": "get_contents",
 									"originalRequest": {
@@ -692,15 +621,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/content/get/6/",
+									"raw": "{{api}}/content/get/3",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"content",
 										"get",
-										"6",
-										""
+										"3"
 									]
 								}
 							},
@@ -781,7 +709,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY4NDgyMTA3NiwiaWF0IjoxNjgyMjI5MDc2LCJqdGkiOiIwYWNlMDgwOWZhMDU0MzZlYjJiNWQ3YmJkOTZkMmUyMyIsInVzZXJfaWQiOjIwMjMwMjAzfQ.jP1sUF2Vn1wkknutHxBNlQup4I25dKnF6aqP64V7Uxo",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyNzc5MzY3LCJpYXQiOjE2ODI3NzU3NjcsImp0aSI6IjUzYjRiNTgyYTJlOTQ1NzFhMzYzZmY2YTNmZGEwYjI5IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.GdgcjHOxu_QTJ_vcujVYzYdnd8Om8ajcORIiGagx3lg",
 											"type": "string"
 										}
 									]
@@ -850,9 +778,13 @@
 											"key": "resource",
 											"type": "file",
 											"src": [
-												"Fcd82laacAAyVvX.jfif",
-												"FN_RxynaQAAnUrf.jpg",
-												"FZn9KqMaQAQqjgO.jfif"
+												"/C:/Users/Ruufii/Downloads/344353194_251564734097633_4800903756468985861_n (1).jpg",
+												"/C:/Users/Ruufii/Downloads/344227903_1284918282404776_4705322087547322839_n (1).jpg",
+												"/C:/Users/Ruufii/Downloads/344345527_220797330585420_1883187080771956575_n.jpg",
+												"/C:/Users/Ruufii/Downloads/344353194_251564734097633_4800903756468985861_n.jpg",
+												"/C:/Users/Ruufii/Downloads/344227903_1284918282404776_4705322087547322839_n.jpg",
+												"/C:/Users/Ruufii/Downloads/344348274_248959040976563_1389011762086210913_n.jpg",
+												"/C:/Users/Ruufii/Downloads/343837852_1183592982345261_8614889772949677637_n.jpg"
 											]
 										},
 										{
@@ -864,14 +796,13 @@
 									]
 								},
 								"url": {
-									"raw": "{{api}}/content/create/",
+									"raw": "{{api}}/content/create",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"content",
-										"create",
-										""
+										"create"
 									]
 								}
 							},
@@ -1097,15 +1028,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{api}}/content/update/8/",
+									"raw": "{{api}}/content/update/8",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"content",
 										"update",
-										"8",
-										""
+										"8"
 									]
 								}
 							},
@@ -1261,15 +1191,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/content/delete/13/",
+									"raw": "{{api}}/content/delete/13",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"content",
 										"delete",
-										"13",
-										""
+										"13"
 									]
 								}
 							},
@@ -1363,15 +1292,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/u/wishlist/get/",
+									"raw": "{{api}}/u/wishlist/get",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"u",
 										"wishlist",
-										"get",
-										""
+										"get"
 									]
 								}
 							},
@@ -1470,15 +1398,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{api}}/u/toggle/wishlist/",
+									"raw": "{{api}}/u/toggle/wishlist",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"u",
 										"toggle",
-										"wishlist",
-										""
+										"wishlist"
 									]
 								}
 							},
@@ -1648,15 +1575,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/review/get/5/",
+									"raw": "{{api}}/review/get/5",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"review",
 										"get",
-										"5",
-										""
+										"5"
 									]
 								}
 							},
@@ -1760,15 +1686,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{api}}/review/create/5/",
+									"raw": "{{api}}/review/create/5",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"review",
 										"create",
-										"5",
-										""
+										"5"
 									]
 								}
 							},
@@ -1872,15 +1797,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/review/delete/5/",
+									"raw": "{{api}}/review/delete/5",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"review",
 										"delete",
-										"5",
-										""
+										"5"
 									]
 								}
 							},
@@ -1974,14 +1898,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/cart/get/",
+									"raw": "{{api}}/cart/get",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"cart",
-										"get",
-										""
+										"get"
 									]
 								}
 							},
@@ -2069,15 +1992,14 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/cart/create/9/",
+									"raw": "{{api}}/cart/create/9",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"cart",
 										"create",
-										"9",
-										""
+										"9"
 									]
 								}
 							},
@@ -2166,14 +2088,13 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/cart/checkout/",
+									"raw": "{{api}}/cart/checkout",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"cart",
-										"checkout",
-										""
+										"checkout"
 									]
 								}
 							},
@@ -2261,15 +2182,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/cart/delete/5/",
+									"raw": "{{api}}/cart/delete/5",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
 										"cart",
 										"delete",
-										"5",
-										""
+										"5"
 									]
 								}
 							},
@@ -2350,14 +2270,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/category/get/",
+							"raw": "{{api}}/category/get",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"category",
-								"get",
-								""
+								"get"
 							]
 						}
 					},

@@ -90,7 +90,7 @@ def get_profile(request, username):
         resp = {
             "data": {
                 'username': result[1],
-                'email': result[2],
+                # 'email': result[2],
                 'summary': result[3],
                 'profile_picture': result[4],
                 'balance': result[5],
@@ -691,7 +691,7 @@ def delete_product(request, id):
 def search_products(request):
     keyword = str(request.GET.get('keyword', ''))
     page = int(request.GET.get('page', 1))
-    limit = int(request.GET.get('limit', 10))
+    limit = int(request.GET.get('limit', 9))
 
     conn = None
     try:
@@ -700,16 +700,17 @@ def search_products(request):
 
         # get the total number of matching products
         cur.execute(
-            "SELECT COUNT(*) FROM product WHERE title ILIKE %s", ['%'+keyword+'%'])
+            "SELECT COUNT(*) FROM product WHERE title ILIKE %s AND is_removed = false", ['%'+keyword+'%'])
         total_count = cur.fetchone()[0]
 
         # get a list of products matching the keyword, paginated
         cur.execute(
-            "SELECT id, title, description, fab_user_id, st_price, created_at "
-            "FROM product "
-            "WHERE is_removed = false AND title ILIKE %s "
-            "ORDER BY created_at DESC "
-            "LIMIT %s OFFSET %s",
+            """SELECT p.id, title, description, MIN(resource) as banner, subcategory_id, st_price, created_at 
+                FROM product p INNER JOIN gallery g ON p.id = g.product_id
+                WHERE is_removed = false AND title ILIKE %s
+                GROUP BY p.id 
+                ORDER BY created_at DESC 
+                LIMIT %s OFFSET %s""",
             ['%'+keyword+'%', limit, (page-1)*limit]
         )
         rows = cur.fetchall()
@@ -718,11 +719,12 @@ def search_products(request):
         for row in rows:
             products.append({
                 'id': row[0],
-                'name': row[1],
+                'title': row[1],
                 'description': row[2],
-                'creator': row[3],
-                'price': row[4],
-                'created_at': row[5].strftime('%Y-%m-%dT%H:%M:%S')
+                'banner': row[3],
+                'subcategory_id': row[-3],
+                'price': row[-2],
+                'created_at': row[-1].strftime('%Y-%m-%dT%H:%M:%S')
             })
 
         resp = {
@@ -730,9 +732,9 @@ def search_products(request):
                 'products': products,
                 'pagination': {
                     'page': page,
-                    'limit': limit,
+                    'page_size': limit,
+                    'num_pages': math.ceil(total_count / limit),
                     'total_count': total_count,
-                    'total_pages': math.ceil(total_count / limit)
                 }
             },
             'message': 'Амжилттай!'
