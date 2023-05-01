@@ -1985,7 +1985,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyMjMyMDUxLCJpYXQiOjE2ODIyMjg0NTEsImp0aSI6IjkxMjg5M2IwZTQ5OTRhZjBiMTViZWIzMjJmMzgxYzYwIiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.nyafaGRWJ_Wi7eu-IXpVX0lcNuOWQy029y-zn9Yic80",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgyODczMDQ4LCJpYXQiOjE2ODI4Njk0NDgsImp0aSI6Ijg1NjE0ZjEwOTE5MzQ0NTRiMTJjZWFhYjViZjM5YTg4IiwidXNlcl9pZCI6MjAyMzAyMDMsInVzZXJuYW1lIjoiU2FuZHkifQ.jj6GM2gIYx1ZKdp6wgcSvnXMVNVw6vv2V2RZYtRAma0",
 											"type": "string"
 										}
 									]
@@ -2010,14 +2010,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{api}}/cart/get/",
+											"raw": "{{api}}/cart/get",
 											"host": [
 												"{{api}}"
 											],
 											"path": [
 												"cart",
-												"get",
-												""
+												"get"
 											]
 										}
 									},
@@ -2027,7 +2026,7 @@
 									"header": [
 										{
 											"key": "Date",
-											"value": "Sun, 23 Apr 2023 05:50:01 GMT"
+											"value": "Sun, 30 Apr 2023 15:44:25 GMT"
 										},
 										{
 											"key": "Server",
@@ -2039,7 +2038,7 @@
 										},
 										{
 											"key": "Allow",
-											"value": "OPTIONS, GET"
+											"value": "GET, OPTIONS"
 										},
 										{
 											"key": "X-Frame-Options",
@@ -2047,7 +2046,7 @@
 										},
 										{
 											"key": "Content-Length",
-											"value": "173"
+											"value": "344"
 										},
 										{
 											"key": "Vary",
@@ -2067,7 +2066,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": {\n        \"in_cart\": [\n            {\n                \"title\": \"Boss Multifaros\",\n                \"min\": \"public/img/Fcd82laacAAyVvX.jfif\",\n                \"st_price\": 9\n            }\n        ],\n        \"total_in_cart\": 1,\n        \"total_price\": 9\n    },\n    \"message\": \"Амжилттай!\"\n}"
+									"body": "{\n    \"data\": {\n        \"in_cart\": [\n            {\n                \"id\": 12,\n                \"title\": \"Boss Multifaros\",\n                \"min\": \"public/img/343837852_1183592982345261_8614889772949677637_n_RVCgz3R.jpg\",\n                \"st_price\": 9\n            },\n            {\n                \"id\": 14,\n                \"title\": \"Myullodia #ФwФ\",\n                \"min\": \"public/img/341873256_185189254352727_8476156681473690306_n.jpg\",\n                \"st_price\": 0\n            }\n        ],\n        \"total_in_cart\": 2,\n        \"total_price\": 9\n    },\n    \"message\": \"Амжилттай!\"\n}"
 								}
 							]
 						},
@@ -2244,7 +2243,7 @@
 										}
 									]
 								},
-								"method": "PUT",
+								"method": "POST",
 								"header": [],
 								"url": {
 									"raw": "{{api}}/cart/checkout",

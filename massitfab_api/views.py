@@ -887,7 +887,8 @@ def get_wishlist(request):
     finally:
         if conn is not None:
             disconnectDB(conn)
-            
+
+
 @api_view(['GET'])
 def get_allWishlist(request):
     auth_header = request.headers.get('Authorization')
@@ -1219,24 +1220,26 @@ def add_n_remove_from_cart(request, product_id):
 
         # Check if it's already in the cart
         cur.execute(
-            "SELECT * FROM customer WHERE product_id = %s AND in_cart = true",
-            [product_id]
+            "SELECT * FROM customer WHERE product_id = %s AND in_cart = true AND fab_user_id = %s",
+            [product_id, user_id]
         )
         result = cur.fetchone()
+        print(result)
 
         if result is not None:
             # Check if user is authorized to modify
             user_id = auth.get('user_id')
             if user_id != result[1]:
-                log_error('add_n_remove_from_cart', json.dumps(), 'Unauthorized')
+                log_error('add_n_remove_from_cart', json.dumps(
+                    request.data), 'Unauthorized')
                 return Response(
                     {'message': 'Unauthorized'},
                     status=status.HTTP_401_UNAUTHORIZED
                 )
 
             if result[-1] == True:
-                log_error('add_n_remove_from_cart', "{}",
-                        'Product is already purchased')
+                log_error('add_n_remove_from_cart', json.dumps(request.data),
+                          'Product is already purchased')
                 return Response(
                     {'message': 'Product is already purchased'},
                     status=status.HTTP_404_NOT_FOUND
@@ -1254,12 +1257,12 @@ def add_n_remove_from_cart(request, product_id):
         conn.commit()
 
         resp = {
-        'data': {
-            "cart_id": cart_id,
-            "user_id": user_id,
-            "product_id": product_id,
-        },
-        "message": "Сагсанд амжилттай нэмэгдлээ!",
+            'data': {
+                "cart_id": cart_id,
+                "user_id": user_id,
+                "product_id": product_id,
+            },
+            "message": "Сагсанд амжилттай нэмэгдлээ!",
         }
         return Response(
             resp,
