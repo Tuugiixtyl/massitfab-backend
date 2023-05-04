@@ -60,7 +60,7 @@ class CreateProductSerializer(serializers.Serializer):
 
 
 class UpdateProfileSerializer(serializers.Serializer):
-    username = serializers.CharField()
+    username = serializers.CharField(allow_blank=True, required=False)
     summary = serializers.CharField(allow_blank=True, required=False)
     profile_picture = serializers.ImageField(required=False)
 

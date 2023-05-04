@@ -6,7 +6,7 @@ app_name = 'mfApi'
 
 urlpatterns = [
     re_path(r'^u/get/(?i)(?P<username>[a-z]+)', get_profile, name='get_profile'),
-    path('u/update/', update_profile, name='update_profile'),
+    path('u/update', update_profile, name='update_profile'),
     
     path('content/create', create_product, name='upload_content'),
     path('content/update/<int:id>', update_product, name='update_content'),
